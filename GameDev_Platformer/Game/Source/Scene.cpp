@@ -6,6 +6,7 @@
 #include "Window.h"
 #include "Scene.h"
 #include "Map.h"
+#include "ModulePhysics.h"
 
 #include "Defs.h"
 #include "Log.h"

@@ -17,6 +17,7 @@ class Textures;
 class Audio;
 class Scene;
 class Map;
+class ModulePhysics;
 
 class App
 {
@@ -88,6 +89,7 @@ public:
 	Audio* audio;
 	Scene* scene;
 	Map* map;
+	ModulePhysics* physics;
 
 private:
 

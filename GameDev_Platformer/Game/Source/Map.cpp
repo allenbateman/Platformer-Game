@@ -54,7 +54,7 @@ void Map::Draw()
 			// DrawTexture()
 			int id = mapData.maplayers.start->data->Get(x, y);
 			SDL_Rect rect = tileset->data->GetTileRect(id);
-			iPoint pos = MapToWorld(x,y);
+			intPoint pos = MapToWorld(x,y);
 
 			app->render->DrawTexture(tileset->data->texture,pos.x,pos.y,&rect);
 
@@ -66,9 +66,9 @@ void Map::Draw()
 }
 
 // L04: TODO 8: Create a method that translates x,y coordinates from map positions to world positions
-iPoint Map::MapToWorld(int x, int y) const
+intPoint Map::MapToWorld(int x, int y) const
 {
-	iPoint ret;
+	intPoint ret;
 
 	ret.x = x * mapData.tileWidth;
 	ret.y = y * mapData.tileHeight;
