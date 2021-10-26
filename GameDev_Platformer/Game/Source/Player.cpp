@@ -3,6 +3,8 @@
 #include "Input.h"
 #include "ModulePhysics.h"
 #include "Player.h"
+#include "Textures.h"
+#include "Render.h"
 #include <SDL/include/SDL_scancode.h>
 
 ModulePlayer::ModulePlayer() : Module()

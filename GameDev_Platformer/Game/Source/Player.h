@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "Point.h"
 #include "Animation.h"
+#include "ModulePhysics.h"
 
 struct Player1 {
 	PhysBody* player;

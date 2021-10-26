@@ -1,25 +1,36 @@
-﻿  App.cpp
+﻿  Main.cpp
+  App.cpp
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': macro redefinition
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : see previous definition of 'LOG'
+  Audio.cpp
   Input.cpp
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': macro redefinition
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : see previous definition of 'LOG'
+  Map.cpp
   ModulePhysics.cpp
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(95,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(96,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(140,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(190,44): warning C4305: '=': truncation from 'double' to 'float32'
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(365,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(366,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(372,27): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(91,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(92,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(136,21): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(186,44): warning C4305: '=': truncation from 'double' to 'float32'
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(361,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(362,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(368,27): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
   Player.cpp
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+  Scene.cpp
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': macro redefinition
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : see previous definition of 'LOG'
+  Render.cpp
+  Textures.cpp
+  Window.cpp
   Generating Code...
   Game.vcxproj -> C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe

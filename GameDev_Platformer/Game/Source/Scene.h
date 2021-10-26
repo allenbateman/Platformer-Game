@@ -9,20 +9,6 @@
 
 struct SDL_Texture;
 
-struct PlayerInScene
-{
-	PhysBody* player;
-	Animation idlePlayerAnim;
-	Animation walkingPlayerAnim;
-	enum State
-	{
-		IDLE,
-		DEAD,
-		WALKING
-	};
-	int speed;
-};
-
 class Scene : public Module
 {
 public:
