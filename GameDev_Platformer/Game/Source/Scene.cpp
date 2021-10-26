@@ -32,7 +32,8 @@ bool Scene::Awake()
 // Called before the first frame
 bool Scene::Start()
 {
-
+	// L03: DONE: Load map
+	//app->map->Load("iso_walk.tmx");
 	app->map->Load("level1.tmx");
 	
 	// Load music
@@ -58,6 +59,20 @@ bool Scene::Update(float dt)
 
 	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		app->SaveGameRequest();
+
+	if(app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		app->render->camera.y -= 1;
+
+	if(app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		app->render->camera.y += 1;
+
+	if(app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+		app->render->camera.x -= 1;
+
+	if(app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		app->render->camera.x += 1;
+
+	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 
 	// Draw map
 	app->map->Draw();
