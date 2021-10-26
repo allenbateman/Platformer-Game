@@ -386,3 +386,12 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+*.ipch
+*.db
+GameDev_Platformer/.vs/Development/v16/Browse.VC.db
+GameDev_Platformer/.vs/Development/v16/ipch/AutoPCH/31c637dff4c7565e/PLAYER.ipch
+*.db
+*.ipch
+GameDev_Platformer/.vs/Development/v16/ipch/AutoPCH/31c637dff4c7565e/PLAYER.ipch
+GameDev_Platformer/.vs/Development/v16/Browse.VC.db
+GameDev_Platformer/.vs/Development/v16/.suo
