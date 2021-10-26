@@ -3,11 +3,24 @@
  <properties>
   <property name="Draw" type="int" value="1"/>
  </properties>
- <tileset firstgid="1" source="Background 1.tsx"/>
- <tileset firstgid="1741" source="Background 2.tsx"/>
- <tileset firstgid="3481" source="Background 3.tsx"/>
- <tileset firstgid="5221" source="Forest 1.tsx"/>
- <tileset firstgid="5361" source="Forest_Assets_x2.tsx"/>
+ 
+ <tileset firstgid="1" name="Background 1" tilewidth="16" tileheight="16" tilecount="1740" columns="60">
+	<image source="../Spritesx16/Background_layer1_x2.png" width="960" height="468"/>
+ </tileset>
+ <tileset firstgid="1741" name="Background 2" tilewidth="16" tileheight="16" tilecount="1740" columns="60">
+	<image source="../Spritesx16/Background_layer2_x2.png" width="960" height="468"/>
+ </tileset>
+ <tileset firstgid="3481" name="Background 3" tilewidth="16" tileheight="16" tilecount="1740" columns="60">
+	<image source="../Spritesx16/Background_layer3_x2.png" width="960" height="468"/>
+ </tileset>
+ <tileset firstgid="5221"  name="Forest 1" tilewidth="16" tileheight="16" tilecount="140" columns="20">
+  <image source="../Spritesx16/Forest_Tileset_x2.png" width="320" height="112"/>
+ </tileset>
+
+ <tileset firstgid="5361" name="Forest_Assets_x2" tilewidth="16" tileheight="16" tilecount="189" columns="27">
+  <image source="../Spritesx16/Forest_Assets_x2.png" width="432" height="112"/>
+ </tileset>
+
  <layer id="3" name="Background 3" width="80" height="30">
   <properties>
    <property name="Draw" type="int" value="1"/>
