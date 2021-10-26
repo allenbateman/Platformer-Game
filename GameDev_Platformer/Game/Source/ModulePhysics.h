@@ -63,6 +63,8 @@ public:
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact) override;
 
+	PhysBody* test;
+
 	bool debug;
 	b2MouseJoint* mouse_joint;
 private:
@@ -73,5 +75,5 @@ private:
 	b2Body* mouseBody;
 	b2Vec2 p;
 
-	p2List<b2RevoluteJoint*> revoluteList;
+	//p2List<b2RevoluteJoint*> revoluteList;
 };

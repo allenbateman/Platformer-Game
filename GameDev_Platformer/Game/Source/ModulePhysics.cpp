@@ -6,7 +6,8 @@
 #include "Player.h"
 #include "Point.h"
 #include "math.h"
-
+#include "Log.h"
+#include "Globals.h"
 //#ifdef _DEBUG
 //#pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
 //#else
@@ -35,6 +36,7 @@ bool ModulePhysics::Start()
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
+	test = CreateCircle(250, 250,25, b2_staticBody);
 
 	return true;
 }
@@ -196,6 +198,9 @@ b2PrismaticJoint* ModulePhysics::CreatePrismaticJoint(PhysBody* A, b2Vec2 anchor
 // 
 bool ModulePhysics::PostUpdate()
 {
+
+
+
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
@@ -204,8 +209,7 @@ bool ModulePhysics::PostUpdate()
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
-	if (app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN)
-	{
+
 		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
 		{
 			for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
@@ -215,9 +219,12 @@ bool ModulePhysics::PostUpdate()
 					// Draw circles ------------------------------------------------
 				case b2Shape::e_circle:
 				{
+				
+
 					b2CircleShape* shape = (b2CircleShape*)f->GetShape();
 					b2Vec2 pos = f->GetBody()->GetPosition();
 					app->render->DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), METERS_TO_PIXELS(shape->m_radius), 255, 255, 255);
+
 				}
 				break;
 
@@ -273,7 +280,7 @@ bool ModulePhysics::PostUpdate()
 				}
 				break;
 				}
-
+			
 				/*if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
 				{
 					p = { PIXEL_TO_METERS(app->input->GetMousePosition().x), PIXEL_TO_METERS(app->input->GetMousePosition().y) };
@@ -297,7 +304,7 @@ bool ModulePhysics::PostUpdate()
 					}*/
 					/*}*/
 			}
-		}
+		
 	}
 
 
