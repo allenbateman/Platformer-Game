@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Render.h"
 #include "Textures.h"
+#include "ModulePhysics.h"
 #include "Map.h"
 
 #include "Defs.h"
@@ -246,7 +247,7 @@ bool Map::Load(const char* filename)
 	{
 		ret = LoadAllLayers(mapFile.child("map"));
 	}
-    
+
     if(ret == true)
     {
         // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
@@ -254,9 +255,51 @@ bool Map::Load(const char* filename)
 		// L04: TODO 4: LOG the info for each loaded layer
     }
 
+	//once the maps and layers are loaded, we set the physics properties
+	if (ret == true)
+	{
+		SetMapColliders();
+	}
+
     mapLoaded = ret;
 
     return ret;
+}
+
+bool Map::SetMapColliders()
+{
+	bool ret = true;
+
+	ListItem<MapLayer*>* mapLayerItem;
+	mapLayerItem = mapData.layers.start;
+
+	while (mapLayerItem != NULL) {
+
+		if (mapLayerItem->data->properties.GetProperty("Collider") == true) {
+			
+			for (int x = 0; x < mapLayerItem->data->width; x++)
+			{
+				for (int y = 0; y < mapLayerItem->data->height; y++)
+				{
+					int gid = mapLayerItem->data->Get(x, y);
+
+					if (gid > 0) {
+
+						TileSet* tileset = GetTilesetFromTileId(gid);
+
+						SDL_Rect r = tileset->GetTileRect(gid);
+
+						app->physics->CreateRectangle(r.x, r.y, r.w, r.y, b2_staticBody);
+						LOG("!!!Collider!!!");
+					}
+
+				}
+			}
+		}
+
+		mapLayerItem = mapLayerItem->next;
+	}
+	return ret;
 }
 
 // L03: TODO: Load map general properties
