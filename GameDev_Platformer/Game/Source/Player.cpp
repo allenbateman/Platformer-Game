@@ -15,9 +15,12 @@ ModulePlayer::~ModulePlayer()
 // Load assets
 bool ModulePlayer::Start()
 {
+	speedX = 0.8f;
+	speedY = 0.8f;
 	//Initializing player struct data
 	p = new Player1;
 	p->player = app->physics->CreateRectangle(20, 300, 20, 40, b2_dynamicBody);
+	p->player->body->SetFixedRotation(true);
 	//Idle anim
 	p->idlePlayerAnim.PushBack({ 0, 0, 39, 38 });
 	//Walking anim
@@ -35,16 +38,23 @@ bool ModulePlayer::CleanUp()
 }
 
 // Update: draw background
-bool ModulePlayer::Update()
+bool ModulePlayer::Update(float dt)
 {
-	return UPDATE_CONTINUE;
-
+	bool ret = true;
 	//Player movement
+	//Right
+	//if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	//{
+	//	p->player->body->SetLinearVelocity({ speed, 0 });
+	//}
+	//if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	//{
+	//	p->player->body->SetLinearVelocity({ -speed, 0 });
+	//}
+	//if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	//{
+	//	p->player->body->ApplyLinearImpulse({ 0, -speed - 0.3f}, { 0, 0 }, true);
+	//}
 
-	if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
-	{
-		p->player->body->ApplyLinearImpulse({ 1 , 0 }, { -1, 0 }, true);
-	}
-
-	return true;
+	return ret;
 }

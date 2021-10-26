@@ -50,6 +50,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	PhysBody* tempGround;
+
 private:
 	SDL_Texture* img;
 	p2List_item<PhysBody*>* collider;

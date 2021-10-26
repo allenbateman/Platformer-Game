@@ -26,9 +26,11 @@ public:
 
 
 	bool Start();
-	bool Update();
+	bool Update(float dt);
 	bool CleanUp();
 
 public:
 	Player1* p;
+	float speedX;
+	float speedY;
 };
