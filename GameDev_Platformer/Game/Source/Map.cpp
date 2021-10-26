@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Map.h"
+#include "ModulePhysics.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -69,9 +70,6 @@ void Map::Draw()
 
 					if (gid > 0) {
 
-						//L06: TODO 4: Obtain the tile set using GetTilesetFromTileId
-						//now we always use the firt tileset in the list
-						//TileSet* tileset = mapData.tilesets.start->data;
 						TileSet* tileset = GetTilesetFromTileId(gid);
 
 						SDL_Rect r = tileset->GetTileRect(gid);
@@ -254,6 +252,12 @@ bool Map::Load(const char* filename)
 		// L04: TODO 4: LOG the info for each loaded layer
     }
 
+	//once the maps and layers are loaded, we set the physics properties
+	if (ret == true)
+	{
+		SetMapColliders();
+	}
+
     mapLoaded = ret;
 
     return ret;
@@ -408,5 +412,43 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 		properties.list.add(p);
 	}
 	
+	return ret;
+}
+
+bool Map::SetMapColliders()
+{
+	bool ret = true;
+
+	ListItem<MapLayer*>* mapLayerItem;
+	mapLayerItem = mapData.layers.start;
+	LOG("--------!!!SETTING COLLIDERS!!!---------");
+	while (mapLayerItem != NULL) {
+
+		if (mapLayerItem->data->properties.GetProperty("Collider") == 1) {
+
+			for (int x = 0; x < mapLayerItem->data->width; x++)
+			{
+				for (int y = 0; y < mapLayerItem->data->height; y++)
+				{
+					int gid = mapLayerItem->data->Get(x, y);
+
+					if (gid > 0) {
+
+						TileSet* tileset = GetTilesetFromTileId(gid);
+
+						SDL_Rect r = tileset->GetTileRect(gid);
+						iPoint pos;
+						pos = MapToWorld(x,y);
+		
+						app->physics->groundColliders.add(app->physics->CreateRectangle(pos.x + (tileset->tileWidth*0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody));
+						LOG("!!!Collider!!!");
+					}
+
+				}
+			}
+		}
+
+		mapLayerItem = mapLayerItem->next;
+	}
 	return ret;
 }

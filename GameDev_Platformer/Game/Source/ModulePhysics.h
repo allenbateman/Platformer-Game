@@ -67,6 +67,7 @@ public:
 
 	bool debug;
 	b2MouseJoint* mouse_joint;
+	p2List<PhysBody*> groundColliders;
 private:
 
 	b2World* world;
@@ -75,5 +76,5 @@ private:
 	b2Body* mouseBody;
 	b2Vec2 p;
 
-	//p2List<b2RevoluteJoint*> revoluteList;
+	
 };
