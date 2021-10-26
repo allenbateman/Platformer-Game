@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Input.h"
 #include "Window.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"

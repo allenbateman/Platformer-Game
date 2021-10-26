@@ -2,8 +2,26 @@
 #define __SCENE_H__
 
 #include "Module.h"
+#include "p2List.h"
+#include "Globals.h"
+#include "ModulePhysics.h"
+#include "Animation.h"
 
 struct SDL_Texture;
+
+struct PlayerInScene
+{
+	PhysBody* player;
+	Animation idlePlayerAnim;
+	Animation walkingPlayerAnim;
+	enum State
+	{
+		IDLE,
+		DEAD,
+		WALKING
+	};
+	int speed;
+};
 
 class Scene : public Module
 {

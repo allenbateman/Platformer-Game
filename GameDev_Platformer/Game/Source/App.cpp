@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Map.h"
 #include "ModulePhysics.h"
+#include "Player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -27,6 +28,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new Scene();
 	map = new Map();
 	physics = new ModulePhysics();
+	player = new ModulePlayer();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -37,6 +39,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(map);
 	AddModule(physics);
+	AddModule(player);
 
 	// Render last to swap buffer
 	AddModule(render);
