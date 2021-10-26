@@ -17,7 +17,6 @@ class Textures;
 class Audio;
 class Scene;
 class Map;
-class ModulePhysics;
 
 class App
 {
@@ -89,7 +88,6 @@ public:
 	Audio* audio;
 	Scene* scene;
 	Map* map;
-	ModulePhysics* physics;
 
 private:
 
@@ -109,7 +107,6 @@ private:
 	uint frames;
 	float dt;
 
-	// L02: DONE 1: Create variables to control when to execute the request load / save
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
 };
