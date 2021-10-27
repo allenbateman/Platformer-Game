@@ -68,6 +68,8 @@ public:
 	bool debug;
 	b2MouseJoint* mouse_joint;
 	p2List<PhysBody*> groundColliders;
+	p2List<PhysBody*> collectables;
+	p2List<PhysBody*> deathColliders;
 private:
 
 	b2World* world;

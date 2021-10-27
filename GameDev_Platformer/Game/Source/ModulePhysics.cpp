@@ -19,6 +19,7 @@ ModulePhysics::ModulePhysics() : Module()
 	world = NULL;
 	mouse_joint = NULL;
 	debug = false;
+	name.Create("physics");
 }
 
 // Destructor

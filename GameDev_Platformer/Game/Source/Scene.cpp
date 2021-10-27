@@ -37,7 +37,7 @@ bool Scene::Start()
 	app->map->Load("level1.tmx");
 	
 	// Load music
-	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
 	return true;
 }
@@ -57,7 +57,6 @@ bool Scene::Update(float dt)
 
 	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		app->SaveGameRequest();
-
 
 	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
 

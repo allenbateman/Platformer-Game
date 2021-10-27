@@ -446,7 +446,30 @@ bool Map::SetMapColliders()
 				}
 			}
 		}
+		if (mapLayerItem->data->properties.GetProperty("Trigger") == 1) {
 
+			for (int x = 0; x < mapLayerItem->data->width; x++)
+			{
+				for (int y = 0; y < mapLayerItem->data->height; y++)
+				{
+					int gid = mapLayerItem->data->Get(x, y);
+
+					if (gid > 0) {
+
+						TileSet* tileset = GetTilesetFromTileId(gid);
+
+						SDL_Rect r = tileset->GetTileRect(gid);
+						iPoint pos;
+						pos = MapToWorld(x, y);
+						if(mapLayerItem->data->properties.GetProperty("Gem") == 1)
+							app->physics->collectables.add(app->physics->CreateRectangleSensor(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_kinematicBody));
+						if(mapLayerItem->data->properties.GetProperty("Death") == 1)
+							app->physics->deathColliders.add(app->physics->CreateRectangleSensor(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_kinematicBody));
+					}
+
+				}
+			}
+		}
 		mapLayerItem = mapLayerItem->next;
 	}
 	return ret;

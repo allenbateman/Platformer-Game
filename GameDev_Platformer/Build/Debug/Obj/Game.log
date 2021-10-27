@@ -1,8 +1,8 @@
-﻿  Player.cpp
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(47,17): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(48,18): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(52,85): warning C4305: 'argumento': truncamiento de 'double' a 'float32'
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(57,86): warning C4305: 'argumento': truncamiento de 'double' a 'float32'
+﻿  Map.cpp
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': redefinición de macro
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : vea la definición anterior de 'LOG'
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Map.cpp(443,112): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Map.cpp(443,77): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Map.cpp(465,120): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Map.cpp(465,83): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
   Game.vcxproj -> C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe
