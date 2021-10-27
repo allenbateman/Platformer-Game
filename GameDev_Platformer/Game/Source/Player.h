@@ -4,18 +4,14 @@
 #include "Point.h"
 #include "Animation.h"
 #include "Textures.h"
+#include "Render.h"
 
 struct Player1 {
 	PhysBody* player;
 	Animation idlePlayerAnim;
 	Animation jumpingPlayerAnim;
 	Animation walkingPlayerAnim;
-	enum State
-	{
-		IDLE,
-		WALK,
-		JUMP
-	};
+	Animation deathPlayerAnim;
 	bool IsDirectionRight;
 };
 
@@ -39,15 +35,17 @@ public:
 public:
 	Player1* p;
 	Animation* currentAnim = nullptr;
-	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim;
+	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim;
 	enum State
 	{
 		IDLE,
 		WALK,
-		JUMP
+		JUMP,
+		DEATH
 	};
 	State pState;
 	bool IsDirectionRight;
 	float maxSpeedX;
 	float minSpeedX;
+	SDL_RendererFlip direction;
 };
