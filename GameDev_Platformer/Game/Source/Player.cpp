@@ -15,8 +15,9 @@ ModulePlayer::~ModulePlayer()
 // Load assets
 bool ModulePlayer::Start()
 {
-	speedX = 0.8f;
-	speedY = 0.8f;
+	maxSpeedX = 0;
+	minSpeedX = 0;
+
 	//Initializing player struct data
 	p = new Player1;
 	p->player = app->physics->CreateRectangle(20, 300, 20, 40, b2_dynamicBody);
@@ -42,18 +43,27 @@ bool ModulePlayer::Update(float dt)
 {
 	bool ret = true;
 	//Player movement
+	maxSpeedX = 0.6;
+	minSpeedX = -0.6;
 	//Right
-	//if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if ((app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT) && (p->player->body->GetLinearVelocity().x <= maxSpeedX))
+	{
+		p->player->body->SetLinearVelocity({ 0.6, p->player->body->GetLinearVelocity().y });
+	}
+	//Left
+	if ((app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT) && (p->player->body->GetLinearVelocity().x >= minSpeedX))
+	{
+		p->player->body->SetLinearVelocity({ -0.6, p->player->body->GetLinearVelocity().y });
+	}
+	//Jump
+	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) && (p->player->body->GetLinearVelocity().y == 0))
+	{
+		p->player->body->ApplyLinearImpulse({ 0, -1.1f }, { 0, 0 }, true);
+	}
+	////DoubleJump
+	//if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) && (p->player->body->GetLinearVelocity().y > 0))
 	//{
-	//	p->player->body->SetLinearVelocity({ speed, 0 });
-	//}
-	//if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-	//{
-	//	p->player->body->SetLinearVelocity({ -speed, 0 });
-	//}
-	//if (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	//{
-	//	p->player->body->ApplyLinearImpulse({ 0, -speed - 0.3f}, { 0, 0 }, true);
+	//	p->player->body->ApplyLinearImpulse({ 0, -1.1f }, { 0, 0 }, true);
 	//}
 
 	return ret;

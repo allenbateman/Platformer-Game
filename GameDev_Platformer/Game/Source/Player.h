@@ -31,6 +31,6 @@ public:
 
 public:
 	Player1* p;
-	float speedX;
-	float speedY;
+	float maxSpeedX;
+	float minSpeedX;
 };

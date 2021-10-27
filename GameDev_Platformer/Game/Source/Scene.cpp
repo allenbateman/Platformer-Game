@@ -39,8 +39,6 @@ bool Scene::Start()
 	// Load music
 	app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
-	tempGround = app->physics->CreateRectangle(0 + 640, 430, 1280, 50, b2_staticBody);
-
 	return true;
 }
 

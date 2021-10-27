@@ -36,8 +36,6 @@ bool ModulePhysics::Start()
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
-	test = CreateCircle(250, 250,25, b2_staticBody);
-
 	return true;
 }
 
