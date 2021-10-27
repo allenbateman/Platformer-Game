@@ -90,7 +90,7 @@ bool ModulePlayer::Update(float dt)
 	}
 
 	app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(p->player->body->GetPosition().x - 9), 
-				 METERS_TO_PIXELS(p->player->body->GetPosition().y), &(currentAnim->GetCurrentFrame()), 1.0f);
+				 METERS_TO_PIXELS(p->player->body->GetPosition().y), &(currentAnim->GetCurrentFrame()),1,1,1,1,1.5f);
 
 	bool ret = true;
 	//Player movement
