@@ -1,24 +1,8 @@
-﻿  App.cpp
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': macro redefinition
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : see previous definition of 'LOG'
-  ModulePhysics.cpp
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': macro redefinition
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : see previous definition of 'LOG'
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(95,23): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(96,25): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(140,21): warning C4018: '<': signed/unsigned mismatch
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(190,44): warning C4305: '=': truncation from 'double' to 'float32'
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(370,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(371,13): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\ModulePhysics.cpp(377,27): warning C4244: 'return': conversion from 'float32' to 'int', possible loss of data
-  Scene.cpp
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': macro redefinition
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : see previous definition of 'LOG'
-  Generating Code...
-  Game.vcxproj -> C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe
+﻿  Player.cpp
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(47,17): warning C4305: '=': truncamiento de 'double' a 'float'
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(48,18): warning C4305: '=': truncamiento de 'double' a 'float'
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(52,85): warning C4305: 'argumento': truncamiento de 'double' a 'float32'
+C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(57,86): warning C4305: 'argumento': truncamiento de 'double' a 'float32'
+  Game.vcxproj -> C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe

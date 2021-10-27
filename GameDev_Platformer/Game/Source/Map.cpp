@@ -441,7 +441,6 @@ bool Map::SetMapColliders()
 						pos = MapToWorld(x,y);
 		
 						app->physics->groundColliders.add(app->physics->CreateRectangle(pos.x + (tileset->tileWidth*0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody));
-						LOG("!!!Collider!!!");
 					}
 
 				}

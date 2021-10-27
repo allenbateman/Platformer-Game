@@ -284,12 +284,21 @@ const char* App::GetOrganization() const
 void App::LoadGameRequest()
 {
 	// NOTE: We should check if SAVE_STATE_FILENAME actually exist
-	loadGameRequested = true;
+	bool ret = true;
+
+	pugi::xml_document gameStateFile;
+	pugi::xml_parse_result  result = gameStateFile.load_file("savegame.xml");
+
+	if (gameStateFile.child("save_state") == NULL)
+		ret = false;
+
+	loadGameRequested = ret;
 }
 
 // ---------------------------------------
 void App::SaveGameRequest() const
 {
+	//TODO
 	// NOTE: We should check if SAVE_STATE_FILENAME actually exist and... should we overwriten
 	saveGameRequested = true;
 }
@@ -299,11 +308,30 @@ void App::SaveGameRequest() const
 // then call all the modules to load themselves
 bool App::LoadGame()
 {
-	bool ret = false;
+	bool ret = true;
 
-	//...
+	pugi::xml_document gameStateFile;
+	pugi::xml_parse_result  result = gameStateFile.load_file("savegame.xml");
+	
+	if (result == NULL)
+	{
+		LOG("Could not load xml file savegame.xml. pugi error: %s", result.description());
+		ret = false;
+	}
+	else {
+		ListItem<Module*>* item;
+		item = modules.start;
+
+		while (item != NULL)
+		{
+			ret = item->data->LoadState(gameStateFile.child("save_state").child(item->data->name.GetString()));
+			item = item->next;
+		}
+	}
 
 	loadGameRequested = false;
+
+	LOG("Game Loaded...");
 
 	return ret;
 }
@@ -313,9 +341,25 @@ bool App::SaveGame() const
 {
 	bool ret = true;
 
-	//...
+	pugi::xml_document* saveDoc = new pugi::xml_document();
+	pugi::xml_node  saveStateNode = saveDoc->append_child("save_state");
+
+	ListItem<Module*>* item;
+	item = modules.start;
+
+	while (item != NULL)
+	{
+		if (ret != item->data->SaveState(saveStateNode.append_child(item->data->name.GetString())))
+			LOG("could not save status of %s", item->data->name.GetString());
+		item = item->next;
+	}
+
+	if (ret != saveDoc->save_file("savegame.xml"))
+		LOG("Could not save savegame file....");
 
 	saveGameRequested = false;
+
+	LOG("Game Saved...");
 
 	return ret;
 }

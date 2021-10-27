@@ -50,6 +50,11 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+
+	// Load / Save
+	bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&) const;
+
 private:
 	SDL_Texture* img;
 	p2List_item<PhysBody*>* collider;

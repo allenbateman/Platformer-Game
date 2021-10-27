@@ -93,3 +93,15 @@ bool Scene::CleanUp()
 
 	return true;
 }
+
+bool Scene::LoadState(pugi::xml_node&)
+{
+	bool ret = true;
+	return ret;
+}
+
+bool Scene::SaveState(pugi::xml_node&) 
+{
+	bool ret = true;
+	return ret;
+}

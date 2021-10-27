@@ -29,6 +29,10 @@ public:
 	bool Update(float dt);
 	bool CleanUp();
 
+	// Load / Save
+	bool LoadState(pugi::xml_node&);
+	bool SaveState(pugi::xml_node&) const;
+
 public:
 	Player1* p;
 	float maxSpeedX;

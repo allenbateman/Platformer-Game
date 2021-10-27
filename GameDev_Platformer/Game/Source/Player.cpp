@@ -20,7 +20,8 @@ bool ModulePlayer::Start()
 
 	//Initializing player struct data
 	p = new Player1;
-	p->player = app->physics->CreateRectangle(20, 300, 20, 40, b2_dynamicBody);
+	//p->player = app->physics->CreateRectangle(20, 300, 20, 40, b2_dynamicBody);
+	p->player = app->physics->CreateCircle(20, 300, 20,b2_dynamicBody);
 	p->player->body->SetFixedRotation(true);
 	//Idle anim
 	p->idlePlayerAnim.PushBack({ 0, 0, 39, 38 });
@@ -36,6 +37,18 @@ bool ModulePlayer::Start()
 bool ModulePlayer::CleanUp()
 {
 	return true;
+}
+
+bool ModulePlayer::LoadState(pugi::xml_node&)
+{
+	bool ret = true;
+	return ret;
+}
+
+bool ModulePlayer::SaveState(pugi::xml_node&) const
+{
+	bool ret = true;
+	return ret;
 }
 
 // Update: draw background
