@@ -17,6 +17,13 @@
 #define METERS_TO_PIXELS(m) ((int) floor(PIXELS_PER_METER * m))
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
+
+enum class Collider_Type {
+	GEM,
+	GOLD,
+	DEATH,
+	WIN
+};
 // Small class to return to other modules to track position and rotation of physics bodies
 class PhysBody
 {
@@ -36,6 +43,7 @@ public:
 public:
 	int width, height;
 	b2Body* body;
+	Collider_Type type;
 	Module* listener;
 	bool pendingToDelete = false;
 };

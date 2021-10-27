@@ -7,6 +7,7 @@
 #include "Scene.h"
 #include "Map.h"
 #include "ModulePhysics.h"
+#include "player.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -103,4 +104,21 @@ bool Scene::SaveState(pugi::xml_node&) const
 {
 	bool ret = true;
 	return ret;
+}
+void Scene::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
+{
+	b2Vec2 position;
+
+	LOG("I got touched!");
+
+
+	if (bodyA->type == Collider_Type::GEM || bodyB->type == Collider_Type::GEM)
+	{
+		LOG("GOT A GEM!");
+	}
+
+	if (bodyA->type == Collider_Type::DEATH || bodyB->type == Collider_Type::DEATH)
+	{
+		LOG("I DIED!");
+	}
 }

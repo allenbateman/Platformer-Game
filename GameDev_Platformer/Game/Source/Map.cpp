@@ -4,6 +4,7 @@
 #include "Textures.h"
 #include "Map.h"
 #include "ModulePhysics.h"
+#include "Scene.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -461,10 +462,18 @@ bool Map::SetMapColliders()
 						SDL_Rect r = tileset->GetTileRect(gid);
 						iPoint pos;
 						pos = MapToWorld(x, y);
-						if(mapLayerItem->data->properties.GetProperty("Gem") == 1)
+						if (mapLayerItem->data->properties.GetProperty("Gem") == 1)
+						{
 							app->physics->collectables.add(app->physics->CreateRectangleSensor(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_kinematicBody));
+							app->physics->collectables.getLast()->data->listener = app->scene;
+							app->physics->collectables.getLast()->data->type = Collider_Type::GEM;
+						}
 						if(mapLayerItem->data->properties.GetProperty("Death") == 1)
+						{
 							app->physics->deathColliders.add(app->physics->CreateRectangleSensor(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_kinematicBody));
+							app->physics->deathColliders.getLast()->data->listener = app->scene;
+							app->physics->deathColliders.getLast()->data->type = Collider_Type::DEATH;
+						}
 					}
 
 				}

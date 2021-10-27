@@ -218,8 +218,7 @@ bool ModulePhysics::PostUpdate()
 					// Draw circles ------------------------------------------------
 				case b2Shape::e_circle:
 				{
-				
-
+			
 					b2CircleShape* shape = (b2CircleShape*)f->GetShape();
 					b2Vec2 pos = f->GetBody()->GetPosition();
 					app->render->DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), METERS_TO_PIXELS(shape->m_radius), 255, 255, 255);
@@ -279,29 +278,7 @@ bool ModulePhysics::PostUpdate()
 				}
 				break;
 				}
-			
-				/*if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
-				{
-					p = { PIXEL_TO_METERS(app->input->GetMousePosition().x), PIXEL_TO_METERS(app->input->GetMousePosition().y) };
-					if (f->GetShape()->TestPoint(b->GetTransform(), p) == true)
-					{
-						mouseBody = b;
-
-						b2Vec2 mousePosition;
-						mousePosition.x = p.x;
-						mousePosition.y = p.y;
-
-						b2MouseJointDef def;
-						def.bodyA = ground;
-						def.bodyB = mouseBody;
-						def.target = mousePosition;
-						def.dampingRatio = 0.5f;
-						def.frequencyHz = 2.0f;
-						def.maxForce = 100.0f * mouseBody->GetMass();
-
-						mouse_joint = (b2MouseJoint*)world->CreateJoint(&def);
-					}*/
-					/*}*/
+		
 			}
 		
 	}
