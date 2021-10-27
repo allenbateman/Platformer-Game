@@ -100,7 +100,7 @@ bool Scene::LoadState(pugi::xml_node&)
 	return ret;
 }
 
-bool Scene::SaveState(pugi::xml_node&) 
+bool Scene::SaveState(pugi::xml_node&) const
 {
 	bool ret = true;
 	return ret;
