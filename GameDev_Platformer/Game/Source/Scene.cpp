@@ -115,6 +115,10 @@ void Scene::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	if (bodyA->type == Collider_Type::GEM || bodyB->type == Collider_Type::GEM)
 	{
 		LOG("GOT A GEM!");
+		if(bodyA != NULL)
+			app->physics->collectables.del(app->physics->collectables.getFirst());
+		else if(bodyB != NULL)
+			app->physics->collectables.del(app->physics->collectables.getFirst());
 	}
 
 	if (bodyA->type == Collider_Type::DEATH || bodyB->type == Collider_Type::DEATH)

@@ -20,7 +20,9 @@
 
 enum class Collider_Type {
 	GEM,
-	GOLD,
+	KEY,
+	CHECK_POINT,
+	SPAWNER,
 	DEATH,
 	WIN
 };

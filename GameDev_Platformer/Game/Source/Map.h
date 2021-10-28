@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "List.h"
 #include "Point.h"
+#include "ModulePhysics.h"
 
 #include "PugiXml\src\pugixml.hpp"
 
@@ -43,14 +44,12 @@ struct Properties
 {
 	struct Property
 	{
-		//...
 		SString name;
 		int value;
 	};
 	
 	~Properties()
 	{
-		//...
 		ListItem<Property*>* item;
 		item = list.start;
 
@@ -68,7 +67,6 @@ struct Properties
 
 	List<Property*> list;
 };
-
 // L04: DONE 1: Create a struct for the map layer
 struct MapLayer
 {
@@ -95,6 +93,24 @@ struct MapLayer
 	}
 };
 
+struct Object {
+
+	Properties properties;
+	SString name;
+	Collider_Type type;
+	int x, y, width, height, id;
+
+	Object() {}
+	~Object() {}
+};
+
+struct ObjectLayer {
+
+	SString name;
+	List<Object*> objects;
+};
+
+
 // L03: DONE 1: Create a struct needed to hold the information to Map node
 struct MapData
 {
@@ -105,6 +121,7 @@ struct MapData
 	SDL_Color backgroundColor;
 	MapTypes type;
 	List<TileSet*> tilesets;
+	List<ObjectLayer*> objectLayers;
 
 	// L04: DONE 2: Add a list/array of layers to the map
 	List<MapLayer*> layers;
@@ -147,12 +164,15 @@ private:
 	bool LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set);
 	bool LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set);
 
-	// L04
+	// Tile Layers
 	bool LoadLayer(pugi::xml_node& node, MapLayer* layer);
 	bool LoadAllLayers(pugi::xml_node mapNode);
-
-	// L06: TODO 6: Load a group of properties 
 	bool LoadProperties(pugi::xml_node& node, Properties& properties);
+
+	// ObjectLayers
+	bool LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer);
+	bool LoadAllObjectLayers(pugi::xml_node mapNode);
+	bool LoadObject(pugi::xml_node& node, Object* object);
 
 	// L06: TODO 3: Pick the right Tileset based on a tile id
 	TileSet* GetTilesetFromTileId(int id) const;

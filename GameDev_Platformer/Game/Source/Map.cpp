@@ -53,20 +53,17 @@ void Map::Draw()
 {
 	if (mapLoaded == false) return;
 
-	// L04: DONE 5: Prepare the loop to draw all tilesets + DrawTexture()
 	ListItem<MapLayer*>* mapLayerItem;
 	mapLayerItem = mapData.layers.start;
 
-	// L06: TODO 4: Make sure we draw all the layers and not just the first one
 	while (mapLayerItem != NULL) {
 
 		if (mapLayerItem->data->properties.GetProperty("Draw") == 1) {
-
 			for (int x = 0; x < mapLayerItem->data->width; x++)
 			{
 				for (int y = 0; y < mapLayerItem->data->height; y++)
 				{
-					// L04: DONE 9: Complete the draw function
+
 					int gid = mapLayerItem->data->Get(x, y);
 
 					if (gid > 0) {
@@ -76,18 +73,15 @@ void Map::Draw()
 						SDL_Rect r = tileset->GetTileRect(gid);
 						iPoint pos = MapToWorld(x, y);
 
-						app->render->DrawTexture(tileset->texture,
-							pos.x,
-							pos.y,
-							&r);
+						app->render->DrawTexture(tileset->texture,pos.x, pos.y, &r);
 					}
-
 				}
 			}
 		}
-
 		mapLayerItem = mapLayerItem->next;
 	}
+
+		
 }
 
 // L04: DONE 8: Create a method that translates x,y coordinates from map positions to world positions
@@ -237,6 +231,11 @@ bool Map::Load(const char* filename)
 	if (ret == true)
 	{
 		ret = LoadTileSets(mapFile.child("map"));
+
+		if (ret)
+			LOG("TileSets Loaded...");
+		else
+			LOG("TileSets Not Loaded...");
 	}
 
 	// L04: DONE 4: Iterate all layers and load each of them
@@ -244,8 +243,22 @@ bool Map::Load(const char* filename)
 	if (ret == true)
 	{
 		ret = LoadAllLayers(mapFile.child("map"));
+		if (ret)
+			LOG("Layers Loaded...");
+		else
+			LOG("Layers Not Loaded...");
 	}
     
+	if (ret == true)
+	{
+		ret = LoadAllObjectLayers(mapFile.child("map"));
+		if (ret)
+			LOG("Objects Loaded...");
+		else
+			LOG("Objects Not Loaded...");
+	}
+
+
     if(ret == true)
     {
         // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
@@ -354,6 +367,22 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
+// L04: DONE 4: Iterate all layers and load each of them
+bool Map::LoadAllLayers(pugi::xml_node mapNode) {
+	bool ret = true;
+	for (pugi::xml_node layerNode = mapNode.child("layer"); layerNode && ret; layerNode = layerNode.next_sibling("layer"))
+	{
+		//Load the layer
+		MapLayer* mapLayer = new MapLayer();
+		ret = LoadLayer(layerNode, mapLayer);
+
+		//add the layer to the map
+		mapData.layers.add(mapLayer);
+	}
+
+	return ret;
+}
+
 // L04: DONE 3: Implement a function that loads a single layer layer
 bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
@@ -383,38 +412,105 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
-// L04: DONE 4: Iterate all layers and load each of them
-bool Map::LoadAllLayers(pugi::xml_node mapNode) {
-	bool ret = true;
-	for (pugi::xml_node layerNode = mapNode.child("layer"); layerNode && ret; layerNode = layerNode.next_sibling("layer"))
-	{
-		//Load the layer
-		MapLayer* mapLayer = new MapLayer();
-		ret = LoadLayer(layerNode, mapLayer);
-
-		//add the layer to the map
-		mapData.layers.add(mapLayer);
-	}
-
-	return ret;
-}
-
 // L06: TODO 6: Load a group of properties from a node and fill a list with it
 bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
-	bool ret = false;
+	bool ret = true;
 
 	for (pugi::xml_node propertieNode = node.child("properties").child("property"); propertieNode; propertieNode = propertieNode.next_sibling("property"))
 	{
-		Properties::Property *p = new Properties::Property();
+		Properties::Property* p = new Properties::Property();
 		p->name = propertieNode.attribute("name").as_string();
 		p->value = propertieNode.attribute("value").as_int();
 
 		properties.list.add(p);
 	}
+
+	return ret;
+}
+
+bool Map::LoadAllObjectLayers(pugi::xml_node mapNode)
+{
+	bool ret = true;
+	for (pugi::xml_node layerNode = mapNode.child("objectgroup"); layerNode && ret; layerNode = layerNode.next_sibling("objectgroup"))
+	{
+		//Load the layer
+		ObjectLayer* objectLayer = new ObjectLayer();
+		ret = LoadObjectLayer(layerNode, objectLayer);
+
+		//add the layer to the map
+		mapData.objectLayers.add(objectLayer);
+	}
+
+	return ret;
+}
+
+bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
+{
+	bool ret = true;
+
+	//Load object group attributes
+	layer->name = node.attribute("name").as_string();
+
+	//Create and load each object property
+	pugi::xml_node object;
+
+	for (object = node.child("object"); object && ret; object = object.next_sibling("object"))
+	{
+		Object* obj = new Object();
+		//store object attributes 
+		obj->name = node.attribute("name").as_string();
+		obj->id = node.attribute("id").as_int();
+		obj->x = node.attribute("x").as_int();
+		obj->y = node.attribute("y").as_int();
+		obj->width = node.attribute("width").as_int();
+		obj->height = node.attribute("height").as_int();
+
+		if (strcmp(node.attribute("type").as_string(), "Gem") == 0){
+
+			obj->type = Collider_Type::GEM;
+
+		}else if (strcmp(node.attribute("type").as_string(), "Key") == 0){
+
+			obj->type = Collider_Type::KEY;
+			
+		}else if (strcmp(node.attribute("type").as_string(), "Win") == 0)
+		{
+			obj->type = Collider_Type::WIN;
+
+		}else if (strcmp(node.attribute("type").as_string(), "Spawner") == 0) {
+
+			obj->type = Collider_Type::SPAWNER;
+		}
+		layer->objects.add(obj);
+		//send current object node and obj to store the data
+		LoadObject(object, obj);
+	}
 	
 	return ret;
 }
+
+bool Map::LoadObject(pugi::xml_node& node, Object* object)
+{
+	bool ret = true;
+
+	//Iterate over all the object properties and set values, store the object to the list
+	pugi::xml_node tile;
+	int i = 0;
+	for (tile = node.child("properties").child("property"); tile && ret; tile = tile.next_sibling("property"))
+	{
+		Properties::Property* p = new Properties::Property();
+	
+
+		p->name = node.attribute("name").as_string();
+		p->value = node.attribute("value").as_int();
+
+		object->properties.list.add(p);
+	}
+
+	return ret;
+}
+
 
 bool Map::SetMapColliders()
 {
@@ -440,7 +536,7 @@ bool Map::SetMapColliders()
 						SDL_Rect r = tileset->GetTileRect(gid);
 						iPoint pos;
 						pos = MapToWorld(x,y);
-		
+						
 						app->physics->groundColliders.add(app->physics->CreateRectangle(pos.x + (tileset->tileWidth*0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody));
 					}
 
