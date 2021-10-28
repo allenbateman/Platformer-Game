@@ -18,7 +18,7 @@ struct Player1 {
 class ModulePlayer : public Module
 {
 public:
-	ModulePlayer();
+	ModulePlayer(bool isActive);
 	virtual ~ModulePlayer();
 
 

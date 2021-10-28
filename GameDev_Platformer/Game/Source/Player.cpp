@@ -6,7 +6,7 @@
 #include "Player.h"
 #include <SDL/include/SDL_scancode.h>
 
-ModulePlayer::ModulePlayer() : Module()
+ModulePlayer::ModulePlayer(bool isActive) : Module(isActive)
 {
 	name.Create("player");
 }

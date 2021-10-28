@@ -26,21 +26,21 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
 
-	win = new Window();
-	input = new Input();
-	render = new Render();
-	tex = new Textures();
-	audio = new Audio();
-	levelManagement = new LevelManagement();
-	fade = new FadeToBlack();
-	intro = new Intro();
-	start = new StartMenu();
-	scene1 = new Scene1();
-	scene2 = new Scene2();
-	gameOver = new GameOver();
-	map = new Map();
-	physics = new ModulePhysics();
-	player = new ModulePlayer();
+	win = new Window(true);
+	input = new Input(true);
+	render = new Render(true);
+	tex = new Textures(true);
+	audio = new Audio(true);
+	levelManagement = new LevelManagement(true);
+	fade = new FadeToBlack(true);
+	intro = new Intro(true);
+	start = new StartMenu(false);
+	scene1 = new Scene1(false);
+	scene2 = new Scene2(false);
+	gameOver = new GameOver(false);
+	map = new Map(true);
+	physics = new ModulePhysics(true);
+	player = new ModulePlayer(true);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp

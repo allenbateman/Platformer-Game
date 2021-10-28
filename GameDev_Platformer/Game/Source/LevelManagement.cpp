@@ -1,9 +1,11 @@
 #include "LevelManagement.h"
+#include "Log.h"
 #include "Player.h"
 #include <string>
 #include <iostream>
+using namespace std;
 
-LevelManagement::LevelManagement() : Module()
+LevelManagement::LevelManagement(bool isActive) : Module(isActive)
 {
 
 }
@@ -14,7 +16,6 @@ LevelManagement::~LevelManagement()
 
 bool LevelManagement::Start()
 {
-	LOG("Loading LevelManager....");
 	gameState = INTRO;
 	currentScene = (Module*)app->intro;
 	return true;
@@ -25,34 +26,35 @@ bool LevelManagement::Update(float dt)
 	switch (gameState)
 	{
 	case INTRO:
-		if ((app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) && currentScene->active == true)
-		{
-
-			gameState = INTRO;
-		}
-		break;
-	case START:
+		cout << (currentScene->active ? "true" : "false") << endl;
 		if ((app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) && currentScene->active == true)
 		{
 			gameState = START;
 		}
 		break;
-	case SCENE1:
-		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
+	case START:
+		cout << (currentScene->active ? "true" : "false") << endl;
+		if ((app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) && currentScene->active == true)
 		{
 			gameState = SCENE1;
 		}
 		break;
-	case SCENE2:
+	case SCENE1:
 		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = SCENE2;
 		}
 		break;
-	case GAME_OVER:
+	case SCENE2:
 		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = GAME_OVER;
+		}
+		break;
+	case GAME_OVER:
+		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
+		{
+			gameState = START;
 		}
 		break;
 	default:
@@ -63,16 +65,17 @@ bool LevelManagement::Update(float dt)
 	{
 	case INTRO:
 		if (currentScene == nullptr) {
-			LOG("Loading Intro Screen");
 			currentScene = (Module*)app->intro;
+			LOG("INTRO");
 		}
 		break;
 	case START:
 		if (currentScene != (Module*)app->start) {
 			if (app->fade->Fade(currentScene, (Module*)app->intro, 45))
 			{
-				LOG("Loading Start Screen");
 				currentScene = (Module*)app->start;
+				currentScene->active = true;
+				LOG("START");
 			}
 		}
 		break;
@@ -81,8 +84,9 @@ bool LevelManagement::Update(float dt)
 
 			if (app->fade->Fade(currentScene, (Module*)app->start, 45))
 			{
-				LOG("Loading Level 1");
 				currentScene = (Module*)app->scene1;
+				currentScene->active = true;
+				LOG("SCENE 1");
 			}
 		}
 		break;
@@ -94,8 +98,9 @@ bool LevelManagement::Update(float dt)
 
 			if (app->fade->Fade(currentScene, (Module*)app->scene1, 45))
 			{
-				LOG("Loading Level 2");
 				currentScene = (Module*)app->scene2;
+				currentScene->active = true;
+				LOG("SCENE 2");
 			}
 		}
 		break;
@@ -105,8 +110,9 @@ bool LevelManagement::Update(float dt)
 			//Load game over
 			if (app->fade->Fade(currentScene, (Module*)app->gameOver, 45))
 			{
-				LOG("Loading Level 2");
 				currentScene = (Module*)app->gameOver;
+				currentScene->active = true;
+				LOG("GAME OVER");
 			}
 		}
 		break;
@@ -140,9 +146,10 @@ void LevelManagement::PassedLevel()
 
 void LevelManagement::ReturnToMainMenu()
 {
-	LOG("RETURN TO MAIN MENU")
-		if (gameState != START)
-			gameState = START;
+	if (gameState != START)
+	{
+		gameState = START;
+	}
 }
 
 void LevelManagement::RestartLevel()

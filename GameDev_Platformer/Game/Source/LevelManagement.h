@@ -17,7 +17,7 @@
 class LevelManagement : public Module
 {
 public:
-	LevelManagement();
+	LevelManagement(bool isActive);
 	~LevelManagement();
 	bool Start() override;
 	bool Update(float dt) override;

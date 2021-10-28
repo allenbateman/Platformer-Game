@@ -13,7 +13,7 @@ class Intro : public Module
 {
 public:
 
-	Intro();
+	Intro(bool isActive);
 
 	// Destructor
 	virtual ~Intro();
@@ -36,16 +36,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-
-	// Load / Save
-	bool LoadState(pugi::xml_node&);
-	bool SaveState(pugi::xml_node&) const;
-
-	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
-
 private:
 	SDL_Texture* img;
-	p2List_item<PhysBody*>* collider;
 };
 
 #endif // __INTRO_H__

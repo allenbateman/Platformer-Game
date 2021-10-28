@@ -54,7 +54,7 @@ public:
 class ModulePhysics : public Module, public b2ContactListener // TODO
 {
 public:
-	ModulePhysics();
+	ModulePhysics(bool isActive);
 	~ModulePhysics();
 
 	bool Start();

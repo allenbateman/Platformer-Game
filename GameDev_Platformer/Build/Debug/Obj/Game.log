@@ -1,3 +1,6 @@
-﻿FadeToBlack.obj : error LNK2019: unresolved external symbol "void __cdecl log(char const * const,int,char const *,...)" (?log@@YAXQBDHPBDZZ) referenced in function "public: virtual bool __thiscall FadeToBlack::Start(void)" (?Start@FadeToBlack@@UAE_NXZ)
-LevelManagement.obj : error LNK2001: unresolved external symbol "void __cdecl log(char const * const,int,char const *,...)" (?log@@YAXQBDHPBDZZ)
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe : fatal error LNK1120: 1 unresolved externals
+﻿  LevelManagement.cpp
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': macro redefinition
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : see previous definition of 'LOG'
+  Game.vcxproj -> C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe

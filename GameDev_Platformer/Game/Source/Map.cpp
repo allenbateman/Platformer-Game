@@ -12,7 +12,7 @@
 
 #include <math.h>
 
-Map::Map() : Module(), mapLoaded(false)
+Map::Map(bool isActive) : Module(isActive), mapLoaded(false)
 {
     name.Create("map");
 }

@@ -3,10 +3,11 @@
 #include "App.h"
 #include "Render.h"
 #include "Globals.h"
+#include "Log.h"
 
 #include "SDL/include/SDL_render.h"
 
-FadeToBlack::FadeToBlack() : Module()
+FadeToBlack::FadeToBlack(bool isActive) : Module(isActive)
 {
 	screenRect = { 0, 0, SCREEN_WIDTH * SCREEN_SIZE, SCREEN_HEIGHT * SCREEN_SIZE };
 }
@@ -35,8 +36,8 @@ bool FadeToBlack::Update(float dt)
 		++frameCount;
 		if (frameCount >= maxFadeFrames)
 		{
-			//moduleToDisable->Disable();   *******************
-			//moduleToEnable->Enable();
+			moduleToDisable->Disable();
+			moduleToEnable->Enable();
 
 			currentStep = Fade_Step::FROM_BLACK;
 		}

@@ -11,13 +11,11 @@ class Module
 {
 public:
 
-	Module() : active(false)
+	Module(bool isActive) : active(isActive)
 	{}
 
 	void Init()
-	{
-		active = true;
-	}
+	{}
 
 	// Called before render is available
 	// L01: DONE 5: Sending config file to all modules
@@ -66,15 +64,33 @@ public:
 	{
 		return true;
 	}
+
 	virtual void OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
+	}
+
+	void Module::Enable()
+	{
+		if (!active)
+		{
+			active = true;
+			Start();
+		}
+	}
+
+	void Module::Disable()
+	{
+		if (active)
+		{
+			active = false;
+			CleanUp();
+		}
 	}
 
 public:
 
 	SString name;
 	bool active;
-
 };
 
 #endif // __MODULE_H__
