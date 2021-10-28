@@ -18,6 +18,13 @@
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\ModulePhysics.cpp" />
     <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\FadeToBlack.cpp" />
+    <ClCompile Include="Source\GameOver.cpp" />
+    <ClCompile Include="Source\Intro.cpp" />
+    <ClCompile Include="Source\LevelManagement.cpp" />
+    <ClCompile Include="Source\Scene1.cpp" />
+    <ClCompile Include="Source\Scene2.cpp" />
+    <ClCompile Include="Source\StartMenu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -58,6 +65,13 @@
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Player.h" />
+    <ClInclude Include="Source\FadeToBlack.h" />
+    <ClInclude Include="Source\GameOver.h" />
+    <ClInclude Include="Source\Intro.h" />
+    <ClInclude Include="Source\LevelManagement.h" />
+    <ClInclude Include="Source\Scene1.h" />
+    <ClInclude Include="Source\Scene2.h" />
+    <ClInclude Include="Source\StartMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
