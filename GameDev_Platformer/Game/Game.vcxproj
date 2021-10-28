@@ -100,7 +100,6 @@
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\ModulePhysics.cpp" />
     <ClCompile Include="Source\Player.cpp" />
-    <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\Render.cpp" />
     <ClCompile Include="Source\Scene1.cpp" />
     <ClCompile Include="Source\Scene2.cpp" />
@@ -117,7 +116,6 @@
     <ClInclude Include="Source\ModulePhysics.h" />
     <ClInclude Include="Source\p2List.h" />
     <ClInclude Include="Source\Player.h" />
-    <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\Audio.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\App.h" />

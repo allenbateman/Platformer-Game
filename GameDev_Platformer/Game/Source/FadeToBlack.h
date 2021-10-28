@@ -1,5 +1,5 @@
-#ifndef __MODULEFADETOBLACK_H__
-#define __MODULEFADETOBLACK_H__
+#ifndef __FADETOBLACK_H__
+#define __FADETOBLACK_H__
 
 #include "Module.h"
 #include "SDL\include\SDL_rect.h"
@@ -11,7 +11,7 @@ public:
 	FadeToBlack();
 
 	//Destructor
-	~FadeToBlack();
+	virtual ~FadeToBlack();
 
 	// Called when the module is activated
 	// Enables the blending mode for transparency
@@ -51,4 +51,4 @@ private:
 	Module* moduleToDisable = nullptr;
 };
 
-#endif //__MODULEFADETOBLACK_H__
+#endif //__FADETOBLACK_H__

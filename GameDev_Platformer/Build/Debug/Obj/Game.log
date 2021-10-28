@@ -1,12 +1,3 @@
-﻿  Map.cpp
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': redefinición de macro
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : vea la definición anterior de 'LOG'
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Map.cpp(543,112): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Map.cpp(543,77): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Map.cpp(566,118): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Map.cpp(566,81): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Map.cpp(572,120): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Map.cpp(572,83): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-  Game.vcxproj -> C:\Users\allen\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe
+﻿FadeToBlack.obj : error LNK2019: unresolved external symbol "void __cdecl log(char const * const,int,char const *,...)" (?log@@YAXQBDHPBDZZ) referenced in function "public: virtual bool __thiscall FadeToBlack::Start(void)" (?Start@FadeToBlack@@UAE_NXZ)
+LevelManagement.obj : error LNK2001: unresolved external symbol "void __cdecl log(char const * const,int,char const *,...)" (?log@@YAXQBDHPBDZZ)
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe : fatal error LNK1120: 1 unresolved externals
