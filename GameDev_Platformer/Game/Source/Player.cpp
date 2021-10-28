@@ -125,7 +125,7 @@ bool ModulePlayer::Update(float dt)
 	//Jump
 	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) && (p->player->body->GetLinearVelocity().y == 0))
 	{
-		p->player->body->ApplyLinearImpulse({ 0, -0.20f }, { 0, 0 }, true);
+		p->player->body->ApplyLinearImpulse({ 0, -0.21f }, { 0, 0 }, true);
 		pState = JUMP;
 		p->jumpingPlayerAnim.Update();
 		p->idlePlayerAnim.Reset();

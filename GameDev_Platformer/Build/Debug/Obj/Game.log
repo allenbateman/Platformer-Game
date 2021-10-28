@@ -1,6 +1,8 @@
-﻿  LevelManagement.cpp
+﻿  Player.cpp
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
 C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': macro redefinition
-C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : see previous definition of 'LOG'
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(104,17): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(105,18): warning C4305: '=': truncation from 'double' to 'float'
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(109,85): warning C4305: 'argument': truncation from 'double' to 'float32'
+C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(119,86): warning C4305: 'argument': truncation from 'double' to 'float32'
   Game.vcxproj -> C:\Users\Iván\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe
