@@ -4,7 +4,13 @@
 #include "Render.h"
 #include "Textures.h"
 #include "Audio.h"
-#include "Scene.h"
+#include "LevelManagement.h"
+#include "FadeToBlack.h"
+#include "Intro.h"
+#include "StartMenu.h"
+#include "Scene1.h"
+#include "Scene2.h"
+#include "GameOver.h"
 #include "Map.h"
 #include "ModulePhysics.h"
 #include "Player.h"
@@ -25,7 +31,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render();
 	tex = new Textures();
 	audio = new Audio();
-	scene = new Scene();
+	levelManagement = new LevelManagement();
+	fade = new FadeToBlack();
+	intro = new Intro();
+	start = new StartMenu();
+	scene1 = new Scene1();
+	scene2 = new Scene2();
+	gameOver = new GameOver();
 	map = new Map();
 	physics = new ModulePhysics();
 	player = new ModulePlayer();
@@ -38,7 +50,13 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(physics);
 	AddModule(map);
-	AddModule(scene);
+	AddModule(levelManagement);
+	AddModule(fade);
+	AddModule(intro);
+	AddModule(start);
+	AddModule(scene1);
+	AddModule(scene2);
+	AddModule(gameOver);
 	AddModule(player);
 
 	// Render last to swap buffer
