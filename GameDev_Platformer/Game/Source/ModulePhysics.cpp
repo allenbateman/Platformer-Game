@@ -75,7 +75,7 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type)
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type, Color _color)
 {
 	b2BodyDef body;
 	body.type = type;
@@ -96,6 +96,8 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2
 	b->SetUserData(pbody);
 	pbody->width = width * 0.5f;
 	pbody->height = height * 0.5f;
+
+	pbody->color = _color;
 
 	return pbody;
 }

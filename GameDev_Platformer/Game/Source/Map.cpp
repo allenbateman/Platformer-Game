@@ -6,11 +6,14 @@
 #include "ModulePhysics.h"
 #include "Scene1.h"
 #include "Scene2.h"
+#include<iostream>
+
 
 #include "Defs.h"
 #include "Log.h"
-
 #include <math.h>
+
+using namespace std;
 
 Map::Map(bool isActive) : Module(isActive), mapLoaded(false)
 {
@@ -80,6 +83,34 @@ void Map::Draw()
 			}
 		}
 		mapLayerItem = mapLayerItem->next;
+	}
+
+	ListItem<ObjectLayer*>* objectLayer;
+	objectLayer = mapData.objectLayers.start;
+
+	while (objectLayer != NULL)
+	{
+		ListItem<Object*>* object;
+		object = objectLayer->data->objects.start;
+		while (object != NULL)
+		{
+			if (object->data->type == Collider_Type::GEM && object->data->properties.GetProperty("Draw") == 1)
+			{
+
+				SDL_Rect r;
+				r.x = object->data->x;
+				r.y = object->data->y;
+				r.w = object->data->width;
+				r.h = object->data->height;
+
+				//iPoint pos = MapToWorld(x, y);
+
+				//app->render->DrawTexture(tileset->texture, r.x, r.y, &r);
+			
+			}
+			object = object->next;
+		}
+		objectLayer = objectLayer->next;
 	}
 
 		
@@ -433,6 +464,7 @@ bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 bool Map::LoadAllObjectLayers(pugi::xml_node mapNode)
 {
 	bool ret = true;
+	LOG("LOADING OBJECT LAYERS....");
 	for (pugi::xml_node layerNode = mapNode.child("objectgroup"); layerNode && ret; layerNode = layerNode.next_sibling("objectgroup"))
 	{
 		//Load the layer
@@ -450,9 +482,20 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 {
 	bool ret = true;
 
+	//ACABAR 
 	//Load object group attributes
 	layer->name = node.attribute("name").as_string();
 
+	if (strcmp(layer->name.GetString(), "gems") == 0)
+	{
+		layer->texture = app->tex->Load("../Spritesx16/gems.png");
+
+	}else if (strcmp(layer->name.GetString(), "checkpoints" )== 0)
+	{
+		layer->texture = NULL;
+	}
+
+	LOG("LOADING OBJECT LAYER....");
 	//Create and load each object property
 	pugi::xml_node object;
 
@@ -467,9 +510,12 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 		obj->width = node.attribute("width").as_int();
 		obj->height = node.attribute("height").as_int();
 
+		LOG("OBJECT ID: %i", obj->id);
+
 		if (strcmp(node.attribute("type").as_string(), "Gem") == 0){
 
 			obj->type = Collider_Type::GEM;
+			LOG("SET GEM TYPE ATTRIBUTE");
 
 		}else if (strcmp(node.attribute("type").as_string(), "Key") == 0){
 
@@ -496,6 +542,7 @@ bool Map::LoadObject(pugi::xml_node& node, Object* object)
 	bool ret = true;
 
 	//Iterate over all the object properties and set values, store the object to the list
+	LOG("LOADING OBJECTS....");
 	pugi::xml_node tile;
 	int i = 0;
 	for (tile = node.child("properties").child("property"); tile && ret; tile = tile.next_sibling("property"))
@@ -544,39 +591,39 @@ bool Map::SetMapColliders()
 				}
 			}
 		}
-		if (mapLayerItem->data->properties.GetProperty("Trigger") == 1) {
-
-			for (int x = 0; x < mapLayerItem->data->width; x++)
-			{
-				for (int y = 0; y < mapLayerItem->data->height; y++)
-				{
-					int gid = mapLayerItem->data->Get(x, y);
-
-					if (gid > 0) {
-
-						TileSet* tileset = GetTilesetFromTileId(gid);
-
-						SDL_Rect r = tileset->GetTileRect(gid);
-						iPoint pos;
-						pos = MapToWorld(x, y);
-						if (mapLayerItem->data->properties.GetProperty("Gem") == 1)
-						{
-							app->physics->collectables.add(app->physics->CreateRectangleSensor(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_kinematicBody));
-							app->physics->collectables.getLast()->data->listener = app->scene1;
-							app->physics->collectables.getLast()->data->type = Collider_Type::GEM;
-						}
-						if(mapLayerItem->data->properties.GetProperty("Death") == 1)
-						{
-							app->physics->deathColliders.add(app->physics->CreateRectangleSensor(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_kinematicBody));
-							app->physics->deathColliders.getLast()->data->listener = app->scene1;
-							app->physics->deathColliders.getLast()->data->type = Collider_Type::DEATH;
-						}
-					}
-
-				}
-			}
-		}
 		mapLayerItem = mapLayerItem->next;
 	}
+
+	ListItem<ObjectLayer*>* objectLayer;
+	objectLayer = mapData.objectLayers.start;
+	LOG("--------!!!SETTING OBJECTS!!!---------");
+
+	while (objectLayer != NULL)
+	{
+		
+		LOG("SETTING OBJECT LAYER COLLIDER...");
+		ListItem<Object*>* object;
+		object = objectLayer->data->objects.start;
+		while (object != NULL)
+		{
+			LOG("SETTING OBJECT COLLIDER...");
+			if (object->data->type == Collider_Type::GEM)
+			{
+
+				SDL_Rect r;
+				r.x = object->data->x;
+				r.y = object->data->y;
+				r.w = object->data->width;
+				r.h = object->data->height;
+				app->physics->collectables.add(app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y + (r.h * 0.5f), r.w, r.h, b2_staticBody));
+				LOG("SETTING GEM COLLIDER...");
+			
+			}
+			object = object->next;
+		}
+		objectLayer = objectLayer->next;
+	}
+
+
 	return ret;
 }

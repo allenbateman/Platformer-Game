@@ -39,6 +39,7 @@ enum MapTypes
 	MAPTYPE_STAGGERED
 };
 
+
 // L06: TODO 5: Create a generic structure to hold properties
 struct Properties
 {
@@ -99,7 +100,7 @@ struct Object {
 	SString name;
 	Collider_Type type;
 	int x, y, width, height, id;
-
+	
 	Object() {}
 	~Object() {}
 };
@@ -107,7 +108,9 @@ struct Object {
 struct ObjectLayer {
 
 	SString name;
+	SDL_Texture* texture;
 	List<Object*> objects;
+
 };
 
 

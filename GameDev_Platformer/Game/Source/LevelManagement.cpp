@@ -26,32 +26,35 @@ bool LevelManagement::Update(float dt)
 	switch (gameState)
 	{
 	case INTRO:
-		cout << (currentScene->active ? "true" : "false") << endl;
+		cout << (currentScene->active ? "Intro: true" : "Intro: false") << endl;
 		if ((app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) && currentScene->active == true)
 		{
 			gameState = START;
 		}
 		break;
 	case START:
-		cout << (currentScene->active ? "true" : "false") << endl;
+		cout << (currentScene->active ? "Start: true" : "Start: false") << endl;
 		if ((app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) && currentScene->active == true)
 		{
 			gameState = SCENE1;
 		}
 		break;
 	case SCENE1:
+		cout << (currentScene->active ? "Scene1: true" : "Scene1: false") << endl;
 		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = SCENE2;
 		}
 		break;
 	case SCENE2:
+		cout << (currentScene->active ? "Scene2: true" : "Scene2: false") << endl;
 		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = GAME_OVER;
 		}
 		break;
 	case GAME_OVER:
+		cout << (currentScene->active ? "GameOver: true" : "GameOver: false") << endl;
 		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = START;

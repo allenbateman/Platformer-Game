@@ -34,7 +34,6 @@ bool Scene1::Awake()
 bool Scene1::Start()
 {
 	// L03: DONE: Load map
-	//app->map->Load("iso_walk.tmx");
 	app->map->Load("level1.tmx");
 	
 	// Load music
