@@ -33,6 +33,7 @@ bool Intro::Awake()
 // Called before the first frame
 bool Intro::Start()
 {
+	img = app->tex->Load("Assets/Spritesx16/intro.png");
 	return true;
 }
 
@@ -45,7 +46,12 @@ bool Intro::PreUpdate()
 // Called each loop iteration
 bool Intro::Update(float dt)
 {
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = 1280;
+	rect.h = 480;
 
+	app->render->DrawTexture(img, 0, 0, &rect, 1.0f, 0.0f, 1, 1, 1, SDL_FLIP_NONE);
 	return true;
 }
 
