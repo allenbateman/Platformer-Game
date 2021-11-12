@@ -34,8 +34,9 @@ bool Scene1::Awake()
 bool Scene1::Start()
 {
 	// L03: DONE: Load map
+	app->physics->Start();
 	app->map->Load("level1.tmx");
-	
+
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
 
@@ -88,8 +89,9 @@ bool Scene1::PostUpdate()
 // Called before quitting
 bool Scene1::CleanUp()
 {
-	LOG("Freeing scene");
-
+	LOG("Freeing scene 1");
+	app->map->CleanUp();
+	app->physics->CleanUp();
 	return true;
 }
 

@@ -1,6 +1,6 @@
-﻿  Intro.cpp
-C:\Users\ivancc2\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\ivancc2\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\ivancc2\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': redefinición de macro
-C:\Users\ivancc2\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : vea la definición anterior de 'LOG'
-  Game.vcxproj -> C:\Users\ivancc2\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe
+﻿  App.cpp
+C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': redefinición de macro
+C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : vea la definición anterior de 'LOG'
+  Game.vcxproj -> C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe

@@ -38,9 +38,9 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene1 = new Scene1(false);
 	scene2 = new Scene2(false);
 	gameOver = new GameOver(false);
-	map = new Map(true);
-	physics = new ModulePhysics(true);
-	player = new ModulePlayer(true);
+	map = new Map(false);
+	physics = new ModulePhysics(false);
+	player = new ModulePlayer(false);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp

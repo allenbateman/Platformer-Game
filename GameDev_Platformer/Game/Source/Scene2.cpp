@@ -33,7 +33,8 @@ bool Scene2::Awake()
 // Called before the first frame
 bool Scene2::Start()
 {
-
+	app->physics->Start();
+	//loadMap
 	return true;
 }
 
@@ -61,8 +62,9 @@ bool Scene2::PostUpdate()
 // Called before quitting
 bool Scene2::CleanUp()
 {
-	LOG("Freeing scene");
-
+	LOG("Freeing scene 2");
+	app->map->CleanUp();
+	app->physics->CleanUp();
 	return true;
 }
 

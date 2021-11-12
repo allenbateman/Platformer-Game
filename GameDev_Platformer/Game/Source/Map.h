@@ -110,7 +110,14 @@ struct ObjectLayer {
 	SString name;
 	SDL_Texture* texture;
 	List<Object*> objects;
-
+	int width;
+	int height;
+	uint* data;
+	// L04: DONE 6: Short function to get the value of x,y
+	inline uint Get(int x, int y) const
+	{
+		return data[(y * width) + x];
+	}
 };
 
 
