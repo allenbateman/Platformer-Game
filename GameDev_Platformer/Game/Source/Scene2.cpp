@@ -34,6 +34,7 @@ bool Scene2::Awake()
 bool Scene2::Start()
 {
 	app->physics->Start();
+	app->player->Start();
 	//loadMap
 	return true;
 }
@@ -64,7 +65,7 @@ bool Scene2::CleanUp()
 {
 	LOG("Freeing scene 2");
 	app->map->CleanUp();
-	app->physics->CleanUp();
+	app->physics->Disable();
 	return true;
 }
 

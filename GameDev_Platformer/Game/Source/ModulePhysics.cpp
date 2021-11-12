@@ -28,14 +28,23 @@ ModulePhysics::~ModulePhysics()
 {
 }
 
+bool ModulePhysics::Awake()
+{
+	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
+	world->SetContactListener(this);
+	// needed to create joints like mouse joint
+	b2BodyDef bd;
+	ground = world->CreateBody(&bd);
+
+	return true;
+}
+
 bool ModulePhysics::Start()
 {
-	if (world != NULL)
+	if(world == NULL)
 	{
 		world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 		world->SetContactListener(this);
-	
-
 		// needed to create joints like mouse joint
 		b2BodyDef bd;
 		ground = world->CreateBody(&bd);
@@ -290,6 +299,13 @@ bool ModulePhysics::PostUpdate()
 
 
 	return true;
+}
+
+void ModulePhysics::Disable()
+{
+	groundColliders.clear();
+	collectables.clear();
+	deathColliders.clear();
 }
 
 

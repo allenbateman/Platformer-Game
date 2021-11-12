@@ -21,11 +21,14 @@ public:
 	ModulePlayer(bool isActive);
 	virtual ~ModulePlayer();
 
-
+	bool Awake();
 	bool Start();
 	bool Update(float dt);
 	bool CleanUp();
-
+	void SetPosition(iPoint pos) { position = pos; };
+	iPoint GetPosition() { return position; };
+	void Spawn(iPoint pos);
+	void Disable();
 	// Load / Save
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&) const;
@@ -48,4 +51,5 @@ public:
 	float maxSpeedX;
 	float minSpeedX;
 	SDL_RendererFlip direction;
+	iPoint position;
 };

@@ -66,7 +66,7 @@ bool Intro::PostUpdate()
 // Called before quitting
 bool Intro::CleanUp()
 {
-	LOG("Freeing scene");
+	LOG("Freeing scene intro");
 
 	return true;
 }

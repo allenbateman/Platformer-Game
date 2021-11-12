@@ -24,7 +24,7 @@ Scene1::~Scene1()
 // Called before render is available
 bool Scene1::Awake()
 {
-	LOG("Loading Scene");
+	LOG("Loading Scene 1");
 	bool ret = true;
 
 	return ret;
@@ -35,7 +35,9 @@ bool Scene1::Start()
 {
 	// L03: DONE: Load map
 	app->physics->Start();
+
 	app->map->Load("level1.tmx");
+	app->player->Spawn(iPoint(20, 300));
 
 	// Load music
 	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
@@ -90,8 +92,10 @@ bool Scene1::PostUpdate()
 bool Scene1::CleanUp()
 {
 	LOG("Freeing scene 1");
+	app->player->Disable(); 
 	app->map->CleanUp();
-	app->physics->CleanUp();
+	app->physics->Disable();
+	
 	return true;
 }
 

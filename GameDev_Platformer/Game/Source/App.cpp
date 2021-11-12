@@ -32,14 +32,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	tex = new Textures(true);
 	audio = new Audio(true);
 	levelManagement = new LevelManagement(true);
+	physics = new ModulePhysics(true);
+	map = new Map(true);
 	fade = new FadeToBlack(true);
 	intro = new Intro(true);
 	start = new StartMenu(false);
 	scene1 = new Scene1(false);
 	scene2 = new Scene2(false);
 	gameOver = new GameOver(false);
-	map = new Map(false);
-	physics = new ModulePhysics(false);
 	player = new ModulePlayer(false);
 
 	// Ordered for awake / Start / Update
@@ -132,7 +132,7 @@ bool App::Start()
 	ListItem<Module*>* item;
 	item = modules.start;
 
-	while(item != NULL && ret == true)
+	while(item != NULL && ret == true && item->data->active)
 	{
 		ret = item->data->Start();
 		item = item->next;

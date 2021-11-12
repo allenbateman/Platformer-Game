@@ -60,7 +60,7 @@ bool StartMenu::PostUpdate()
 // Called before quitting
 bool StartMenu::CleanUp()
 {
-	LOG("Freeing scene");
+	LOG("Freeing scene main menu ");
 
 	return true;
 }

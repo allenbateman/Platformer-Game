@@ -14,46 +14,59 @@ ModulePlayer::ModulePlayer(bool isActive) : Module(isActive)
 ModulePlayer::~ModulePlayer()
 {}
 
+bool ModulePlayer::Awake()
+{
+
+	return true;
+}
+
 // Load assets
 bool ModulePlayer::Start()
 {
 	maxSpeedX = 0;
 	minSpeedX = 0;
 
-	//Initializing player struct data
-	p = new Player1;
 	pState = IDLE;
-	//p->player = app->physics->CreateRectangle(20, 300, 20, 40, b2_dynamicBody);
-	p->player = app->physics->CreateCircle(20, 300, 7, b2_dynamicBody);
-	p->player->body->SetFixedRotation(true);
-	//Idle anim
-	p->idlePlayerAnim.PushBack({ 262, 43, 16, 21 });
-	p->idlePlayerAnim.PushBack({ 294, 43, 16, 21 });
-	p->idlePlayerAnim.PushBack({ 327, 43, 16, 21 });
-	p->idlePlayerAnim.loop = false;
-	p->idlePlayerAnim.mustFlip = true;
-	p->idlePlayerAnim.speed = 0.02f;
-	//Walking anim
-	p->walkingPlayerAnim.PushBack({ 390, 43, 16, 21 });
-	p->walkingPlayerAnim.PushBack({ 454, 43, 16, 21 });
-	p->walkingPlayerAnim.loop = true;
-	p->walkingPlayerAnim.mustFlip = true;
-	p->walkingPlayerAnim.speed = 0.1f;
-	//Jump anim
-	p->jumpingPlayerAnim.PushBack({ 390, 43, 16, 21 });
-	p->jumpingPlayerAnim.PushBack({ 422, 43, 16, 21 });
-	p->jumpingPlayerAnim.PushBack({ 454, 43, 16, 21 });
-	p->jumpingPlayerAnim.PushBack({ 486, 43, 16, 21 });
-	p->jumpingPlayerAnim.loop = true;
-	p->walkingPlayerAnim.mustFlip = true;
-	p->jumpingPlayerAnim.speed = 0.1f;
-	//Death anim
-	p->deathPlayerAnim.PushBack({ 262, 43, 16, 21 });
-	p->deathPlayerAnim.loop = false;
-	p->deathPlayerAnim.mustFlip = true;
-	p->deathPlayerAnim.speed = 1.0f;
 
-	playerTexture= app->tex->Load("Assets/Spritesx16/characters.png");
+	//Initializing player struct data
+	if (p == NULL)
+	{
+		p = new Player1;
+
+		//Idle anim
+		p->idlePlayerAnim.PushBack({ 262, 43, 16, 21 });
+		p->idlePlayerAnim.PushBack({ 294, 43, 16, 21 });
+		p->idlePlayerAnim.PushBack({ 327, 43, 16, 21 });
+		p->idlePlayerAnim.loop = false;
+		p->idlePlayerAnim.mustFlip = true;
+		p->idlePlayerAnim.speed = 0.02f;
+		//Walking anim
+		p->walkingPlayerAnim.PushBack({ 390, 43, 16, 21 });
+		p->walkingPlayerAnim.PushBack({ 454, 43, 16, 21 });
+		p->walkingPlayerAnim.loop = true;
+		p->walkingPlayerAnim.mustFlip = true;
+		p->walkingPlayerAnim.speed = 0.1f;
+		//Jump anim
+		p->jumpingPlayerAnim.PushBack({ 390, 43, 16, 21 });
+		p->jumpingPlayerAnim.PushBack({ 422, 43, 16, 21 });
+		p->jumpingPlayerAnim.PushBack({ 454, 43, 16, 21 });
+		p->jumpingPlayerAnim.PushBack({ 486, 43, 16, 21 });
+		p->jumpingPlayerAnim.loop = true;
+		p->walkingPlayerAnim.mustFlip = true;
+		p->jumpingPlayerAnim.speed = 0.1f;
+		//Death anim
+		p->deathPlayerAnim.PushBack({ 262, 43, 16, 21 });
+		p->deathPlayerAnim.loop = false;
+		p->deathPlayerAnim.mustFlip = true;
+		p->deathPlayerAnim.speed = 1.0f;
+
+		playerTexture = app->tex->Load("Assets/Spritesx16/characters.png");
+
+
+		p->player = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody);
+		p->player->body->SetFixedRotation(true);
+	}
+
 
 	return true;
 }
@@ -61,7 +74,25 @@ bool ModulePlayer::Start()
 // Unload assets
 bool ModulePlayer::CleanUp()
 {
+	delete p;
+	currentAnim = nullptr;
 	return true;
+}
+
+void ModulePlayer::Spawn(iPoint pos)
+{
+	
+	SetPosition(pos);
+	pState = IDLE;
+
+	Start();
+	Enable();
+
+}
+
+void ModulePlayer::Disable()
+{
+	active = false;
 }
 
 bool ModulePlayer::LoadState(pugi::xml_node&)
@@ -96,6 +127,7 @@ bool ModulePlayer::Update(float dt)
 		break;
 	}
 
+	if(playerTexture != NULL)
 	app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(p->player->body->GetPosition().x - 16), METERS_TO_PIXELS(p->player->body->GetPosition().y) - 26,
 				 &(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 

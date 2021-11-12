@@ -6,8 +6,14 @@
 	<audio />
 	<physics />
 	<map />
-	<scene />
 	<:anonymous />
+	<:anonymous />
+	<scene />
+	<scene />
+	<scene />
+	<scene />
+	<scene />
+	<player />
 	<renderer>
 		<camera x="0" y="0" />
 	</renderer>

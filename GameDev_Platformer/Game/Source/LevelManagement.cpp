@@ -27,6 +27,7 @@ bool LevelManagement::Update(float dt)
 	{
 	case INTRO:
 		//cout << (currentScene->active ? "Intro: true" : "Intro: false") << endl;
+		cout << "Intro\n";
 		if ((app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) && currentScene->active == true)
 		{
 			gameState = START;
@@ -34,6 +35,7 @@ bool LevelManagement::Update(float dt)
 		break;
 	case START:
 		//cout << (currentScene->active ? "Start: true" : "Start: false") << endl;
+		cout << "Start \n";
 		if ((app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) && currentScene->active == true)
 		{
 			gameState = SCENE1;
@@ -41,6 +43,7 @@ bool LevelManagement::Update(float dt)
 		break;
 	case SCENE1:
 		//cout << (currentScene->active ? "Scene1: true" : "Scene1: false") << endl;
+		cout << "Scene 1 \n";
 		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = SCENE2;
@@ -48,6 +51,7 @@ bool LevelManagement::Update(float dt)
 		break;
 	case SCENE2:
 		//cout << (currentScene->active ? "Scene2: true" : "Scene2: false") << endl;
+		cout << "Scene 2 \n";
 		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = GAME_OVER;
@@ -55,6 +59,7 @@ bool LevelManagement::Update(float dt)
 		break;
 	case GAME_OVER:
 		//cout << (currentScene->active ? "GameOver: true" : "GameOver: false") << endl;
+		cout << "GAME OVER \n";
 		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = START;
@@ -85,9 +90,10 @@ bool LevelManagement::Update(float dt)
 	case SCENE1:
 		if (currentScene != (Module*)app->scene1) {
 
-			if (app->fade->Fade(currentScene, (Module*)app->start, 45))
+			if (app->fade->Fade(currentScene, (Module*)app->scene1, 45))
 			{
 				currentScene = (Module*)app->scene1;
+				currentScene->Start();
 				currentScene->active = true;
 				LOG("SCENE 1");
 			}
@@ -99,7 +105,7 @@ bool LevelManagement::Update(float dt)
 		{
 			//Load level
 
-			if (app->fade->Fade(currentScene, (Module*)app->scene1, 45))
+			if (app->fade->Fade(currentScene, (Module*)app->scene2, 45))
 			{
 				currentScene = (Module*)app->scene2;
 				currentScene->active = true;

@@ -60,9 +60,11 @@ public:
 	ModulePhysics(bool isActive);
 	~ModulePhysics();
 
+	bool Awake();
 	bool Start();
 	bool PreUpdate();
 	bool PostUpdate();
+	void Disable();
 	bool CleanUp();
 
 	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType type = b2_dynamicBody);
