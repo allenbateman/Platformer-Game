@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Input.h"
 #include "ModulePhysics.h"
+#include "LevelManagement.h"
 #include "Render.h"
 #include "Player.h"
 #include <SDL/include/SDL_scancode.h>
@@ -63,8 +64,11 @@ bool ModulePlayer::Start()
 		playerTexture = app->tex->Load("Assets/Spritesx16/characters.png");
 
 
-		p->player = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody);
+		p->player = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, {0,250,125,255});
+		p->player->listener = app->levelManagement->currentScene;
+		p->player->type = Collider_Type::PLAYER;
 		p->player->body->SetFixedRotation(true);
+		app->physics->entities.add(p->player);
 	}
 
 

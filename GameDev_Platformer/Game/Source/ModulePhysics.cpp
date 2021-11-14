@@ -58,10 +58,62 @@ bool ModulePhysics::PreUpdate()
 	world->Step(1.0f / 60.0f, 6, 2);
 	static bool temp = false;
 
+	//p2List_item<PhysBody*>* current = allPhysicBodies.getFirst();
+	//while (current != NULL)
+	//{
+	//	bool removeItem = false;
+	//	p2List_item<PhysBody*>* itemToRemove = current;
+	//	if (!collectables.find(current->data) || !entities.find(current->data)) {
+	//		removeItem = true;
+	//	}
+	//	current = current->next;
+	//	if (removeItem && itemToRemove->data->body != NULL)
+	//	{
+	//		allPhysicBodies.del(itemToRemove);
+	//		//RemoveBodyFromWorld(itemToRemove->data->body);
+	//	}
+	//}
+
+
+
+	for (p2List_item<PhysBody*>* pb = collectables.getFirst(); pb; pb = pb->next)
+	{
+		if (!allPhysicBodies.find(pb->data))
+		{
+			allPhysicBodies.add(pb->data);
+			LOG("Adding new collectable");
+		}
+	}
+	for(p2List_item<PhysBody*>* pb = groundColliders.getFirst(); pb; pb = pb->next)
+	{
+		if (!allPhysicBodies.find(pb->data))
+		{
+			allPhysicBodies.add(pb->data); 
+			LOG("Adding new ground collider"); 
+		}
+	}
+	for(p2List_item<PhysBody*>* pb = deathColliders.getFirst(); pb; pb = pb->next)
+	{
+		if (!allPhysicBodies.find(pb->data))
+		{
+			allPhysicBodies.add(pb->data); 
+			LOG("Adding new death collider");
+		}
+	}
+	for (p2List_item<PhysBody*>* pb = entities.getFirst(); pb; pb = pb->next)
+	{
+		if (!allPhysicBodies.find(pb->data))
+		{
+			allPhysicBodies.add(pb->data);
+			LOG("Adding new entity collider");
+		}
+	}
+
+
 	return true;
 }
 
-PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type)
+PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type,b2Color color)
 {
 	b2BodyDef body;
 	body.type = type;
@@ -82,11 +134,12 @@ PhysBody* ModulePhysics::CreateCircle(int x, int y, int radius, b2BodyType type)
 	pbody->body = b;
 	b->SetUserData(pbody);
 	pbody->width = pbody->height = radius;
+	pbody->color;
 
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type, Color _color)
+PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2BodyType type, b2Color _color)
 {
 	b2BodyDef body;
 	body.type = type;
@@ -99,7 +152,6 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2
 	b2FixtureDef fixture;
 	fixture.shape = &box;
 	fixture.density = 1.0f;
-
 	b->CreateFixture(&fixture);
 
 	PhysBody* pbody = new PhysBody();
@@ -113,7 +165,7 @@ PhysBody* ModulePhysics::CreateRectangle(int x, int y, int width, int height, b2
 	return pbody;
 }
 
-PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, b2BodyType type)
+PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int height, b2BodyType type,b2Color color)
 {
 	b2BodyDef body;
 	body.type = type;
@@ -136,12 +188,12 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	b->SetUserData(pbody);
 	pbody->width = width;
 	pbody->height = height;
-
+	pbody->color = color;
 	return pbody;
 }
 
 
-PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2BodyType type)
+PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2BodyType type, b2Color color)
 {
 	b2BodyDef body;
 	body.type = type;
@@ -171,7 +223,8 @@ PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2Body
 	pbody->body = b;
 	pbody->width = pbody->height = 0;
 	b->SetUserData(pbody);
-
+	pbody->color = color;
+	
 	return pbody;
 }
 
@@ -212,8 +265,6 @@ b2PrismaticJoint* ModulePhysics::CreatePrismaticJoint(PhysBody* A, b2Vec2 anchor
 bool ModulePhysics::PostUpdate()
 {
 
-
-
 	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
 		debug = !debug;
 
@@ -222,80 +273,150 @@ bool ModulePhysics::PostUpdate()
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
-
-		for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+	for (p2List_item<PhysBody*>* pb = allPhysicBodies.getFirst(); pb; pb = pb->next)
+	{
+		for (b2Fixture* f = pb->data->body->GetFixtureList(); f; f = f->GetNext())
 		{
-			for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
+			switch (f->GetType())
 			{
-				switch (f->GetType())
-				{
-					// Draw circles ------------------------------------------------
-				case b2Shape::e_circle:
-				{
-			
-					b2CircleShape* shape = (b2CircleShape*)f->GetShape();
-					b2Vec2 pos = f->GetBody()->GetPosition();
-					app->render->DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), METERS_TO_PIXELS(shape->m_radius), 255, 255, 255);
+				// Draw circles ------------------------------------------------
+			case b2Shape::e_circle:
+			{
 
-				}
-				break;
+				b2CircleShape* shape = (b2CircleShape*)f->GetShape();
+				b2Vec2 pos = f->GetBody()->GetPosition();
+				app->render->DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), METERS_TO_PIXELS(shape->m_radius), pb->data->color.r, pb->data->color.g, pb->data->color.b);
 
-				// Draw polygons ------------------------------------------------
-				case b2Shape::e_polygon:
-				{
-					b2PolygonShape* polygonShape = (b2PolygonShape*)f->GetShape();
-					int32 count = polygonShape->GetVertexCount();
-					b2Vec2 prev, v;
-
-					for (int32 i = 0; i < count; ++i)
-					{
-						v = b->GetWorldPoint(polygonShape->GetVertex(i));
-						if (i > 0)
-							app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
-
-						prev = v;
-					}
-
-					v = b->GetWorldPoint(polygonShape->GetVertex(0));
-					app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
-				}
-				break;
-
-				// Draw chains contour -------------------------------------------
-				case b2Shape::e_chain:
-				{
-					b2ChainShape* shape = (b2ChainShape*)f->GetShape();
-					b2Vec2 prev, v;
-
-					for (int32 i = 0; i < shape->m_count; ++i)
-					{
-						v = b->GetWorldPoint(shape->m_vertices[i]);
-						if (i > 0)
-							app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
-						prev = v;
-					}
-
-					v = b->GetWorldPoint(shape->m_vertices[0]);
-					app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
-				}
-				break;
-
-				// Draw a single segment(edge) ----------------------------------
-				case b2Shape::e_edge:
-				{
-					b2EdgeShape* shape = (b2EdgeShape*)f->GetShape();
-					b2Vec2 v1, v2;
-
-					v1 = b->GetWorldPoint(shape->m_vertex0);
-					v1 = b->GetWorldPoint(shape->m_vertex1);
-					app->render->DrawLine(METERS_TO_PIXELS(v1.x), METERS_TO_PIXELS(v1.y), METERS_TO_PIXELS(v2.x), METERS_TO_PIXELS(v2.y), 100, 100, 255);
-				}
-				break;
-				}
-		
 			}
-		
+			break;
+
+			// Draw polygons ------------------------------------------------
+			case b2Shape::e_polygon:
+			{
+				b2PolygonShape* polygonShape = (b2PolygonShape*)f->GetShape();
+				int32 count = polygonShape->GetVertexCount();
+				b2Vec2 prev, v;
+
+				for (int32 i = 0; i < count; ++i)
+				{
+					v = pb->data->body->GetWorldPoint(polygonShape->GetVertex(i));
+					if (i > 0)
+						app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), pb->data->color.r, pb->data->color.g, pb->data->color.b);
+
+					prev = v;
+				}
+
+				v = pb->data->body->GetWorldPoint(polygonShape->GetVertex(0));
+				app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), pb->data->color.r, pb->data->color.g, pb->data->color.b);
+			}
+			break;
+
+			// Draw chains contour -------------------------------------------
+			case b2Shape::e_chain:
+			{
+				b2ChainShape* shape = (b2ChainShape*)f->GetShape();
+				b2Vec2 prev, v;
+
+				for (int32 i = 0; i < shape->m_count; ++i)
+				{
+					v = pb->data->body->GetWorldPoint(shape->m_vertices[i]);
+					if (i > 0)
+						app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), pb->data->color.r, pb->data->color.g, pb->data->color.b);
+					prev = v;
+				}
+
+				v = pb->data->body->GetWorldPoint(shape->m_vertices[0]);
+				app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), pb->data->color.r, pb->data->color.g, pb->data->color.b);
+			}
+			break;
+
+			// Draw a single segment(edge) ----------------------------------
+			case b2Shape::e_edge:
+			{
+				b2EdgeShape* shape = (b2EdgeShape*)f->GetShape();
+				b2Vec2 v1, v2;
+
+				v1 = pb->data->body->GetWorldPoint(shape->m_vertex0);
+				v1 = pb->data->body->GetWorldPoint(shape->m_vertex1);
+				app->render->DrawLine(METERS_TO_PIXELS(v1.x), METERS_TO_PIXELS(v1.y), METERS_TO_PIXELS(v2.x), METERS_TO_PIXELS(v2.y), pb->data->color.r, pb->data->color.g, pb->data->color.b);
+			}
+			break;
+			}
+		}
 	}
+		//for (b2Body* b = world->GetBodyList(); b; b = b->GetNext())
+		//{
+		//	for (b2Fixture* f = b->GetFixtureList(); f; f = f->GetNext())
+		//	{
+		//		switch (f->GetType())
+		//		{
+		//			// Draw circles ------------------------------------------------
+		//		case b2Shape::e_circle:
+		//		{
+		//	
+		//			b2CircleShape* shape = (b2CircleShape*)f->GetShape();
+		//			b2Vec2 pos = f->GetBody()->GetPosition();
+		//			app->render->DrawCircle(METERS_TO_PIXELS(pos.x), METERS_TO_PIXELS(pos.y), METERS_TO_PIXELS(shape->m_radius),255, 255, 255);
+
+		//		}
+		//		break;
+
+		//		// Draw polygons ------------------------------------------------
+		//		case b2Shape::e_polygon:
+		//		{
+		//			b2PolygonShape* polygonShape = (b2PolygonShape*)f->GetShape();
+		//			int32 count = polygonShape->GetVertexCount();
+		//			b2Vec2 prev, v;
+
+		//			for (int32 i = 0; i < count; ++i)
+		//			{
+		//				v = b->GetWorldPoint(polygonShape->GetVertex(i));
+		//				if (i > 0)
+		//					app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
+
+		//				prev = v;
+		//			}
+
+		//			v = b->GetWorldPoint(polygonShape->GetVertex(0));
+		//			app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 255, 100, 100);
+		//		}
+		//		break;
+
+		//		// Draw chains contour -------------------------------------------
+		//		case b2Shape::e_chain:
+		//		{
+		//			b2ChainShape* shape = (b2ChainShape*)f->GetShape();
+		//			b2Vec2 prev, v;
+
+		//			for (int32 i = 0; i < shape->m_count; ++i)
+		//			{
+		//				v = b->GetWorldPoint(shape->m_vertices[i]);
+		//				if (i > 0)
+		//					app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+		//				prev = v;
+		//			}
+
+		//			v = b->GetWorldPoint(shape->m_vertices[0]);
+		//			app->render->DrawLine(METERS_TO_PIXELS(prev.x), METERS_TO_PIXELS(prev.y), METERS_TO_PIXELS(v.x), METERS_TO_PIXELS(v.y), 100, 255, 100);
+		//		}
+		//		break;
+
+		//		// Draw a single segment(edge) ----------------------------------
+		//		case b2Shape::e_edge:
+		//		{
+		//			b2EdgeShape* shape = (b2EdgeShape*)f->GetShape();
+		//			b2Vec2 v1, v2;
+
+		//			v1 = b->GetWorldPoint(shape->m_vertex0);
+		//			v1 = b->GetWorldPoint(shape->m_vertex1);
+		//			app->render->DrawLine(METERS_TO_PIXELS(v1.x), METERS_TO_PIXELS(v1.y), METERS_TO_PIXELS(v2.x), METERS_TO_PIXELS(v2.y), 100, 100, 255);
+		//		}
+		//		break;
+		//		}
+		//
+		//	}
+		
+	//}
 
 
 	return true;
@@ -317,6 +438,11 @@ bool ModulePhysics::CleanUp()
 	delete world;
 
 	return true;
+}
+
+void ModulePhysics::RemoveBodyFromWorld(b2Body *body)
+{
+	world->DestroyBody(body);
 }
 
 void PhysBody::GetPosition(int& x, int& y) const

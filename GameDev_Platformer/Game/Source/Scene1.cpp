@@ -61,8 +61,6 @@ bool Scene1::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		app->SaveGameRequest();
 
-	//app->render->DrawTexture(img, 380, 100); // Placeholder not needed any more
-
 	// Draw map
 	app->map->Draw();
 
@@ -114,16 +112,47 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	b2Vec2 position;
 
-	LOG("I got touched!");
 
-
-	if (bodyA->type == Collider_Type::GEM || bodyB->type == Collider_Type::GEM)
+	p2List_item<PhysBody*>* ToRemove;
+	if (bodyA->type == Collider_Type::PLAYER)
 	{
-		LOG("GOT A GEM!");
+		LOG("I got touched! A");
+		p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
+	
+		while (current != NULL)
+		{
+			bool removeItem = false;
+			p2List_item<PhysBody*>* itemToRemove = current;
+			if (bodyB->type == Collider_Type::GEM && current->data == bodyB) {		
+				removeItem = true;
+				LOG("REMOVE GEM");
+			}
+			current = current->next;
+			if (removeItem)
+			{
+				//app->physics->RemoveBodyFromWorld(itemToRemove->data->body);
+				app->physics->collectables.del(itemToRemove);				
+			}
+		}
 	}
-
-	if (bodyA->type == Collider_Type::DEATH || bodyB->type == Collider_Type::DEATH)
+	else if (bodyB->type == Collider_Type::PLAYER)
 	{
-		LOG("I DIED!");
+		LOG("I got touched! B");
+		p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
+		bool removeItem = false;
+		while (current != NULL)
+		{
+
+			if (bodyA->type == Collider_Type::GEM && current->data == bodyA) {
+				
+				removeItem = true;
+				LOG("REMOVE GEM");
+			}
+			current = current->next;
+			if (removeItem)
+			{
+				
+			}
+		}
 	}
 }

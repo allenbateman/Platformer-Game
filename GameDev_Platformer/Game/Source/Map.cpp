@@ -4,6 +4,7 @@
 #include "Textures.h"
 #include "Map.h"
 #include "ModulePhysics.h"
+#include "LevelManagement.h"
 #include "Scene1.h"
 #include "Scene2.h"
 #include<iostream>
@@ -629,7 +630,9 @@ bool Map::SetMapColliders()
 						iPoint pos;
 						pos = MapToWorld(x, y);
 
-						app->physics->groundColliders.add(app->physics->CreateRectangle(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody));
+						PhysBody* pb = app->physics->CreateRectangle(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody);
+						pb->color = { 255,50,50,255 };
+						app->physics->deathColliders.add(pb);
 					}
 
 				}
@@ -658,7 +661,11 @@ bool Map::SetMapColliders()
 
 			if (object->data->type == Collider_Type::GEM || object->data->type == Collider_Type::KEY)
 			{
-				app->physics->collectables.add(app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody));
+
+				PhysBody* pb = app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
+				pb->color = { 100,50,255,255 };
+				app->physics->collectables.add(pb);
+		
 				LOG("SETTING GEM COLLIDER...");
 			
 			}else if (object->data->type == Collider_Type::WIN)

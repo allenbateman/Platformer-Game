@@ -382,7 +382,7 @@ public:
 
 	/// Dump this body to a log file
 	void Dump();
-
+	
 private:
 
 	friend class b2World;

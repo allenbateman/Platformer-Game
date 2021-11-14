@@ -24,7 +24,8 @@ enum class Collider_Type {
 	CHECK_POINT,
 	SPAWNER,
 	DEATH,
-	WIN
+	WIN,
+	PLAYER
 };
 struct Color {
 	float r, g, b, a;
@@ -44,7 +45,7 @@ public:
 	float GetRotation() const;
 	bool Contains(int x, int y) const;
 	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
-	Color color;
+	b2Color color;
 public:
 	int width, height;
 	b2Body* body;
@@ -66,11 +67,12 @@ public:
 	bool PostUpdate();
 	void Disable();
 	bool CleanUp();
+	void RemoveBodyFromWorld(b2Body *body);
 
-	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType type = b2_dynamicBody);
-	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type = b2_dynamicBody, Color color = { 255,255,255,255 });
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, b2BodyType type = b2_dynamicBody);
-	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType type = b2_dynamicBody);
+	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType type = b2_dynamicBody, b2Color color = { 255,255,255,255 });
+	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type = b2_dynamicBody, b2Color color = { 255,255,255,255 });
+	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, b2BodyType type = b2_dynamicBody, b2Color color = { 255,255,255,255 });
+	PhysBody* CreateChain(int x, int y, int* points, int size, b2BodyType type = b2_dynamicBody, b2Color color = { 255,255,255,255 });
 
 	b2RevoluteJoint* CreateRevoluteJoint(PhysBody* A, b2Vec2 anchorA, PhysBody* B, b2Vec2 anchorB, float angle = 0.0f, bool collideConnected = false, bool enableLimit = true);
 	b2PrismaticJoint* CreatePrismaticJoint(PhysBody* A, b2Vec2 anchorA, PhysBody* B, b2Vec2 anchorB, b2Vec2 axys, float maxHeight = 0.0f, bool collideConnected = true, bool enableLimit = true);
@@ -85,6 +87,12 @@ public:
 	p2List<PhysBody*> groundColliders;
 	p2List<PhysBody*> collectables;
 	p2List<PhysBody*> deathColliders;
+	p2List<PhysBody*> entities;
+
+	p2List<PhysBody*> allPhysicBodies;
+
+	p2List<PhysBody*> BodiesToRemove;
+
 private:
 
 	b2World* world;
