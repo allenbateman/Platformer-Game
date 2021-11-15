@@ -7,6 +7,7 @@
 #include "Scene1.h"
 #include "Map.h"
 #include "ModulePhysics.h"
+#include "LevelManagement.h"
 #include "player.h"
 
 #include "Defs.h"
@@ -110,8 +111,6 @@ bool Scene1::SaveState(pugi::xml_node&) const
 }
 void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	b2Vec2 position;
-
 
 	p2List_item<PhysBody*>* ToRemove;
 	if (bodyA->type == Collider_Type::PLAYER)
@@ -144,9 +143,15 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 				}
 			}
-		}else if (bodyB->type == Collider_Type::DEATH) {
-
+		}else if (bodyB->type == Collider_Type::DEATH)
+		{
+			app->player->pState = app->player->DEATH;
 			LOG("KILL ME!");
+		}
+		else if (bodyB->type == Collider_Type::WIN)
+		{
+			app->levelManagement->NextLevel();
+			LOG("I WON, GIVE ME TREAT!");
 		}
 	}
 	else if (bodyB->type == Collider_Type::PLAYER)
@@ -174,6 +179,10 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}else if (bodyA->type == Collider_Type::DEATH) {
 
 			LOG("KILL ME!");
+		}
+		else if (bodyA->type == Collider_Type::WIN)
+		{
+			LOG("I WON, GIVE ME TREAT!");
 		}
 	}
 

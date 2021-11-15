@@ -582,7 +582,7 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 
 			obj->type = Collider_Type::KEY;
 			
-		}else if (strcmp(object.attribute("type").as_string(), "Win") == 0)
+		}else if (strcmp(object.attribute("type").as_string(), "win") == 0)
 		{
 			obj->type = Collider_Type::WIN;
 
@@ -700,7 +700,7 @@ bool Map::SetMapColliders()
 			if (object->data->type == Collider_Type::GEM || object->data->type == Collider_Type::KEY)
 			{
 
-				PhysBody* pb = app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
+				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
 				pb->color = { 100,50,255,255 };
 				pb->id = object->data->id;
 				app->physics->collectables.add(pb);
@@ -709,19 +709,21 @@ bool Map::SetMapColliders()
 			
 			}else if (object->data->type == Collider_Type::WIN)
 			{
-				PhysBody* pb = app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
+				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y + (r.h * 0.5f), r.w, r.h, b2_staticBody);
 				pb->color = { 0,255,0,255 };
 				pb->id = object->data->id;
-				app->physics->collectables.add(pb);
+				app->physics->checkPoints.add(pb);
+
 				LOG("SETTING WIN COLLIDER...");
 
 			}
 			else if (object->data->type == Collider_Type::SPAWNER)
 			{
-				PhysBody* pb = app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
+				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y + (r.h * 0.5f), r.w, r.h, b2_staticBody);
 				pb->color = { 255,0,250,255 };
 				pb->id = object->data->id;
-				app->physics->collectables.add(pb);
+				app->physics->checkPoints.add(pb);
+
 				LOG("SETTING SPAWNER COLLIDER...");
 			}
 

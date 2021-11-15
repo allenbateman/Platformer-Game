@@ -128,7 +128,7 @@ bool LevelManagement::Update(float dt)
 }
 
 
-void LevelManagement::PassedLevel()
+void LevelManagement::NextLevel()
 {
 	switch (gameState) {
 	case GameState::SCENE1:

@@ -23,7 +23,7 @@ public:
 	bool Update(float dt) override;
 	bool CleanUp() override;
 	Module* currentScene = nullptr;
-	void PassedLevel();
+	void NextLevel();
 	void ReturnToMainMenu();
 	void ReturnToLevelSelection();
 	void RestartLevel();

@@ -88,6 +88,7 @@ public:
 	p2List<PhysBody*> groundColliders;
 	p2List<PhysBody*> collectables;
 	p2List<PhysBody*> deathColliders;
+	p2List<PhysBody*> checkPoints;
 	p2List<PhysBody*> entities;
 
 	p2List<PhysBody*> allPhysicBodies;
