@@ -117,42 +117,64 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	if (bodyA->type == Collider_Type::PLAYER)
 	{
 		LOG("I got touched! A");
-		p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
+		if(bodyB->type == Collider_Type::GEM)
+		{ 
+			p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
 	
-		while (current != NULL)
-		{
-			bool removeItem = false;
-			p2List_item<PhysBody*>* itemToRemove = current;
-			if (bodyB->type == Collider_Type::GEM && current->data == bodyB) {		
-				removeItem = true;
-				LOG("REMOVE GEM");
-			}
-			current = current->next;
-			if (removeItem)
+			while (current != NULL)
 			{
-				//app->physics->RemoveBodyFromWorld(itemToRemove->data->body);
-				app->physics->collectables.del(itemToRemove);				
+				bool removeItem = false;
+				p2List_item<PhysBody*>* itemToRemove = current;
+				if (current->data == bodyB) {		
+					removeItem = true;
+					LOG("REMOVE GEM");
+				}
+				current = current->next;
+				if (removeItem)
+				{
+					itemToRemove->data->pendingToDelete = true;		
+
+					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
+					if (!obj->properties.SetProperty("Draw", 0))
+					{
+						LOG("Could not change object property");
+					}
+
+					app->physics->collectables.del(itemToRemove);
+
+				}
 			}
+		}else if (bodyB->type == Collider_Type::DEATH) {
+
+			LOG("KILL ME!");
 		}
 	}
 	else if (bodyB->type == Collider_Type::PLAYER)
 	{
 		LOG("I got touched! B");
-		p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
-		bool removeItem = false;
-		while (current != NULL)
+		if (bodyA->type == Collider_Type::GEM)
 		{
-
-			if (bodyA->type == Collider_Type::GEM && current->data == bodyA) {
-				
-				removeItem = true;
-				LOG("REMOVE GEM");
-			}
-			current = current->next;
-			if (removeItem)
+			p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
+			bool removeItem = false;
+			while (current != NULL)
 			{
-				
+				p2List_item<PhysBody*>* itemToRemove = current;
+				if (current->data == bodyA) {
+
+					removeItem = true;
+					LOG("REMOVE GEM");
+				}
+				current = current->next;
+				if (removeItem)
+				{
+					itemToRemove->data->pendingToDelete = true;
+					app->physics->collectables.del(itemToRemove);
+				}
 			}
+		}else if (bodyA->type == Collider_Type::DEATH) {
+
+			LOG("KILL ME!");
 		}
 	}
+
 }

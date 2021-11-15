@@ -42,6 +42,23 @@ int Properties::GetProperty(const char* value, int defaultValue) const
 	return defaultValue;
 }
 
+bool Properties::SetProperty(const char* name, int set_value) {
+
+
+	ListItem<Property*>* item = list.start;
+
+	while (item)
+	{
+		if (item->data->name == name)
+		{
+			item->data->value = set_value;
+			return true;
+		}
+		item = item->next;
+	}
+	return false;
+}
+
 // Called before render is available
 bool Map::Awake(pugi::xml_node& config)
 {
@@ -176,6 +193,27 @@ iPoint Map::WorldToMap(int x, int y) const
 	}
 
 	return ret;
+}
+
+Object* Map::GetObjectById(int _id)
+{
+	ListItem<ObjectLayer*>* objectLayer;
+	objectLayer = mapData.objectLayers.start;
+	while (objectLayer != NULL)
+	{
+		ListItem<Object*>* object;
+		object = objectLayer->data->objects.start;
+		while (object != NULL)
+		{
+			if (object->data->id == _id)
+			{
+				return object->data;
+			}
+			object = object->next;
+		}
+		objectLayer = objectLayer->next;
+	}
+	return nullptr;
 }
 
 // L06: TODO 3: Pick the right Tileset based on a tile id
@@ -664,20 +702,26 @@ bool Map::SetMapColliders()
 
 				PhysBody* pb = app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
 				pb->color = { 100,50,255,255 };
+				pb->id = object->data->id;
 				app->physics->collectables.add(pb);
 		
 				LOG("SETTING GEM COLLIDER...");
 			
 			}else if (object->data->type == Collider_Type::WIN)
 			{
-
-				app->physics->collectables.add(app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody));
+				PhysBody* pb = app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
+				pb->color = { 0,255,0,255 };
+				pb->id = object->data->id;
+				app->physics->collectables.add(pb);
 				LOG("SETTING WIN COLLIDER...");
 
 			}
 			else if (object->data->type == Collider_Type::SPAWNER)
 			{
-				app->physics->collectables.add(app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y + (r.h * 0.5f), r.w, r.h, b2_staticBody));
+				PhysBody* pb = app->physics->CreateRectangle(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
+				pb->color = { 255,0,250,255 };
+				pb->id = object->data->id;
+				app->physics->collectables.add(pb);
 				LOG("SETTING SPAWNER COLLIDER...");
 			}
 

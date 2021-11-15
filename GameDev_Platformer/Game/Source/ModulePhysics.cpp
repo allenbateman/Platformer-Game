@@ -58,21 +58,22 @@ bool ModulePhysics::PreUpdate()
 	world->Step(1.0f / 60.0f, 6, 2);
 	static bool temp = false;
 
-	//p2List_item<PhysBody*>* current = allPhysicBodies.getFirst();
-	//while (current != NULL)
-	//{
-	//	bool removeItem = false;
-	//	p2List_item<PhysBody*>* itemToRemove = current;
-	//	if (!collectables.find(current->data) || !entities.find(current->data)) {
-	//		removeItem = true;
-	//	}
-	//	current = current->next;
-	//	if (removeItem && itemToRemove->data->body != NULL)
-	//	{
-	//		allPhysicBodies.del(itemToRemove);
-	//		//RemoveBodyFromWorld(itemToRemove->data->body);
-	//	}
-	//}
+	p2List_item<PhysBody*>* current = allPhysicBodies.getFirst();
+	while (current != NULL)
+	{
+		bool removeItem = false;
+		p2List_item<PhysBody*>* itemToRemove = current;
+		if (itemToRemove->data->pendingToDelete) {
+			removeItem = true;
+		}
+		current = current->next;
+		if (removeItem && itemToRemove->data->body != NULL)
+		{
+			LOG("Removing item ");
+			RemoveBodyFromWorld(itemToRemove->data->body);
+			allPhysicBodies.del(itemToRemove);		
+		}
+	}
 
 
 

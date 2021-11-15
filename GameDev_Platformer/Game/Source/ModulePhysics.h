@@ -52,6 +52,7 @@ public:
 	Collider_Type type;
 	Module* listener;
 	bool pendingToDelete = false;
+	int id;
 };
 
 // Module --------------------------------------
