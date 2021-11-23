@@ -14,6 +14,7 @@
 #include "Map.h"
 #include "ModulePhysics.h"
 #include "Player.h"
+#include "Pathfinding.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -34,6 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	levelManagement = new LevelManagement(true);
 	physics = new ModulePhysics(true);
 	map = new Map(true);
+	pathfinding = new Pathfinding(true);
 	fade = new FadeToBlack(true);
 	intro = new Intro(true);
 	start = new StartMenu(false);

@@ -25,6 +25,7 @@ class GameOver;
 class Map;
 class ModulePhysics;
 class ModulePlayer;
+class Pathfinding;
 
 class App
 {
@@ -104,6 +105,7 @@ public:
 	Map* map;
 	ModulePhysics* physics;
 	ModulePlayer* player;
+	Pathfinding* pathfinding;
 
 private:
 
