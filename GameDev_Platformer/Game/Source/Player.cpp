@@ -116,19 +116,19 @@ bool ModulePlayer::Update(float dt)
 {
 	switch (pState)
 	{
-	case IDLE:
-		currentAnim = &p->idlePlayerAnim;
-		break;
-	case WALK:
-		currentAnim = &p->walkingPlayerAnim;
-		break;
-	case JUMP:
-		currentAnim = &p->jumpingPlayerAnim;
-		break;
-	case DEATH:
-		currentAnim = &p->deathPlayerAnim;
-		direction  = SDL_FLIP_HORIZONTAL;
-		break;
+		case IDLE:
+			currentAnim = &p->idlePlayerAnim;
+			break;
+		case WALK:
+			currentAnim = &p->walkingPlayerAnim;
+			break;
+		case JUMP:
+			currentAnim = &p->jumpingPlayerAnim;
+			break;
+		case DEATH:
+			currentAnim = &p->deathPlayerAnim;
+			direction  = SDL_FLIP_HORIZONTAL;
+			break;
 	}
 
 	if(playerTexture != NULL)

@@ -52,4 +52,6 @@ public:
 	float minSpeedX;
 	SDL_RendererFlip direction;
 	iPoint position;
+	fPoint speed = {1,1};
+	fPoint jumpForce = { 0,2 };
 };
