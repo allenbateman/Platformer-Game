@@ -25,13 +25,13 @@ public:
 	bool Start();
 	bool Update(float dt);
 	bool CleanUp();
-	void SetPosition(iPoint pos) { position = pos; };
-	iPoint GetPosition() { return position; };
-	void Spawn(iPoint pos);
+	void SetPosition(fPoint pos) { position = pos; };
+	fPoint GetPosition() { return position; };
+	void Spawn(fPoint pos);
 	void Disable();
 	// Load / Save
-	bool LoadState(pugi::xml_node&);
-	bool SaveState(pugi::xml_node&) const;
+	bool LoadState(pugi::xml_node& data);
+	bool SaveState(pugi::xml_node& data) const;
 
 	SDL_Texture* playerTexture;
 
@@ -51,7 +51,8 @@ public:
 	float maxSpeedX;
 	float minSpeedX;
 	SDL_RendererFlip direction;
-	iPoint position;
+	fPoint position;
 	fPoint speed = {1,1};
 	fPoint jumpForce = { 0,2 };
+
 };

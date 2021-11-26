@@ -76,8 +76,6 @@ struct MapLayer
 	int width;
 	int height;
 	uint* data;
-
-	// L06: DONE 1: Support custom properties
 	Properties properties;
 
 	MapLayer() : data(NULL)
@@ -114,7 +112,7 @@ struct ObjectLayer {
 	int width;
 	int height;
 	uint* data;
-	// L04: DONE 6: Short function to get the value of x,y
+	// Short function to get the value of x,y
 	inline uint Get(int x, int y) const
 	{
 		return data[(y * width) + x];
@@ -133,8 +131,6 @@ struct MapData
 	MapTypes type;
 	List<TileSet*> tilesets;
 	List<ObjectLayer*> objectLayers;
-
-	// L04: DONE 2: Add a list/array of layers to the map
 	List<MapLayer*> layers;
 };
 
@@ -168,6 +164,10 @@ public:
 	Object* GetObjectById(int _id);
 
 	bool SetMapColliders();
+
+	// Load / Save
+	bool LoadState(pugi::xml_node& data);
+	bool SaveState(pugi::xml_node& data) const;
 
 private:
 

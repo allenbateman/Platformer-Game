@@ -83,7 +83,7 @@ bool ModulePlayer::CleanUp()
 	return true;
 }
 
-void ModulePlayer::Spawn(iPoint pos)
+void ModulePlayer::Spawn(fPoint pos)
 {
 	
 	SetPosition(pos);
@@ -99,15 +99,29 @@ void ModulePlayer::Disable()
 	active = false;
 }
 
-bool ModulePlayer::LoadState(pugi::xml_node&)
+bool ModulePlayer::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
+
+	b2Vec2 position; 
+	position.x = data.child("player").attribute("x").as_int();
+	position.y = data.child("player").attribute("y").as_int();
+	pState = static_cast<State>(data.child("player").attribute("state").as_int());
+
+	p->player->body->SetTransform(position,p->player->body->GetAngle());
+
+
+
 	return ret;
 }
 
-bool ModulePlayer::SaveState(pugi::xml_node&) const
+bool ModulePlayer::SaveState(pugi::xml_node& data) const
 {
 	bool ret = true;
+	pugi::xml_node player = data.append_child("player");
+	player.append_attribute("x") = p->player->body->GetPosition().x;
+	player.append_attribute("y") = p->player->body->GetPosition().y;
+	player.append_attribute("state") = pState;
 	return ret;
 }
 

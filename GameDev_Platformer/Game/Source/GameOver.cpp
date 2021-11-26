@@ -14,7 +14,7 @@
 
 GameOver::GameOver(bool isActive) : Module(isActive)
 {
-	name.Create("scene");
+	name.Create("game_over");
 }
 
 // Destructor

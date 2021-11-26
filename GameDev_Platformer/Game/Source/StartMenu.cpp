@@ -14,7 +14,7 @@
 
 StartMenu::StartMenu(bool isActive) : Module(isActive)
 {
-	name.Create("scene");
+	name.Create("start_menu");
 }
 
 // Destructor

@@ -18,14 +18,14 @@
 #define PIXEL_TO_METERS(p)  ((float) METER_PER_PIXEL * p)
 
 
-enum class Collider_Type {
-	GEM,
-	KEY,
-	CHECK_POINT,
-	SPAWNER,
-	DEATH,
-	WIN,
-	PLAYER
+enum Collider_Type {
+	GEM = 0,
+	KEY = 1,
+	CHECK_POINT = 2,
+	SPAWNER = 3,
+	DEATH = 4,
+	WIN = 5,
+	PLAYER = 6
 };
 struct Color {
 	float r, g, b, a;

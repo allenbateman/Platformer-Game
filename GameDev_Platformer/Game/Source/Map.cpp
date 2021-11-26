@@ -25,11 +25,8 @@ Map::Map(bool isActive) : Module(isActive), mapLoaded(false)
 Map::~Map()
 {}
 
-// L06: TODO 7: Ask for the value of a custom property
 int Properties::GetProperty(const char* value, int defaultValue) const
 {
-	//...
-
 	ListItem<Property*>* item = list.start;
 
 	while (item)
@@ -256,7 +253,7 @@ bool Map::CleanUp()
 {
     LOG("Unloading map");
 
-    // L03: DONE 2: Make sure you clean up any memory allocated from tilesets/map
+    // clean up any memory allocated from tilesets/map
     // Remove all tilesets
 	ListItem<TileSet*>* item;
 	item = mapData.tilesets.start;
@@ -268,7 +265,7 @@ bool Map::CleanUp()
 	}
 	mapData.tilesets.clear();
 
-	// L04: DONE 2: clean up all layer data
+	// clean up all layer data
 	// Remove all layers
 	ListItem<MapLayer*>* item2;
 	item2 = mapData.layers.start;
@@ -280,6 +277,7 @@ bool Map::CleanUp()
 	}
 	mapData.layers.clear();
 
+	// Remove all objects
 	ListItem<ObjectLayer*>* item3;
 	item3 = mapData.objectLayers.start;
 
@@ -312,11 +310,11 @@ bool Map::Load(const char* filename)
 	// Load general info
     if(ret == true)
     {
-        // L03: DONE 3: Create and call a private function to load and fill all your map data
+        // Create and call a private function to load and fill all your map data
 		ret = LoadMap(mapFile);
 	}
 
-    // L03: DONE 4: Create and call a private function to load a tileset
+    // Create and call a private function to load a tileset
     // remember to support more any number of tilesets!
 	if (ret == true)
 	{
@@ -328,7 +326,7 @@ bool Map::Load(const char* filename)
 			LOG("TileSets Not Loaded...");
 	}
 
-	// L04: DONE 4: Iterate all layers and load each of them
+	// Iterate all layers and load each of them
 	// Load layer info
 	if (ret == true)
 	{
@@ -380,13 +378,13 @@ bool Map::LoadMap(pugi::xml_node mapFile)
 	}
 	else
 	{
-		// L03: DONE 3: Load map general properties
+		// Load map general properties
 		mapData.height = map.attribute("height").as_int();
 		mapData.width = map.attribute("width").as_int();
 		mapData.tileHeight = map.attribute("tileheight").as_int();
 		mapData.tileWidth = map.attribute("tilewidth").as_int();
 
-		// L05: DONE 1: Add formula to go from isometric map to world coordinates
+		// Add formula to go from isometric map to world coordinates
 		mapData.type = MAPTYPE_UNKNOWN;
 		if (strcmp(map.attribute("orientation").as_string(), "isometric") == 0)
 		{
@@ -401,7 +399,7 @@ bool Map::LoadMap(pugi::xml_node mapFile)
 	return ret;
 }
 
-// L03: DONE 4: Implement the LoadTileSet function to load the tileset properties
+// Implement the LoadTileSet function to load the tileset properties
 bool Map::LoadTileSets(pugi::xml_node mapFile) {
 
 	bool ret = true;
@@ -418,7 +416,7 @@ bool Map::LoadTileSets(pugi::xml_node mapFile) {
 	return ret;
 }
 
-// L03: DONE 4: Load Tileset attributes
+// Load Tileset attributes
 bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
@@ -436,7 +434,7 @@ bool Map::LoadTilesetDetails(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
-// L03: DONE 4: Load Tileset image
+// Load Tileset image
 bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
@@ -449,7 +447,7 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	}
 	else
 	{
-		// L03: DONE 4: Load Tileset image
+		// Load Tileset image
 		SString tmp("%s%s", folder.GetString(), image.attribute("source").as_string());
 		set->texture = app->tex->Load(tmp.GetString());
 	}
@@ -457,7 +455,7 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 	return ret;
 }
 
-// L04: DONE 4: Iterate all layers and load each of them
+// Iterate all layers and load each of them
 bool Map::LoadAllLayers(pugi::xml_node mapNode) {
 	bool ret = true;
 	for (pugi::xml_node layerNode = mapNode.child("layer"); layerNode && ret; layerNode = layerNode.next_sibling("layer"))
@@ -473,7 +471,7 @@ bool Map::LoadAllLayers(pugi::xml_node mapNode) {
 	return ret;
 }
 
-// L04: DONE 3: Implement a function that loads a single layer layer
+// Implement a function that loads a single layer layer
 bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 {
 	bool ret = true;
@@ -483,7 +481,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	layer->width = node.attribute("width").as_int();
 	layer->height = node.attribute("height").as_int();
 
-	//L06: TODO 6 Call Load Propoerties
+	//Call Load Propoerties
 	LoadProperties(node, layer->properties);
 
 	//Reserve the memory for the tile array
@@ -502,7 +500,7 @@ bool Map::LoadLayer(pugi::xml_node& node, MapLayer* layer)
 	return ret;
 }
 
-// L06: TODO 6: Load a group of properties from a node and fill a list with it
+//Load a group of properties from a node and fill a list with it
 bool Map::LoadProperties(pugi::xml_node& node, Properties& properties)
 {
 	bool ret = true;
@@ -540,7 +538,6 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 {
 	bool ret = true;
 
-	//ACABAR 
 	//Load object group attributes
 	layer->name = node.attribute("name").as_string();
 
@@ -591,7 +588,7 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 			obj->type = Collider_Type::SPAWNER;
 		}
 		layer->objects.add(obj);
-		//send current object node and obj to store the prperties
+		//send current object node and obj to store the properties
 		LoadObject(object, obj);
 	}
 	
@@ -609,7 +606,6 @@ bool Map::LoadObject(pugi::xml_node& node, Object* object)
 	for (objProperty = node.child("properties").child("property"); objProperty && ret; objProperty = objProperty.next_sibling("property"))
 	{
 		Properties::Property* p = new Properties::Property();
-	
 
 		p->name = objProperty.attribute("name").as_string();
 		p->value = objProperty.attribute("value").as_int();
@@ -733,7 +729,142 @@ bool Map::SetMapColliders()
 
 		objectLayer = objectLayer->next;
 	}
+	return ret;
+}
 
+bool Map::LoadState(pugi::xml_node& data)
+{
+	mapData;
+
+
+	return false;
+}
+
+bool Map::SaveState(pugi::xml_node& data) const
+{
+
+	bool ret = true;
+
+	LOG("saving map data...");
+
+	pugi::xml_node map = data.append_child("map_data");
+
+	map.append_attribute("height") = mapData.height;
+	map.append_attribute("width") = mapData.width;
+	map.append_attribute("tile_height") = mapData.tileHeight;
+	map.append_attribute("tile_width") = mapData.tileWidth;
+	map.append_attribute("red_backgroundcolor") = mapData.backgroundColor.r;
+	map.append_attribute("green_backgroundcolor") = mapData.backgroundColor.g;
+	map.append_attribute("blue_backgroundcolor") = mapData.backgroundColor.b;
+	map.append_attribute("alpha_backgroundcolor") = mapData.backgroundColor.a;
+
+
+	LOG("saving tile set data...");
+	//saving tileSets data
+	map = data.append_child("map_data").append_child("tile_set");
+	pugi::xml_node tileSet;
+	ListItem<TileSet*>* tileSetData = mapData.tilesets.start;
+
+	while (tileSetData != NULL)
+	{
+		
+		tileSet = map.append_child(tileSetData->data->name.GetString());
+		tileSet.append_attribute("gid") = tileSetData->data->firstgid;
+
+		tileSet.append_attribute("tile_count") = tileSetData->data->tilecount;
+		tileSet.append_attribute("tile_height") = tileSetData->data->tileHeight;
+		tileSet.append_attribute("tile_width") = tileSetData->data->tileWidth;
+
+		tileSet.append_attribute("columns") = tileSetData->data->columns;
+		tileSet.append_attribute("margin") = tileSetData->data->margin;
+		tileSet.append_attribute("spacing") = tileSetData->data->spacing;
+
+		tileSet.append_attribute("texture") = tileSetData->data->texture;
+		tileSet.append_attribute("tex_height") = tileSetData->data->texHeight;
+		tileSet.append_attribute("tex_width") = tileSetData->data->texWidth;
+
+
+		tileSetData = tileSetData->next;
+	}
+
+	LOG("saving object layer data...");
+	pugi::xml_node objectLayer;
+	ListItem<ObjectLayer*>* objectLayerData = mapData.objectLayers.start;
+	
+	while (objectLayerData != NULL)
+	{
+
+		objectLayer = data.append_child("map_data").append_child("object_layer");
+
+		objectLayer.append_attribute("name") = objectLayerData->data->name.GetString();
+		objectLayer.append_attribute("height") = objectLayerData->data->height;
+		objectLayer.append_attribute("width") = objectLayerData->data->width;
+		objectLayer.append_attribute("texture") = objectLayerData->data->texture;
+		objectLayer.append_attribute("texture") = objectLayerData->data->data;
+
+
+		pugi::xml_node object;
+		ListItem<Object*>* objectData = objectLayerData->data->objects.start;
+		
+		while (objectData != NULL)
+		{
+			
+			object = objectLayer.append_child(objectData->data->name.GetString());
+
+			object.append_attribute("id") = objectData->data->id;
+
+			object.append_attribute("type") = objectData->data->type;
+			object.append_attribute("x") = objectData->data->x;
+			object.append_attribute("y") = objectData->data->y;
+			object.append_attribute("height") = objectData->data->height;
+			object.append_attribute("width") = objectData->data->width;
+			
+
+			pugi::xml_node property;
+			ListItem<Properties::Property*>* propertyData = objectData->data->properties.list.start;
+
+			while (propertyData != NULL)
+			{
+				property = object.append_child(propertyData->data->name.GetString());
+				property.append_attribute("name") = propertyData->data->name.GetString();
+				property.append_attribute("value") = propertyData->data->value;
+
+				propertyData = propertyData->next;
+			}
+
+			objectData = objectData->next;
+		}
+
+		objectLayerData = objectLayerData->next;
+	}
+
+	LOG("saving map layer data...");
+	map = data.append_child("map_data").append_child("map_layer");
+	pugi::xml_node mapLayer;
+	ListItem<MapLayer*>* mapLayertData = mapData.layers.start;
+
+	while (mapLayertData != NULL) 
+	{
+
+		mapLayer = map.append_child(mapLayertData->data->name.GetString());
+		mapLayer.append_attribute("name") = mapLayertData->data->name.GetString();
+		mapLayer.append_attribute("height") = mapLayertData->data->height;
+		mapLayer.append_attribute("width") = mapLayertData->data->width;
+		
+		pugi::xml_node mapLayerPropety;
+		ListItem<Properties::Property*>* mapPropertyLayertData = mapLayertData->data->properties.list.start;
+
+		while (mapPropertyLayertData != NULL)
+		{
+			mapLayerPropety = mapLayerPropety.append_child(mapPropertyLayertData->data->name.GetString());
+			mapLayerPropety.append_attribute("name") = mapPropertyLayertData->data->name.GetString();
+			mapLayerPropety.append_attribute("value") = mapPropertyLayertData->data->value;
+
+			mapPropertyLayertData = mapPropertyLayertData->next;
+		}
+
+		mapLayertData = mapLayertData->next;
+	}
 
 	return ret;
 }

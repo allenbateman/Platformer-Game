@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.5" orientation="orthogonal" renderorder="right-down" width="80" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="57">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="80" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="57">
  <properties>
   <property name="Draw" type="int" value="1"/>
  </properties>
- <tileset firstgid="1" name="Background 1" tilewidth="16" tileheight="16" tilecount="1740" columns="60">
+ <tileset firstgid="1" name="Background1" tilewidth="16" tileheight="16" tilecount="1740" columns="60">
   <image source="../Spritesx16/Background_layer1_x2.png" width="960" height="468"/>
  </tileset>
- <tileset firstgid="1741" name="Background 2" tilewidth="16" tileheight="16" tilecount="1740" columns="60">
+ <tileset firstgid="1741" name="Background2" tilewidth="16" tileheight="16" tilecount="1740" columns="60">
   <image source="../Spritesx16/Background_layer2_x2.png" width="960" height="468"/>
  </tileset>
- <tileset firstgid="3481" name="Background 3" tilewidth="16" tileheight="16" tilecount="1740" columns="60">
+ <tileset firstgid="3481" name="Background3" tilewidth="16" tileheight="16" tilecount="1740" columns="60">
   <image source="../Spritesx16/Background_layer3_x2.png" width="960" height="468"/>
  </tileset>
- <tileset firstgid="5221" name="Forest 1" tilewidth="16" tileheight="16" tilecount="140" columns="20">
+ <tileset firstgid="5221" name="Forest1" tilewidth="16" tileheight="16" tilecount="140" columns="20">
   <properties>
    <property name="Collider" type="int" value="1"/>
    <property name="Draw" type="int" value="1"/>
   </properties>
   <image source="../Spritesx16/Forest_Tileset_x2.png" width="320" height="112"/>
   <wangsets>
-   <wangset name="Unnamed Set" tile="-1">
+   <wangset name="Unnamed Set" type="mixed" tile="-1">
     <properties>
      <property name="Draw" type="int" value="1"/>
      <property name="Moco" type="int" value="1"/>
@@ -39,14 +39,14 @@
   </properties>
   <image source="../Spritesx16/Forest_Background_Assets_x2.png" width="432" height="80"/>
  </tileset>
- <tileset firstgid="5654" name="gems" tilewidth="16" tileheight="16" tilecount="2" columns="2">
+ <tileset firstgid="5654" name="Gems" tilewidth="16" tileheight="16" tilecount="2" columns="2">
   <properties>
    <property name="Collectable" type="int" value="1"/>
    <property name="Draw" type="int" value="1"/>
   </properties>
   <image source="../Spritesx16/gems.png" width="32" height="16"/>
  </tileset>
- <layer id="3" name="Background 3" width="80" height="30">
+ <layer id="3" name="Background3" width="80" height="30">
   <properties>
    <property name="Draw" type="int" value="1"/>
   </properties>
@@ -2453,7 +2453,7 @@
    <tile gid="5060"/>
   </data>
  </layer>
- <layer id="2" name="Background 2" width="80" height="30">
+ <layer id="2" name="Background2" width="80" height="30">
   <properties>
    <property name="Draw" type="int" value="1"/>
   </properties>
@@ -4860,7 +4860,7 @@
    <tile gid="3320"/>
   </data>
  </layer>
- <layer id="1" name="Background 1" width="80" height="30">
+ <layer id="1" name="Background1" width="80" height="30">
   <properties>
    <property name="Draw" type="int" value="1"/>
   </properties>
@@ -7267,7 +7267,7 @@
    <tile/>
   </data>
  </layer>
- <layer id="5" name="Background 0" width="80" height="30">
+ <layer id="5" name="Background0" width="80" height="30">
   <properties>
    <property name="Draw" type="int" value="1"/>
   </properties>

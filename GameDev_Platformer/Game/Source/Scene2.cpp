@@ -14,7 +14,7 @@
 
 Scene2::Scene2(bool isActive) : Module(isActive)
 {
-	name.Create("scene");
+	name.Create("level2");
 }
 
 // Destructor

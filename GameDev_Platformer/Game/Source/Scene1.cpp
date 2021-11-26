@@ -15,7 +15,7 @@
 
 Scene1::Scene1(bool isActive) : Module(isActive)
 {
-	name.Create("scene");
+	name.Create("level1");
 }
 
 // Destructor
@@ -34,14 +34,9 @@ bool Scene1::Awake()
 // Called before the first frame
 bool Scene1::Start()
 {
-	// L03: DONE: Load map
 	app->physics->Start();
-
 	app->map->Load("level1.tmx");
-	app->player->Spawn(iPoint(20, 300));
-
-	// Load music
-	//app->audio->PlayMusic("Assets/audio/music/music_spy.ogg");
+	app->player->Spawn(fPoint(20, 300));
 
 	return true;
 }
@@ -113,25 +108,27 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 
 	p2List_item<PhysBody*>* ToRemove;
+	p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
 	if (bodyA->type == Collider_Type::PLAYER)
 	{
 		LOG("I got touched! A");
-		if(bodyB->type == Collider_Type::GEM)
-		{ 
-			p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
-	
+		switch (bodyB->type)
+		{
+		case Collider_Type::GEM:
+		
+
 			while (current != NULL)
 			{
 				bool removeItem = false;
 				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyB) {		
+				if (current->data == bodyB) {
 					removeItem = true;
 					LOG("REMOVE GEM");
 				}
 				current = current->next;
 				if (removeItem)
 				{
-					itemToRemove->data->pendingToDelete = true;		
+					itemToRemove->data->pendingToDelete = true;
 
 					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
 					if (!obj->properties.SetProperty("Draw", 0))
@@ -143,29 +140,33 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 				}
 			}
-		}else if (bodyB->type == Collider_Type::DEATH)
-		{
-			app->player->pState = app->player->DEATH;
-			LOG("KILL ME!");
-		}
-		else if (bodyB->type == Collider_Type::WIN)
-		{
+			break;
+		case Collider_Type::DEATH:
+				app->player->pState = app->player->DEATH;
+				LOG("KILL ME!");
+			break;
+		case Collider_Type::WIN:
 			app->levelManagement->NextLevel();
 			LOG("I WON, GIVE ME TREAT!");
+			break;
+		default:
+			break;
 		}
+
+
 	}
 	else if (bodyB->type == Collider_Type::PLAYER)
 	{
 		LOG("I got touched! B");
-		if (bodyA->type == Collider_Type::GEM)
+		switch (bodyA->type)
 		{
-			p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
-			bool removeItem = false;
+		case Collider_Type::GEM:
+
 			while (current != NULL)
 			{
+				bool removeItem = false;
 				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyA) {
-
+				if (current->data == bodyB) {
 					removeItem = true;
 					LOG("REMOVE GEM");
 				}
@@ -173,16 +174,26 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 				if (removeItem)
 				{
 					itemToRemove->data->pendingToDelete = true;
+
+					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
+					if (!obj->properties.SetProperty("Draw", 0))
+					{
+						LOG("Could not change object property");
+					}
 					app->physics->collectables.del(itemToRemove);
 				}
 			}
-		}else if (bodyA->type == Collider_Type::DEATH) {
-
+			break;
+		case Collider_Type::DEATH:
+			app->player->pState = app->player->DEATH;
 			LOG("KILL ME!");
-		}
-		else if (bodyA->type == Collider_Type::WIN)
-		{
+			break;
+		case Collider_Type::WIN:
+			app->levelManagement->NextLevel();
 			LOG("I WON, GIVE ME TREAT!");
+			break;
+		default:
+			break;
 		}
 	}
 
