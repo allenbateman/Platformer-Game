@@ -111,12 +111,10 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
 	if (bodyA->type == Collider_Type::PLAYER)
 	{
-		LOG("I got touched! A");
+		//LOG("I got touched! A");
 		switch (bodyB->type)
 		{
 		case Collider_Type::GEM:
-		
-
 			while (current != NULL)
 			{
 				bool removeItem = false;
@@ -137,17 +135,44 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 					}
 
 					app->physics->collectables.del(itemToRemove);
+				}
+			}
+			break;
+		case Collider_Type::KEY:
+			while (current != NULL)
+			{
+				bool removeItem = false;
+				p2List_item<PhysBody*>* itemToRemove = current;
+				if (current->data == bodyB) {
+					removeItem = true;
+					LOG("REMOVE KEY");
+				}
+				current = current->next;
+				if (removeItem)
+				{
+					itemToRemove->data->pendingToDelete = true;
 
+					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
+					if (!obj->properties.SetProperty("Draw", 0))
+					{
+						LOG("Could not change object property");
+					}
+
+					app->physics->collectables.del(itemToRemove);
 				}
 			}
 			break;
 		case Collider_Type::DEATH:
-				app->player->pState = app->player->DEATH;
+				app->player->state = PlayerState::DEAD;
 				LOG("KILL ME!");
 			break;
 		case Collider_Type::WIN:
 			app->levelManagement->NextLevel();
 			LOG("I WON, GIVE ME TREAT!");
+			break;
+		case Collider_Type::GROUND:
+			app->player->onGround = true;
+			LOG("ON GROUND");
 			break;
 		default:
 			break;
@@ -157,7 +182,7 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	}
 	else if (bodyB->type == Collider_Type::PLAYER)
 	{
-		LOG("I got touched! B");
+		//LOG("I got touched! B");
 		switch (bodyA->type)
 		{
 		case Collider_Type::GEM:
@@ -184,13 +209,40 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 				}
 			}
 			break;
+		case Collider_Type::KEY:
+			while (current != NULL)
+			{
+				bool removeItem = false;
+				p2List_item<PhysBody*>* itemToRemove = current;
+				if (current->data == bodyB) {
+					removeItem = true;
+					LOG("REMOVE KEY");
+				}
+				current = current->next;
+				if (removeItem)
+				{
+					itemToRemove->data->pendingToDelete = true;
+
+					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
+					if (!obj->properties.SetProperty("Draw", 0))
+					{
+						LOG("Could not change object property");
+					}
+					app->physics->collectables.del(itemToRemove);
+				}
+			}
+			break;
 		case Collider_Type::DEATH:
-			app->player->pState = app->player->DEATH;
+			app->player->state = PlayerState::DEAD;
 			LOG("KILL ME!");
 			break;
 		case Collider_Type::WIN:
 			app->levelManagement->NextLevel();
 			LOG("I WON, GIVE ME TREAT!");
+			break;
+		case Collider_Type::GROUND:
+			app->player->onGround = true;
+			LOG("ON GROUND");
 			break;
 		default:
 			break;

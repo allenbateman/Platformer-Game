@@ -349,9 +349,9 @@ bool Map::Load(const char* filename)
 
     if(ret == true)
     {
-        // L03: TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
+        // TODO 5: LOG all the data loaded iterate all tilesets and LOG everything
 
-		// L04: TODO 4: LOG the info for each loaded layer
+		// TODO 4: LOG the info for each loaded layer
     }
 
 	//once the maps and layers are loaded, we set the physics properties
@@ -439,6 +439,9 @@ bool Map::LoadTilesetImage(pugi::xml_node& tileset_node, TileSet* set)
 {
 	bool ret = true;
 	pugi::xml_node image = tileset_node.child("image");
+	set->source = tileset_node.child("image").attribute("source").as_string();
+	set->texHeight = tileset_node.child("image").attribute("tex_height").as_int();
+	set->texWidth = tileset_node.child("image").attribute("text_width").as_int();
 
 	if (image == NULL)
 	{
@@ -641,8 +644,10 @@ bool Map::SetMapColliders()
 						SDL_Rect r = tileset->GetTileRect(gid);
 						iPoint pos;
 						pos = MapToWorld(x,y);
-						
-						app->physics->groundColliders.add(app->physics->CreateRectangle(pos.x + (tileset->tileWidth*0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody));
+						PhysBody* pb = app->physics->CreateRectangle(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody);
+						pb->color = { 0,0,0,255 };
+						pb->type = Collider_Type::GROUND;
+						app->physics->groundColliders.add(pb);
 					}
 
 				}
@@ -666,6 +671,8 @@ bool Map::SetMapColliders()
 
 						PhysBody* pb = app->physics->CreateRectangle(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody);
 						pb->color = { 255,50,50,255 };
+						pb->listener = app->levelManagement->currentScene;
+						pb->type = Collider_Type::DEATH;
 						app->physics->deathColliders.add(pb);
 					}
 
@@ -693,21 +700,33 @@ bool Map::SetMapColliders()
 			r.w = object->data->width;
 			r.h = object->data->height;
 
-			if (object->data->type == Collider_Type::GEM || object->data->type == Collider_Type::KEY)
+			if (object->data->type == Collider_Type::GEM)
 			{
-
 				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
 				pb->color = { 100,50,255,255 };
 				pb->id = object->data->id;
+				pb->type = Collider_Type::GEM;
 				app->physics->collectables.add(pb);
+
 		
 				LOG("SETTING GEM COLLIDER...");
 			
-			}else if (object->data->type == Collider_Type::WIN)
+			}
+			else if (object->data->type == Collider_Type::KEY)
+			{
+				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
+				pb->color = { 100,50,255,255 };
+				pb->id = object->data->id;
+				pb->type = Collider_Type::KEY;
+				app->physics->collectables.add(pb);
+
+			}
+			else if (object->data->type == Collider_Type::WIN)
 			{
 				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y + (r.h * 0.5f), r.w, r.h, b2_staticBody);
 				pb->color = { 0,255,0,255 };
 				pb->id = object->data->id;
+				pb->type = Collider_Type::WIN;
 				app->physics->checkPoints.add(pb);
 
 				LOG("SETTING WIN COLLIDER...");
@@ -718,6 +737,7 @@ bool Map::SetMapColliders()
 				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y + (r.h * 0.5f), r.w, r.h, b2_staticBody);
 				pb->color = { 255,0,250,255 };
 				pb->id = object->data->id;
+				pb->type = Collider_Type::SPAWNER;
 				app->physics->checkPoints.add(pb);
 
 				LOG("SETTING SPAWNER COLLIDER...");
@@ -734,10 +754,104 @@ bool Map::SetMapColliders()
 
 bool Map::LoadState(pugi::xml_node& data)
 {
-	mapData;
+	bool ret = true;
+
+	pugi::xml_node map = data.child("map_data");
+
+	mapData.height = map.attribute("height").as_int();
+	mapData.width = map.attribute("height").as_int();
+	mapData.tileHeight = map.attribute("tile_height").as_int();
+	mapData.tileWidth = map.attribute("tile_width").as_int();
+	mapData.backgroundColor.r = map.attribute("red_background").as_int();
+	mapData.backgroundColor.g = map.attribute("green_background").as_int();
+	mapData.backgroundColor.b = map.attribute("blue_background").as_int();
+	mapData.backgroundColor.a = map.attribute("alpha_background").as_int();
 
 
-	return false;
+	ListItem<TileSet*>* tileSet = mapData.tilesets.start;
+	pugi::xml_node tileSetNode = map.child("tile_set").first_child();
+
+	while (tileSet != NULL && tileSetNode != NULL)
+	{
+		tileSet->data->firstgid = tileSetNode.attribute("gid").as_int();
+
+		tileSet->data->tilecount = tileSetNode.attribute("tile_count").as_int();
+		tileSet->data->tileHeight = tileSetNode.attribute("tile_height").as_int();
+		tileSet->data->tileWidth = tileSetNode.attribute("tile_width").as_int();
+
+		tileSet->data->columns = tileSetNode.attribute("columns").as_int();
+		tileSet->data->margin = tileSetNode.attribute("margin").as_int();
+		tileSet->data->spacing = tileSetNode.attribute("spacing").as_int();
+
+		//Load textures....
+		
+		tileSet = tileSet->next;
+		tileSetNode = tileSetNode.next_sibling();
+	}
+
+
+	ListItem<ObjectLayer*>* objectLayer = mapData.objectLayers.start;
+	pugi::xml_node objectLayerNode = map.child("object_layer").first_child();
+
+	while (objectLayer != NULL && objectLayerNode != NULL)
+	{
+		//loading object layer
+		objectLayer->data->name = objectLayerNode.attribute("name").as_string();
+		objectLayer->data->height = objectLayerNode.attribute("height").as_int();
+		objectLayer->data->width = objectLayerNode.attribute("width").as_int();
+
+		ListItem<Object*>* object = objectLayer->data->objects.start;
+		pugi::xml_node objectNode = objectLayerNode.first_child();
+
+		while (object != NULL && objectNode != NULL)
+		{
+			object->data->id = objectNode.attribute("id").as_int();
+
+			object->data->type = static_cast<Collider_Type>(objectNode.attribute("type").as_int());
+
+			object->data->x = objectNode.attribute("x").as_int();
+			object->data->y = objectNode.attribute("y").as_int();
+
+			object->data->height = objectNode.attribute("height").as_int();
+			object->data->width = objectNode.attribute("width").as_int();
+
+			ListItem<Properties::Property*>* property = object->data->properties.list.start;
+			pugi::xml_node propertyNode = objectNode.first_child();
+
+			while (property != NULL && propertyNode != NULL)
+			{
+				property->data->name = propertyNode.attribute("name").as_string();
+				property->data->value = propertyNode.attribute("value").as_int();
+
+				LOG("%s, %i", property->data->name, property->data->value);
+
+				property = property->next;
+				propertyNode = propertyNode.next_sibling();
+			}
+
+			object = object->next;
+			objectNode = objectNode.next_sibling();
+		}
+
+		objectLayer = objectLayer->next;
+		objectLayerNode = objectLayerNode.next_sibling();
+	}
+
+
+	ListItem<MapLayer*>* mapLayer = mapData.layers.start;
+	pugi::xml_node mapLayerNode = map.child("map_layer").first_child();
+	
+	while (mapLayer != NULL && mapLayerNode != NULL)
+	{
+		mapLayer->data->name = mapLayerNode.attribute("name").as_string();
+		mapLayer->data->height = mapLayerNode.attribute("height").as_int();
+		mapLayer->data->width = mapLayerNode.attribute("width").as_int();
+
+		mapLayer = mapLayer->next;
+		mapLayerNode = mapLayerNode.next_sibling();
+	}
+
+	return ret;
 }
 
 bool Map::SaveState(pugi::xml_node& data) const
@@ -761,15 +875,17 @@ bool Map::SaveState(pugi::xml_node& data) const
 
 	LOG("saving tile set data...");
 	//saving tileSets data
-	map = data.append_child("map_data").append_child("tile_set");
+	pugi::xml_node tileSetsLayer = map.append_child("tile_set");
 	pugi::xml_node tileSet;
 	ListItem<TileSet*>* tileSetData = mapData.tilesets.start;
 
 	while (tileSetData != NULL)
 	{
 		
-		tileSet = map.append_child(tileSetData->data->name.GetString());
+		tileSet = tileSetsLayer.append_child(tileSetData->data->name.GetString());
+
 		tileSet.append_attribute("gid") = tileSetData->data->firstgid;
+		tileSet.append_attribute("name") = tileSetData->data->name.GetString();
 
 		tileSet.append_attribute("tile_count") = tileSetData->data->tilecount;
 		tileSet.append_attribute("tile_height") = tileSetData->data->tileHeight;
@@ -780,6 +896,7 @@ bool Map::SaveState(pugi::xml_node& data) const
 		tileSet.append_attribute("spacing") = tileSetData->data->spacing;
 
 		tileSet.append_attribute("texture") = tileSetData->data->texture;
+		tileSet.append_attribute("source") = tileSetData->data->source.GetString();
 		tileSet.append_attribute("tex_height") = tileSetData->data->texHeight;
 		tileSet.append_attribute("tex_width") = tileSetData->data->texWidth;
 
@@ -788,19 +905,22 @@ bool Map::SaveState(pugi::xml_node& data) const
 	}
 
 	LOG("saving object layer data...");
-	pugi::xml_node objectLayer;
+	pugi::xml_node objectsLayer;
+	pugi::xml_node objects;
 	ListItem<ObjectLayer*>* objectLayerData = mapData.objectLayers.start;
-	
+
+	objectsLayer = map.append_child("object_layer");
+
 	while (objectLayerData != NULL)
 	{
 
-		objectLayer = data.append_child("map_data").append_child("object_layer");
+		objects = objectsLayer.append_child(objectLayerData->data->name.GetString());
 
-		objectLayer.append_attribute("name") = objectLayerData->data->name.GetString();
-		objectLayer.append_attribute("height") = objectLayerData->data->height;
-		objectLayer.append_attribute("width") = objectLayerData->data->width;
-		objectLayer.append_attribute("texture") = objectLayerData->data->texture;
-		objectLayer.append_attribute("texture") = objectLayerData->data->data;
+		objects.append_attribute("name") = objectLayerData->data->name.GetString();
+		objects.append_attribute("height") = objectLayerData->data->height;
+		objects.append_attribute("width") = objectLayerData->data->width;
+		objects.append_attribute("texture") = objectLayerData->data->texture;
+		objects.append_attribute("texture") = objectLayerData->data->data;
 
 
 		pugi::xml_node object;
@@ -809,7 +929,7 @@ bool Map::SaveState(pugi::xml_node& data) const
 		while (objectData != NULL)
 		{
 			
-			object = objectLayer.append_child(objectData->data->name.GetString());
+			object = objects.append_child(objectData->data->name.GetString());
 
 			object.append_attribute("id") = objectData->data->id;
 
@@ -839,14 +959,15 @@ bool Map::SaveState(pugi::xml_node& data) const
 	}
 
 	LOG("saving map layer data...");
-	map = data.append_child("map_data").append_child("map_layer");
+
+	pugi::xml_node mapLayers = map.append_child("map_layer");
 	pugi::xml_node mapLayer;
 	ListItem<MapLayer*>* mapLayertData = mapData.layers.start;
 
 	while (mapLayertData != NULL) 
 	{
 
-		mapLayer = map.append_child(mapLayertData->data->name.GetString());
+		mapLayer = mapLayers.append_child(mapLayertData->data->name.GetString());
 		mapLayer.append_attribute("name") = mapLayertData->data->name.GetString();
 		mapLayer.append_attribute("height") = mapLayertData->data->height;
 		mapLayer.append_attribute("width") = mapLayertData->data->width;

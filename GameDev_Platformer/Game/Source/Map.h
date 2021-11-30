@@ -20,6 +20,7 @@ struct TileSet
 	int	tileHeight;
 
 	SDL_Texture* texture;
+	SString source;
 	int	texWidth;
 	int	texHeight;
 	int	tilecount;

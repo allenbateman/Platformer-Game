@@ -6,15 +6,18 @@
 #include "Textures.h"
 #include "Render.h"
 
-struct Player1 {
-	PhysBody* player;
-	Animation idlePlayerAnim;
-	Animation jumpingPlayerAnim;
-	Animation walkingPlayerAnim;
-	Animation deathPlayerAnim;
-	bool IsDirectionRight;
-};
 
+
+enum PlayerState
+{
+	IDLE,
+	MOVE_LEFT,
+	MOVE_RIGHT,
+	JUMP,
+	DOUBLE_JUMP,
+	ATTACK,
+	DEAD
+};
 class ModulePlayer : public Module
 {
 public:
@@ -23,12 +26,15 @@ public:
 
 	bool Awake();
 	bool Start();
+	bool PreUpdate();
 	bool Update(float dt);
+	bool PostUpdate();
 	bool CleanUp();
 	void SetPosition(fPoint pos) { position = pos; };
 	fPoint GetPosition() { return position; };
 	void Spawn(fPoint pos);
 	void Disable();
+
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
@@ -36,23 +42,16 @@ public:
 	SDL_Texture* playerTexture;
 
 public:
-	Player1* p;
 	Animation* currentAnim = nullptr;
 	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim;
-	enum State
-	{
-		IDLE,
-		WALK,
-		JUMP,
-		DEATH
-	};
-	State pState;
-	bool IsDirectionRight;
-	float maxSpeedX;
-	float minSpeedX;
+	
+	float jumpForce = 0.2f;
+	bool doubleJump = false;
+	bool onGround = false;
+	PlayerState state;
 	SDL_RendererFlip direction;
 	fPoint position;
-	fPoint speed = {1,1};
-	fPoint jumpForce = { 0,2 };
+	fPoint speed = {2,2};
+	PhysBody* physBody;
 
 };

@@ -434,6 +434,8 @@ int PhysBody::RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& no
 			normal_x = output.normal.x;
 			normal_y = output.normal.y;
 
+			app->render->DrawLine(METERS_TO_PIXELS(x1), METERS_TO_PIXELS(y1), METERS_TO_PIXELS(x2), METERS_TO_PIXELS(y2),255, 0, 0,255);
+
 			return output.fraction * dist;
 		}
 		fixture = fixture->GetNext();
@@ -452,4 +454,14 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 
 	if(physB && physB->listener != NULL)
 		physB->listener->OnCollision(physB, physA);
+}
+
+bool ModulePhysics::LoadState(pugi::xml_node& data)
+{
+	return false;
+}
+
+bool ModulePhysics::SaveState(pugi::xml_node& data) const
+{
+	return false;
 }

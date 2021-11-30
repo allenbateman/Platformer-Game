@@ -6,74 +6,69 @@
 	<audio />
 	<physics />
 	<map>
-		<map_data height="30" width="80" tile_height="16" tile_width="16" red_backgroundcolor="0" green_backgroundcolor="0" blue_backgroundcolor="0" alpha_backgroundcolor="0" />
-		<map_data>
+		<map_data height="30" width="80" tile_height="16" tile_width="16" red_backgroundcolor="0" green_backgroundcolor="0" blue_backgroundcolor="0" alpha_backgroundcolor="0">
 			<tile_set>
-				<Background1 gid="1" tile_count="1740" tile_height="16" tile_width="16" columns="60" margin="0" spacing="0" texture="true" tex_height="0" tex_width="0" />
-				<Background2 gid="1741" tile_count="1740" tile_height="16" tile_width="16" columns="60" margin="0" spacing="0" texture="true" tex_height="0" tex_width="0" />
-				<Background3 gid="3481" tile_count="1740" tile_height="16" tile_width="16" columns="60" margin="0" spacing="0" texture="true" tex_height="0" tex_width="0" />
-				<Forest1 gid="5221" tile_count="140" tile_height="16" tile_width="16" columns="20" margin="0" spacing="0" texture="true" tex_height="0" tex_width="0" />
-				<Forest_Assets_x2 gid="5361" tile_count="189" tile_height="16" tile_width="16" columns="27" margin="0" spacing="0" texture="true" tex_height="0" tex_width="0" />
-				<Forest_Background_Assets_x2 gid="5550" tile_count="104" tile_height="16" tile_width="16" columns="26" margin="16" spacing="0" texture="true" tex_height="0" tex_width="0" />
-				<gems gid="5654" tile_count="2" tile_height="16" tile_width="16" columns="2" margin="0" spacing="0" texture="true" tex_height="0" tex_width="0" />
+				<Background1 gid="1" name="Background1" tile_count="1740" tile_height="16" tile_width="16" columns="60" margin="0" spacing="0" texture="true" source="../Spritesx16/Background_layer1_x2.png" tex_height="0" tex_width="0" />
+				<Background2 gid="1741" name="Background2" tile_count="1740" tile_height="16" tile_width="16" columns="60" margin="0" spacing="0" texture="true" source="../Spritesx16/Background_layer2_x2.png" tex_height="0" tex_width="0" />
+				<Background3 gid="3481" name="Background3" tile_count="1740" tile_height="16" tile_width="16" columns="60" margin="0" spacing="0" texture="true" source="../Spritesx16/Background_layer3_x2.png" tex_height="0" tex_width="0" />
+				<Forest1 gid="5221" name="Forest1" tile_count="140" tile_height="16" tile_width="16" columns="20" margin="0" spacing="0" texture="true" source="../Spritesx16/Forest_Tileset_x2.png" tex_height="0" tex_width="0" />
+				<Forest_Assets_x2 gid="5361" name="Forest_Assets_x2" tile_count="189" tile_height="16" tile_width="16" columns="27" margin="0" spacing="0" texture="true" source="../Spritesx16/Forest_Assets_x2.png" tex_height="0" tex_width="0" />
+				<Forest_Background_Assets_x2 gid="5550" name="Forest_Background_Assets_x2" tile_count="104" tile_height="16" tile_width="16" columns="26" margin="16" spacing="0" texture="true" source="../Spritesx16/Forest_Background_Assets_x2.png" tex_height="0" tex_width="0" />
+				<Gems gid="5654" name="Gems" tile_count="2" tile_height="16" tile_width="16" columns="2" margin="0" spacing="0" texture="true" source="../Spritesx16/gems.png" tex_height="0" tex_width="0" />
 			</tile_set>
-		</map_data>
-		<map_data>
-			<object_layer name="Gems" height="0" width="0" texture="true" texture="false">
-				<Gem id="26" type="0" x="176" y="448" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="39" type="0" x="256" y="416" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="40" type="0" x="336" y="448" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="41" type="0" x="464" y="384" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="42" type="0" x="496" y="352" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="43" type="0" x="864" y="432" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="44" type="0" x="752" y="288" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="45" type="0" x="800" y="240" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="46" type="0" x="944" y="288" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="47" type="0" x="864" y="224" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="48" type="0" x="1040" y="320" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="49" type="0" x="1168" y="304" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Gem id="50" type="0" x="1216" y="256" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Gem>
-				<Key id="52" type="1" x="1232" y="416" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Key>
-				<Key id="53" type="1" x="528" y="448" height="16" width="16">
-					<Draw name="Draw" value="1" />
-				</Key>
+			<object_layer>
+				<Gems name="Gems" height="0" width="0" texture="true" texture="false">
+					<Gem id="26" type="0" x="176" y="448" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="39" type="0" x="256" y="416" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="40" type="0" x="336" y="448" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="41" type="0" x="464" y="384" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="42" type="0" x="496" y="352" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="43" type="0" x="864" y="432" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="44" type="0" x="752" y="288" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="45" type="0" x="800" y="240" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="46" type="0" x="944" y="288" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="47" type="0" x="864" y="224" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="48" type="0" x="1040" y="320" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="49" type="0" x="1168" y="304" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="50" type="0" x="1216" y="256" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Key id="52" type="1" x="1232" y="416" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Key>
+					<Key id="53" type="1" x="528" y="448" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Key>
+				</Gems>
+				<Winspot name="Winspot" height="0" width="0" texture="false" texture="false">
+					<Win id="54" type="5" x="1248" y="160" height="64" width="32" />
+					<Spawner id="55" type="3" x="32" y="400" height="16" width="16" />
+				</Winspot>
 			</object_layer>
-		</map_data>
-		<map_data>
-			<object_layer name="Winspot" height="0" width="0" texture="false" texture="false">
-				<Win id="54" type="5" x="1248" y="160" height="64" width="32" />
-				<Spawner id="55" type="3" x="32" y="400" height="16" width="16" />
-			</object_layer>
-		</map_data>
-		<map_data>
 			<map_layer>
 				<Background3 name="Background3" height="30" width="80" />
 				<Background2 name="Background2" height="30" width="80" />
@@ -95,7 +90,7 @@
 	<level2 />
 	<game_over />
 	<player>
-		<player x="1.76691711" y="8.17500114" state="0" />
+		<player x="3.20889711" y="8.81500149" state="0" />
 	</player>
 	<renderer>
 		<camera x="0" y="0" />

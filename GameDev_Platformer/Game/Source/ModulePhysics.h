@@ -25,7 +25,8 @@ enum Collider_Type {
 	SPAWNER = 3,
 	DEATH = 4,
 	WIN = 5,
-	PLAYER = 6
+	PLAYER = 6,
+	GROUND,
 };
 struct Color {
 	float r, g, b, a;
@@ -80,6 +81,12 @@ public:
 
 	// b2ContactListener ---
 	void BeginContact(b2Contact* contact) override;
+
+
+	// Load / Save
+	bool LoadState(pugi::xml_node& data);
+	bool SaveState(pugi::xml_node& data) const;
+
 
 	PhysBody* test;
 

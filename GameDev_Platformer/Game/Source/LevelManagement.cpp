@@ -16,7 +16,7 @@ LevelManagement::~LevelManagement()
 
 bool LevelManagement::Start()
 {
-	gameState = INTRO;
+	gameState = GameState::INTRO;
 	currentScene = (Module*)app->intro;
 	return true;
 }
@@ -158,7 +158,7 @@ void LevelManagement::ReturnToMainMenu()
 
 void LevelManagement::RestartLevel()
 {
-	if (app->player->DEATH)
+	if (app->player->state == PlayerState::DEAD)
 	{
 		gameState = GAME_OVER;
 
