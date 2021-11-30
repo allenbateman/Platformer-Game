@@ -36,6 +36,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void Enable();
+	void Disable();
 
 	// Load / Save
 	bool LoadState(pugi::xml_node&);
@@ -43,6 +45,8 @@ public:
 
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
+	int KeysToTake = 2;
+	//fPoint playerSpawnPos; 
 private:
 	SDL_Texture* img;
 	p2List_item<PhysBody*>* collider;

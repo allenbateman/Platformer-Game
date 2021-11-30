@@ -649,7 +649,6 @@ bool Map::SetMapColliders()
 						pb->type = Collider_Type::GROUND;
 						app->physics->groundColliders.add(pb);
 					}
-
 				}
 			}
 
@@ -700,7 +699,7 @@ bool Map::SetMapColliders()
 			r.w = object->data->width;
 			r.h = object->data->height;
 
-			if (object->data->type == Collider_Type::GEM)
+			if (object->data->type == Collider_Type::GEM && object->data->properties.GetProperty("Draw") == 1)
 			{
 				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
 				pb->color = { 100,50,255,255 };
@@ -712,7 +711,7 @@ bool Map::SetMapColliders()
 				LOG("SETTING GEM COLLIDER...");
 			
 			}
-			else if (object->data->type == Collider_Type::KEY)
+			else if (object->data->type == Collider_Type::KEY && object->data->properties.GetProperty("Draw") == 1)
 			{
 				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
 				pb->color = { 100,50,255,255 };
@@ -749,12 +748,25 @@ bool Map::SetMapColliders()
 
 		objectLayer = objectLayer->next;
 	}
+
 	return ret;
+}
+
+void Map::ClearColliders()
+{
+	app->physics->collectables.clear();
+	app->physics->groundColliders.clear();
+	app->physics->checkPoints.clear();
 }
 
 bool Map::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
+	
+	//clear all the colliders already set
+	ClearColliders();
+
+	//Load all the data of the saved 
 
 	pugi::xml_node map = data.child("map_data");
 
@@ -850,6 +862,9 @@ bool Map::LoadState(pugi::xml_node& data)
 		mapLayer = mapLayer->next;
 		mapLayerNode = mapLayerNode.next_sibling();
 	}
+
+	//now we set all map colliders 
+	SetMapColliders();
 
 	return ret;
 }

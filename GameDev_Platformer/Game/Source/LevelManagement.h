@@ -41,5 +41,6 @@ public:
 	int frameCounter = 0;
 	int delayTime = 100;
 	int levelsPassed = 0;
+
 };
 #endif // __LEVELMANAGEMENT_H__

@@ -61,11 +61,15 @@ bool ModulePlayer::Start()
 		playerTexture = app->tex->Load("Assets/Spritesx16/characters.png");
 
 
-		physBody = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, {0,250,125,255});
-		physBody->listener = app->levelManagement->currentScene;
-		physBody->type = Collider_Type::PLAYER;
-		physBody->body->SetFixedRotation(true);
-		app->physics->entities.add(physBody);
+		if (physBody == NULL)
+		{
+			position = { 20, 300 };
+			physBody = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, { 0,250,125,255 });
+			physBody->listener = app->levelManagement->currentScene;
+			physBody->type = Collider_Type::PLAYER;
+			physBody->body->SetFixedRotation(true);
+			app->physics->entities.add(physBody);
+		}
 	}
 
 
@@ -75,6 +79,7 @@ bool ModulePlayer::Start()
 // Unload assets
 bool ModulePlayer::CleanUp()
 {
+	state = IDLE;
 	delete physBody;
 	currentAnim = nullptr;
 	return true;
@@ -82,13 +87,9 @@ bool ModulePlayer::CleanUp()
 
 void ModulePlayer::Spawn(fPoint pos)
 {
-	
+	Enable();
 	SetPosition(pos);
 	state = IDLE;
-
-	Start();
-	Enable();
-
 }
 
 void ModulePlayer::Disable()
@@ -143,7 +144,7 @@ bool ModulePlayer::PreUpdate()
 		state = IDLE;
 	}
 	//Jump
-	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) && onGround)
+	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)) && onGround)
 	{
 		physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(),true);
 		doubleJump = true;
@@ -151,11 +152,12 @@ bool ModulePlayer::PreUpdate()
 		state = JUMP;
 
 
-	}
-	////DoubleJump
-	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN) && (physBody->body->GetLinearVelocity().y <= 0))
+	}else////DoubleJump
+	if ((app->input->GetKey(SDL_SCANCODE_UP || (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)) == KEY_DOWN) && doubleJump)
 	{
-		//physBody->body->ApplyLinearImpulse( b2Vec2(0,-jumpForce) , { 0, 0 }, true);
+		physBody->body->ApplyLinearImpulse( b2Vec2(0,-jumpForce) , physBody->body->GetWorldCenter(), true);
+		doubleJump = false;
+		state = DOUBLE_JUMP;
 	}
 
 	return true;

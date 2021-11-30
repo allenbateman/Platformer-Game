@@ -1,3 +1,4 @@
+
 #include "App.h"
 #include "Input.h"
 #include "Textures.h"
@@ -36,7 +37,11 @@ bool Scene1::Start()
 {
 	app->physics->Start();
 	app->map->Load("level1.tmx");
-	app->player->Spawn(fPoint(20, 300));
+	KeysToTake = 2;
+	app->player->Spawn({ 20, 300 });
+	//playerSpawnPos = { 20, 300 };
+	//app->player->Start();
+//	app->player->Spawn(playerSpawnPos);
 
 	return true;
 }
@@ -60,13 +65,14 @@ bool Scene1::Update(float dt)
 	// Draw map
 	app->map->Draw();
 
-	// L03: DONE 7: Set the window title with map/tileset info
+
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 				   app->map->mapData.width, app->map->mapData.height,
 				   app->map->mapData.tileWidth, app->map->mapData.tileHeight,
 				   app->map->mapData.tilesets.count());
 
-	app->win->SetTitle(title.GetString());
+	//
+//	app->win->SetTitle(title.GetString());
 
 	return true;
 }
@@ -85,23 +91,43 @@ bool Scene1::PostUpdate()
 // Called before quitting
 bool Scene1::CleanUp()
 {
-	LOG("Freeing scene 1");
-	app->player->Disable(); 
+	LOG("Disable scene 1");
+	app->player->Disable();
 	app->map->CleanUp();
 	app->physics->Disable();
 	
 	return true;
 }
 
-bool Scene1::LoadState(pugi::xml_node&)
+void Scene1::Enable()
+{
+	LOG("Enable scene 1");
+	Start();
+}
+
+void Scene1::Disable()
+{
+	LOG("Disable scene 1");
+	app->player->Disable();
+	app->map->CleanUp();
+	app->physics->Disable();
+}
+
+bool Scene1::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
+	pugi::xml_node level = data.child("level1");
+	KeysToTake = level.attribute("keys_to_collect").as_int();
 	return ret;
 }
 
-bool Scene1::SaveState(pugi::xml_node&) const
+bool Scene1::SaveState(pugi::xml_node& data) const
 {
 	bool ret = true;
+	pugi::xml_node level = data.append_child("level1");
+
+	level.append_attribute("keys_to_collect") = KeysToTake;
+
 	return ret;
 }
 void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
@@ -145,6 +171,7 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 				p2List_item<PhysBody*>* itemToRemove = current;
 				if (current->data == bodyB) {
 					removeItem = true;
+					KeysToTake--;
 					LOG("REMOVE KEY");
 				}
 				current = current->next;
@@ -167,11 +194,15 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 				LOG("KILL ME!");
 			break;
 		case Collider_Type::WIN:
-			app->levelManagement->NextLevel();
-			LOG("I WON, GIVE ME TREAT!");
+			if (KeysToTake == 0)
+			{
+				app->levelManagement->NextLevel();
+				LOG("I WON, GIVE ME TREAT!");
+			}
 			break;
 		case Collider_Type::GROUND:
 			app->player->onGround = true;
+			app->player->doubleJump= false;
 			LOG("ON GROUND");
 			break;
 		default:
@@ -216,6 +247,7 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 				p2List_item<PhysBody*>* itemToRemove = current;
 				if (current->data == bodyB) {
 					removeItem = true;
+					KeysToTake--;
 					LOG("REMOVE KEY");
 				}
 				current = current->next;
@@ -237,11 +269,16 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			LOG("KILL ME!");
 			break;
 		case Collider_Type::WIN:
-			app->levelManagement->NextLevel();
-			LOG("I WON, GIVE ME TREAT!");
+			if (KeysToTake == 0)
+			{
+				app->levelManagement->NextLevel();
+				LOG("I WON, GIVE ME TREAT!");
+			}
+
 			break;
 		case Collider_Type::GROUND:
 			app->player->onGround = true;
+			app->player->doubleJump = false;
 			LOG("ON GROUND");
 			break;
 		default:

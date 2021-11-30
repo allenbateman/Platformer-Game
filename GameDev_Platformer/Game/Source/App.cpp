@@ -14,6 +14,7 @@
 #include "Map.h"
 #include "ModulePhysics.h"
 #include "Player.h"
+#include "Pathfinding.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -34,6 +35,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	levelManagement = new LevelManagement(true);
 	physics = new ModulePhysics(true);
 	map = new Map(true);
+	pathfinding = new PathFinding(true);
 	fade = new FadeToBlack(true);
 	intro = new Intro(true);
 	start = new StartMenu(false);
@@ -58,9 +60,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene2);
 	AddModule(gameOver);
 	AddModule(player);
+	AddModule(pathfinding);
 
 	// Render last to swap buffer
 	AddModule(render);
+
+
+//	ptimer = new PerfTimer();
+//	frameDuration = new PerfTimer();
 }
 
 // Destructor
@@ -113,10 +120,6 @@ bool App::Awake()
 
 		while ((item != NULL) && (ret == true))
 		{
-			// L01: DONE 5: Add a new argument to the Awake method to receive a pointer to an xml node.
-			// If the section with the module name exists in config.xml, fill the pointer with the valid xml_node
-			// that can be used to read all variables for that module.
-			// Send nullptr if the node does not exist in config.xml
 			ret = item->data->Awake(config.child(item->data->name.GetString()));
 			item = item->next;
 		}
@@ -129,6 +132,10 @@ bool App::Awake()
 bool App::Start()
 {
 	bool ret = true;
+
+	startupTime.Start();
+	lastSecFrameTime.Start();
+
 	ListItem<Module*>* item;
 	item = modules.start;
 
@@ -137,6 +144,8 @@ bool App::Start()
 		ret = item->data->Start();
 		item = item->next;
 	}
+
+
 
 	return ret;
 }
@@ -174,12 +183,18 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 	if (result == NULL) LOG("Could not load xml file: %s. pugi error: %s", CONFIG_FILENAME, result.description());
 	else ret = configFile.child("config");
 
+
+
 	return ret;
 }
 
 // ---------------------------------------------
 void App::PrepareUpdate()
 {
+	frameCount++;
+	lastSecFrameCount++;
+	dt = frameDuration.ReadMs();
+	frameDuration.Start();
 }
 
 // ---------------------------------------------
@@ -188,6 +203,42 @@ void App::FinishUpdate()
 	// L02: DONE 1: This is a good place to call Load / Save methods
 	if (loadGameRequested == true) LoadGame();
 	if (saveGameRequested == true) SaveGame();
+
+	float secondsSinceStartup = startupTime.ReadSec();
+
+	if (lastSecFrameTime.Read() > 1000) {
+		lastSecFrameTime.Start();
+		framesPerSecond = lastSecFrameCount;
+		lastSecFrameCount = 0;
+		averageFps = (averageFps + framesPerSecond) / 2;
+	}
+
+
+
+	static char title[256];
+	sprintf_s(title, 256, "Av.FPS: %.2f FPS: %i Delta Time: %.3f Time since startup: %.3f Frame Count: %I64u ",
+		averageFps, framesPerSecond, dt, secondsSinceStartup, frameCount);
+
+	if (input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+		FPSCapTo30 = !FPSCapTo30;
+
+	if (FPSCapTo30)
+		maxFrameRate = 30;
+	else
+		maxFrameRate = 60;
+
+
+	float delay =  float(1000 / maxFrameRate) - frameDuration.ReadMs();
+
+	LOG("F: %f Delay:%f", frameDuration.ReadMs(), delay);
+
+
+	PerfTimer* delayt = new PerfTimer();
+	delayt->Start();
+	if (maxFrameRate > 0 && delay > 0) SDL_Delay(delay);
+	LOG("Expected %f milliseconds and the real delay is % f", delay, delayt->ReadMs());
+
+	app->win->SetTitle(title);
 }
 
 // Call modules before each loop iteration
@@ -216,6 +267,7 @@ bool App::PreUpdate()
 bool App::DoUpdate()
 {
 	bool ret = true;
+	PERF_START(ptimer);
 	ListItem<Module*>* item;
 	item = modules.start;
 	Module* pModule = NULL;
@@ -230,7 +282,7 @@ bool App::DoUpdate()
 
 		ret = item->data->Update(dt);
 	}
-
+	PERF_PEEK(ptimer);
 	return ret;
 }
 

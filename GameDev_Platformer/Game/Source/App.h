@@ -3,7 +3,8 @@
 
 #include "Module.h"
 #include "List.h"
-
+#include "PerfTimer.h"
+#include "Timer.h"
 #include "PugiXml/src/pugixml.hpp"
 
 #define CONFIG_FILENAME		"config.xml"
@@ -25,6 +26,7 @@ class GameOver;
 class Map;
 class ModulePhysics;
 class ModulePlayer;
+class PathFinding;
 
 class App
 {
@@ -82,6 +84,7 @@ private:
 	// Call modules after each loop iteration
 	bool PostUpdate();
 
+
 	// Load / Save
 	bool LoadGame();
 	bool SaveGame() const;
@@ -104,6 +107,9 @@ public:
 	Map* map;
 	ModulePhysics* physics;
 	ModulePlayer* player;
+	PathFinding* pathfinding;
+	
+	float dt;
 
 private:
 
@@ -115,10 +121,25 @@ private:
 	List<Module *> modules;
 
 	uint frames;
-	float dt;
+	
 
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
+
+	PerfTimer ptimer;
+	PerfTimer frameDuration;
+
+	Timer startupTime;
+	Timer frameTime;
+	Timer lastSecFrameTime;
+
+	uint64 frameCount = 0;
+	uint32 framesPerSecond = 0;
+	uint32 lastSecFrameCount = 0;
+	bool FPSCapTo30 = true;
+	float averageFps = 0.0f;
+
+	uint32 maxFrameRate =0;
 };
 
 extern App* app;

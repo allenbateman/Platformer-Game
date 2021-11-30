@@ -55,7 +55,8 @@ bool ModulePhysics::Start()
 // 
 bool ModulePhysics::PreUpdate()
 {
-	world->Step(1.0f / 60.0f, 6, 2);
+	world->Step(app->dt/1000, 6, 2);//add delta time
+
 	static bool temp = false;
 
 	p2List_item<PhysBody*>* current = allPhysicBodies.getFirst();
@@ -82,7 +83,7 @@ bool ModulePhysics::PreUpdate()
 		if (!allPhysicBodies.find(pb->data))
 		{
 			allPhysicBodies.add(pb->data);
-			LOG("Adding new collectable");
+			LOG("Adding new collectable collider");
 		}
 	}
 	for(p2List_item<PhysBody*>* pb = groundColliders.getFirst(); pb; pb = pb->next)
@@ -118,6 +119,11 @@ bool ModulePhysics::PreUpdate()
 		}
 	}
 
+	return true;
+}
+
+bool ModulePhysics::Update(float dt)
+{
 	return true;
 }
 
@@ -365,19 +371,52 @@ void ModulePhysics::Disable()
 }
 
 
+
+
 // Called before quitting
 bool ModulePhysics::CleanUp()
 {
+	LOG("Clean up Phiscis Module ");
+	//p2List_item<PhysBody*>* current = allPhysicBodies.getFirst();
+	//int counter = allPhysicBodies.count();
+	//while (current != NULL)
+	//{
+	//	bool removeItem = false;
+	//	current->data->pendingToDelete = true;
+	//	p2List_item<PhysBody*>* itemToRemove = current;
+	//	if (itemToRemove->data->pendingToDelete) {
+	//		removeItem = true;
+	//	}
+	//	current = current->next;
+	//	if (removeItem && itemToRemove->data->body != NULL)
+	//	{
+	//		LOG("Removing item %i ",counter);
+	//		if (itemToRemove->data->body != nullptr)
+	//		{
+	//			RemoveBodyFromWorld(itemToRemove->data->body);
+	//			allPhysicBodies.del(itemToRemove);
+	//			counter--;
+	//		}
+	//	}
+	//}
+	//p2List_item<PhysBody*>* current = allPhysicBodies.getFirst();
+	//
+	//while (current != NULL)
+	//{
+	//	current->data->pendingToDelete = true;
 
+	//	current = current->next;
+	//}
 	// Delete the whole physics world!
-	delete world;
+	if(world!=NULL)
+		delete world;
 
 	return true;
 }
 
 void ModulePhysics::RemoveBodyFromWorld(b2Body *body)
 {
-	world->DestroyBody(body);
+	 world->DestroyBody(body);
 }
 
 void PhysBody::GetPosition(int& x, int& y) const

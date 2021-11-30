@@ -165,6 +165,7 @@ public:
 	Object* GetObjectById(int _id);
 
 	bool SetMapColliders();
+	void ClearColliders();
 
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);

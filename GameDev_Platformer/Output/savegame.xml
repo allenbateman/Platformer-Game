@@ -19,22 +19,22 @@
 			<object_layer>
 				<Gems name="Gems" height="0" width="0" texture="true" texture="false">
 					<Gem id="26" type="0" x="176" y="448" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="39" type="0" x="256" y="416" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="40" type="0" x="336" y="448" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="41" type="0" x="464" y="384" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="42" type="0" x="496" y="352" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="43" type="0" x="864" y="432" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="44" type="0" x="752" y="288" height="16" width="16">
 						<Draw name="Draw" value="1" />
@@ -43,13 +43,13 @@
 						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="46" type="0" x="944" y="288" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="47" type="0" x="864" y="224" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="48" type="0" x="1040" y="320" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="49" type="0" x="1168" y="304" height="16" width="16">
 						<Draw name="Draw" value="1" />
@@ -61,7 +61,7 @@
 						<Draw name="Draw" value="1" />
 					</Key>
 					<Key id="53" type="1" x="528" y="448" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Key>
 				</Gems>
 				<Winspot name="Winspot" height="0" width="0" texture="false" texture="false">
@@ -86,11 +86,13 @@
 	<:anonymous />
 	<scene />
 	<start_menu />
-	<level1 />
+	<level1>
+		<level1 keys_to_collect="1" />
+	</level1>
 	<level2 />
 	<game_over />
 	<player>
-		<player x="3.20889711" y="8.81500149" state="0" />
+		<player x="15.2373495" y="8.81314278" state="0" />
 	</player>
 	<renderer>
 		<camera x="0" y="0" />

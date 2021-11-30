@@ -66,6 +66,7 @@ public:
 	bool Awake();
 	bool Start();
 	bool PreUpdate();
+	bool Update(float dt);
 	bool PostUpdate();
 	void Disable();
 	bool CleanUp();
