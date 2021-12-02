@@ -5,24 +5,13 @@
 #include "Animation.h"
 #include "Textures.h"
 #include "Render.h"
+#include "Pathfinding.h"
 
-
-
-enum PlayerState
-{
-	IDLE,
-	MOVE_LEFT,
-	MOVE_RIGHT,
-	JUMP,
-	DOUBLE_JUMP,
-	ATTACK,
-	DEAD
-};
-class ModulePlayer : public Module
+class Musher : public Module
 {
 public:
-	ModulePlayer(bool isActive);
-	virtual ~ModulePlayer();
+	Musher(bool isActive);
+	virtual ~Musher();
 
 	bool Awake();
 	bool Start();
@@ -33,31 +22,24 @@ public:
 	void SetPosition(fPoint pos) { position = pos; };
 	fPoint GetPosition() { return position; };
 	void Spawn(fPoint pos);
-	void Disable();
-
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
 
-	SDL_Texture* playerTexture;
+	SDL_Texture* texture;
 
 public:
 	Animation* currentAnim = nullptr;
-	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim;
-	
+	Animation idleAnim, walkingAnim, jumpingAnim, deathAnim;
+
 	float jumpForce = 0.2f;
 	bool doubleJump = false;
 	bool onGround = false;
-	bool onAir = false;
-	PlayerState state;
 	SDL_RendererFlip direction;
 	fPoint position;
-	fPoint speed = {2,2};
+	fPoint speed = { 2,2 };
 	PhysBody* physBody;
-	PhysBody* leftSensor;
-	PhysBody* rightSensor;
-	PhysBody* botSensor;
-	PhysBody* topSensor;
-	
+
+	PathFinding* pathfinding;
 
 };

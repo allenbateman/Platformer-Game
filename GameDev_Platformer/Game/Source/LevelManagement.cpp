@@ -74,7 +74,7 @@ bool LevelManagement::Update(float dt)
 		break;
 	case START:
 		if (currentScene != (Module*)app->start) {
-			if (app->fade->Fade(currentScene, (Module*)app->intro, 45))
+			if (app->fade->Fade(currentScene, (Module*)app->intro, 30))
 			{
 				currentScene = (Module*)app->start;
 				currentScene->active = true;
@@ -85,7 +85,7 @@ bool LevelManagement::Update(float dt)
 	case SCENE1:
 		if (currentScene != (Module*)app->scene1) {
 
-			if (app->fade->Fade(currentScene, (Module*)app->scene1, 45))
+			if (app->fade->Fade(currentScene, (Module*)app->scene1, 30))
 			{
 				currentScene = (Module*)app->scene1;
 				currentScene->Start();
@@ -100,7 +100,7 @@ bool LevelManagement::Update(float dt)
 		{
 			//Load level
 
-			if (app->fade->Fade(currentScene, (Module*)app->scene2, 45))
+			if (app->fade->Fade(currentScene, (Module*)app->scene2, 30))
 			{
 				currentScene = (Module*)app->scene2;
 				currentScene->active = true;
@@ -112,7 +112,7 @@ bool LevelManagement::Update(float dt)
 
 		if (currentScene != (Module*)app->gameOver) {
 			//Load game over
-			if (app->fade->Fade(currentScene, (Module*)app->gameOver, 45))
+			if (app->fade->Fade(currentScene, (Module*)app->gameOver, 30))
 			{
 				currentScene = (Module*)app->gameOver;
 				currentScene->active = true;

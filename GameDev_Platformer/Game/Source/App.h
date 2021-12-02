@@ -27,6 +27,7 @@ class Map;
 class ModulePhysics;
 class ModulePlayer;
 class PathFinding;
+class Musher;
 
 class App
 {
@@ -108,6 +109,7 @@ public:
 	ModulePhysics* physics;
 	ModulePlayer* player;
 	PathFinding* pathfinding;
+	Musher* musher;
 	
 	float dt;
 

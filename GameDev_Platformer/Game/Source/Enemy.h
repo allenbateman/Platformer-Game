@@ -5,24 +5,14 @@
 #include "Animation.h"
 #include "Textures.h"
 #include "Render.h"
-
-
-
-enum PlayerState
+#include "Pathfinding.h"
+class Enemy :
+    public Module
 {
-	IDLE,
-	MOVE_LEFT,
-	MOVE_RIGHT,
-	JUMP,
-	DOUBLE_JUMP,
-	ATTACK,
-	DEAD
-};
-class ModulePlayer : public Module
-{
+
 public:
-	ModulePlayer(bool isActive);
-	virtual ~ModulePlayer();
+	Enemy(bool isActive);
+	virtual ~Enemy();
 
 	bool Awake();
 	bool Start();
@@ -43,21 +33,16 @@ public:
 
 public:
 	Animation* currentAnim = nullptr;
-	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim;
-	
+	Animation idleAnim, walkingAnim, jumpingAnim, deathAnim;
+
 	float jumpForce = 0.2f;
 	bool doubleJump = false;
 	bool onGround = false;
-	bool onAir = false;
-	PlayerState state;
 	SDL_RendererFlip direction;
 	fPoint position;
-	fPoint speed = {2,2};
+	fPoint speed = { 2,2 };
 	PhysBody* physBody;
-	PhysBody* leftSensor;
-	PhysBody* rightSensor;
-	PhysBody* botSensor;
-	PhysBody* topSensor;
-	
 
+	PathFinding* pathfinding;
 };
+

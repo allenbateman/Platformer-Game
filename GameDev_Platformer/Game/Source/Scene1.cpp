@@ -10,6 +10,7 @@
 #include "ModulePhysics.h"
 #include "LevelManagement.h"
 #include "player.h"
+#include "Musher.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -36,12 +37,18 @@ bool Scene1::Awake()
 bool Scene1::Start()
 {
 	app->physics->Start();
-	app->map->Load("level1.tmx");
+	if (app->map->Load("level1.tmx"))
+	{
+		int w, h;
+		uchar* data = NULL;
+
+		if (app->map->CreateWalkabilityMap(w, h, &data)) app->pathfinding->SetMap(w, h, data);
+
+		RELEASE_ARRAY(data);
+	}
 	KeysToTake = 2;
 	app->player->Spawn({ 20, 300 });
-	//playerSpawnPos = { 20, 300 };
-	//app->player->Start();
-//	app->player->Spawn(playerSpawnPos);
+	app->musher->Spawn({20, 300});
 
 	return true;
 }

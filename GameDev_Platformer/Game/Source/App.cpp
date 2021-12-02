@@ -15,6 +15,7 @@
 #include "ModulePhysics.h"
 #include "Player.h"
 #include "Pathfinding.h"
+#include "Musher.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -43,6 +44,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene2 = new Scene2(false);
 	gameOver = new GameOver(false);
 	player = new ModulePlayer(false);
+	musher = new Musher(false);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -61,13 +63,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gameOver);
 	AddModule(player);
 	AddModule(pathfinding);
+	AddModule(musher);
 
 	// Render last to swap buffer
 	AddModule(render);
 
-
-//	ptimer = new PerfTimer();
-//	frameDuration = new PerfTimer();
 }
 
 // Destructor
@@ -230,13 +230,13 @@ void App::FinishUpdate()
 
 	float delay =  float(1000 / maxFrameRate) - frameDuration.ReadMs();
 
-	LOG("F: %f Delay:%f", frameDuration.ReadMs(), delay);
+//	LOG("F: %f Delay:%f", frameDuration.ReadMs(), delay);
 
 
 	PerfTimer* delayt = new PerfTimer();
 	delayt->Start();
 	if (maxFrameRate > 0 && delay > 0) SDL_Delay(delay);
-	LOG("Expected %f milliseconds and the real delay is % f", delay, delayt->ReadMs());
+//	LOG("Expected %f milliseconds and the real delay is % f", delay, delayt->ReadMs());
 
 	app->win->SetTitle(title);
 }
@@ -282,7 +282,7 @@ bool App::DoUpdate()
 
 		ret = item->data->Update(dt);
 	}
-	PERF_PEEK(ptimer);
+	//PERF_PEEK(ptimer);
 	return ret;
 }
 

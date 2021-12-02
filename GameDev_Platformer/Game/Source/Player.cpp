@@ -31,13 +31,14 @@ bool ModulePlayer::Start()
 	{
 		
 
+		playerTexture = app->tex->Load("Assets/Spritesx16/characters.png");
 		//Idle anim
 		idlePlayerAnim.PushBack({ 262, 43, 16, 21 });
 		idlePlayerAnim.PushBack({ 294, 43, 16, 21 });
 		idlePlayerAnim.PushBack({ 327, 43, 16, 21 });
 		idlePlayerAnim.loop = false;
 		idlePlayerAnim.mustFlip = true;
-		idlePlayerAnim.speed = 0.02f;
+		idlePlayerAnim.speed = 0.2f;
 		//Walking anim
 		walkingPlayerAnim.PushBack({ 390, 43, 16, 21 });
 		walkingPlayerAnim.PushBack({ 454, 43, 16, 21 });
@@ -48,8 +49,8 @@ bool ModulePlayer::Start()
 		jumpingPlayerAnim.PushBack({ 390, 43, 16, 21 });
 		jumpingPlayerAnim.PushBack({ 422, 43, 16, 21 });
 		jumpingPlayerAnim.PushBack({ 454, 43, 16, 21 });
-		jumpingPlayerAnim.PushBack({ 486, 43, 16, 21 });
-		jumpingPlayerAnim.loop = true;
+		jumpingPlayerAnim.PushBack({ 486, 47, 16, 16 });
+		jumpingPlayerAnim.loop = false;
 		walkingPlayerAnim.mustFlip = true;
 		jumpingPlayerAnim.speed = 0.1f;
 		//Death anim
@@ -58,8 +59,8 @@ bool ModulePlayer::Start()
 		deathPlayerAnim.mustFlip = true;
 		deathPlayerAnim.speed = 1.0f;
 
-		playerTexture = app->tex->Load("Assets/Spritesx16/characters.png");
-
+		currentAnim = &idlePlayerAnim;
+		state = IDLE;
 
 		if (physBody == NULL)
 		{
@@ -69,6 +70,18 @@ bool ModulePlayer::Start()
 			physBody->type = Collider_Type::PLAYER;
 			physBody->body->SetFixedRotation(true);
 			app->physics->entities.add(physBody);
+
+
+			//sensors
+			leftSensor = app->physics->CreateRectangleSensor(position.x-7, position.y-5,7,10, b2_kinematicBody, { 255,165,0,255 });
+			rightSensor = app->physics->CreateRectangleSensor(position.x, position.y-5,7,10, b2_kinematicBody, { 255,165,0,255 });
+			topSensor = app->physics->CreateRectangleSensor(position.x-7, position.y,7,5, b2_kinematicBody, { 255,165,0,255 });
+			botSensor = app->physics->CreateRectangleSensor(position.x-7, position.y+5,7,5, b2_kinematicBody, { 255,165,0,255 });
+			app->physics->entities.add(leftSensor);
+			app->physics->entities.add(rightSensor);
+			app->physics->entities.add(topSensor);
+			app->physics->entities.add(botSensor);
+
 		}
 	}
 
@@ -139,7 +152,7 @@ bool ModulePlayer::PreUpdate()
 		state = MOVE_LEFT;
 
 	}
-	else {
+	else if(onGround){
 		physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
 		state = IDLE;
 	}
@@ -171,6 +184,12 @@ bool ModulePlayer::Update(float dt)
 	b2Vec2 vel = physBody->body->GetLinearVelocity();
 	float desiredVel = 0;
 
+	b2Vec2 pos;
+	pos.x = leftSensor->body->GetPosition().x + position.x;
+	pos.y = leftSensor->body->GetPosition().y + position.x;
+	leftSensor->body->SetTransform(pos, physBody->body->GetAngle());
+
+
 	switch (state)
 	{
 	case IDLE:
@@ -197,6 +216,7 @@ bool ModulePlayer::Update(float dt)
 	case ATTACK:
 		break;
 	}
+	currentAnim->Update();
 	return ret;
 }
 
