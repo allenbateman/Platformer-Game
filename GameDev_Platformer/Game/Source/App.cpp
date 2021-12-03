@@ -14,7 +14,6 @@
 #include "Map.h"
 #include "ModulePhysics.h"
 #include "Player.h"
-#include "Pathfinding.h"
 #include "Musher.h"
 
 #include "Defs.h"
@@ -36,7 +35,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	levelManagement = new LevelManagement(true);
 	physics = new ModulePhysics(true);
 	map = new Map(true);
-	pathfinding = new PathFinding(true);
 	fade = new FadeToBlack(true);
 	intro = new Intro(true);
 	start = new StartMenu(false);
@@ -62,7 +60,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene2);
 	AddModule(gameOver);
 	AddModule(player);
-	AddModule(pathfinding);
 	AddModule(musher);
 
 	// Render last to swap buffer

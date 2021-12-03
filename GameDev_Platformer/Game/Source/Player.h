@@ -45,14 +45,14 @@ public:
 	Animation* currentAnim = nullptr;
 	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim;
 	
-	float jumpForce = 0.2f;
+	float jumpForce = 5;
 	bool doubleJump = false;
 	bool onGround = false;
 	bool onAir = false;
 	PlayerState state;
 	SDL_RendererFlip direction;
 	fPoint position;
-	fPoint speed = {2,2};
+	fPoint speed = {5,5};
 	PhysBody* physBody;
 	PhysBody* leftSensor;
 	PhysBody* rightSensor;

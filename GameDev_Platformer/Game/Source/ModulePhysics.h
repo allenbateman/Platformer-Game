@@ -4,10 +4,13 @@
 #include "Box2D/Box2D/Box2D.h"
 
 #define GRAVITY_X 0.0f
-#define GRAVITY_Y -5.0f
+#define GRAVITY_Y -10.0f
 
-#define PIXELS_PER_METER 50.0f // if touched change METER_PER_PIXEL too
-#define METER_PER_PIXEL 0.02f // this is 1 / PIXELS_PER_METER !
+//#define PIXELS_PER_METER 50.0f // if touched change METER_PER_PIXEL too
+//#define METER_PER_PIXEL 0.02f // this is 1 / PIXELS_PER_METER !
+
+#define PIXELS_PER_METER 16.0f // if touched change METER_PER_PIXEL too
+#define METER_PER_PIXEL 0.0625f // this is 1 / PIXELS_PER_METER !
 
 #define RAD_PER_DEG ((float)180/b2_pi)
 #define DEG_PER_RAD ((float)b2_pi/180)

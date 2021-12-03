@@ -1,6 +1,6 @@
 #include "App.h"
 #include "PathFinding.h"
-
+#include "Render.h"
 #include "Defs.h"
 #include "Log.h"
 
@@ -60,6 +60,24 @@ uchar PathFinding::GetTileAt(const iPoint& pos) const
 	return INVALID_WALK_CODE;
 }
 
+void PathFinding::DrawPath()
+{
+
+	//const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
+	//SDL_Rect rect;
+	//
+
+	//for (uint i = 0; i < path->Count(); ++i)
+	//{
+	//	iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+	//	rect.x = pos.x;
+	//	rect.y = pos.y;
+	//	rect.w = 16;
+	//	rect.h = 16;
+	//	app->render->DrawRectangle(rect,255,125,0,150);
+	//}
+}
+
 // To request all tiles involved in the last generated path
 const DynArray<iPoint>* PathFinding::GetLastPath() const
 {
@@ -117,29 +135,29 @@ PathNode::PathNode(const PathNode& node) : g(node.g), h(node.h), pos(node.pos), 
 // PathNode -------------------------------------------------------------------------
 // Fills a list (PathList) of all valid adjacent pathnodes
 // ----------------------------------------------------------------------------------
-uint PathNode::FindWalkableAdjacents(PathList& listToFill) const
+uint PathNode::FindWalkableAdjacents(PathList& listToFill, PathFinding* path) const
 {
 	iPoint cell;
 	uint before = listToFill.list.count();
 
 	// north
 	cell.Create(pos.x, pos.y + 1);
-	if(app->pathfinding->IsWalkable(cell))
+	if(path->IsWalkable(cell))
 		listToFill.list.add(PathNode(-1, -1, cell, this));
 
 	// south
 	cell.Create(pos.x, pos.y - 1);
-	if(app->pathfinding->IsWalkable(cell))
+	if(path->IsWalkable(cell))
 		listToFill.list.add(PathNode(-1, -1, cell, this));
 
 	// east
 	cell.Create(pos.x + 1, pos.y);
-	if(app->pathfinding->IsWalkable(cell))
+	if(path->IsWalkable(cell))
 		listToFill.list.add(PathNode(-1, -1, cell, this));
 
 	// west
 	cell.Create(pos.x - 1, pos.y);
-	if(app->pathfinding->IsWalkable(cell))
+	if(path->IsWalkable(cell))
 		listToFill.list.add(PathNode(-1, -1, cell, this));
 
 	return listToFill.list.count();
@@ -176,10 +194,10 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	PathList close;
 	PathList adjacents;
 
-	PathNode nodeStart(0,0,origin,nullptr);
+	PathNode nodeStart(0, 0, origin, nullptr);
+
 	open.list.add(nodeStart);
 
-	// L12b: TODO 3: Move the lowest score cell from open list to the closed list
 	ListItem<PathNode>* current = open.list.start;
 	ListItem<PathNode>* lowest;
 	lastPath.Clear();
@@ -189,7 +207,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 		{
 
 			lowest = open.GetNodeLowestScore();
-			current =close.list.add(lowest->data);
+			current = close.list.add(lowest->data);
 			open.list.del(lowest);
 
 			if (current->data.pos == destination)
@@ -208,7 +226,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 				break;
 			}
 
-			current->data.FindWalkableAdjacents(adjacents);
+			current->data.FindWalkableAdjacents(adjacents, this);
 
 			ListItem<PathNode>* adj = adjacents.list.start;
 			while (adj != NULL)

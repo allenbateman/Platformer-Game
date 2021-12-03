@@ -2,7 +2,6 @@
 #define __PATHFINDING_H__
 
 #include "Module.h"
-
 #include "Point.h"
 #include "DynArray.h"
 #include "List.h"
@@ -45,6 +44,9 @@ public:
 
 	// Utility: return the walkability value of a tile
 	uchar GetTileAt(const iPoint& pos) const;
+	
+	// draw
+	void DrawPath();
 
 private:
 
@@ -71,6 +73,7 @@ struct PathNode
 	int h;// distance
 	iPoint pos;
 	const PathNode* parent; // needed to reconstruct the path in the end
+	//PathFinding pathEntity; // current PathFinding
 
 	// Convenient constructors
 	PathNode();
@@ -78,7 +81,7 @@ struct PathNode
 	PathNode(const PathNode& node);
 
 	// Fills a list (PathList) of all valid adjacent pathnodes
-	uint FindWalkableAdjacents(PathList& list_to_fill) const;
+	uint FindWalkableAdjacents(PathList& list_to_fill,PathFinding* path) const;
 	// Calculates this tile score
 	int Score() const;
 	// Calculate the F for a specific destination tile

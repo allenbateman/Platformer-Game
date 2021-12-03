@@ -157,7 +157,7 @@ bool ModulePlayer::PreUpdate()
 		state = IDLE;
 	}
 	//Jump
-	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)) && onGround)
+	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && onGround)
 	{
 		physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(),true);
 		doubleJump = true;
@@ -166,7 +166,7 @@ bool ModulePlayer::PreUpdate()
 
 
 	}else////DoubleJump
-	if ((app->input->GetKey(SDL_SCANCODE_UP || (app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)) == KEY_DOWN) && doubleJump)
+	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && doubleJump)
 	{
 		physBody->body->ApplyLinearImpulse( b2Vec2(0,-jumpForce) , physBody->body->GetWorldCenter(), true);
 		doubleJump = false;

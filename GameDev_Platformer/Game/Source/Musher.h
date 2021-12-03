@@ -26,6 +26,9 @@ public:
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
 
+	void UpdatePath();
+	void Move();
+
 	SDL_Texture* texture;
 
 public:

@@ -1,7 +1,9 @@
 #include "Musher.h"
 #include "Globals.h"
 #include "App.h"
+#include "Map.h"
 #include "Input.h"
+#include "Player.h"
 #include "ModulePhysics.h"
 #include "LevelManagement.h"
 #include "Render.h"
@@ -48,7 +50,7 @@ bool Musher::Start()
 
 	currentAnim = &idleAnim;
 
-	position = { 20, 300 };
+	position = { 350, 300 };
 	physBody = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, { 0,250,125,255 });
 	physBody->listener = app->levelManagement->currentScene;
 	physBody->color = {255,125,0,255};
@@ -56,8 +58,15 @@ bool Musher::Start()
 	physBody->body->SetFixedRotation(true);
 	app->physics->entities.add(physBody);
 
+
+
+	//make the path 
 	pathfinding = new PathFinding(true);
-	pathfinding->CreatePath({(int) position.x,(int)position.y }, { 400,301 });
+
+	int w, h;
+	uchar* data = NULL;
+	if (app->map->CreateWalkabilityMap(w, h, &data)) pathfinding->SetMap(w, h, data);
+	RELEASE_ARRAY(data);
 
 	LOG("MUSER START");
 	return true;
@@ -65,6 +74,9 @@ bool Musher::Start()
 
 bool Musher::PreUpdate()
 {
+	position.x = physBody->body->GetPosition().x;
+	position.y = physBody->body->GetPosition().x;
+	UpdatePath();
 	return true;
 }
 
@@ -76,6 +88,22 @@ bool Musher::Update(float dt)
 
 bool Musher::PostUpdate()
 {
+
+	const DynArray<iPoint>* path = pathfinding->GetLastPath();
+	SDL_Rect rect;
+
+
+	for (uint i = 0; i < path->Count(); ++i)
+	{
+		
+		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+		rect.x = (pos.x);
+		rect.y = (pos.y);
+		rect.w = (16);
+		rect.h = (16);
+		app->render->DrawRectangle(rect,255,125,0,150);
+	}
+
 	currentAnim->Update();
 	if(texture!=nullptr)
 	app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x-14), METERS_TO_PIXELS(physBody->body->GetPosition().y-14),
@@ -102,4 +130,29 @@ bool Musher::LoadState(pugi::xml_node& data)
 bool Musher::SaveState(pugi::xml_node& data) const
 {
 	return true;
+}
+
+void Musher::UpdatePath()
+{
+	iPoint origin, destination;
+	origin.x = (int)position.x;
+	origin.y = (int)position.y;
+	destination.x = (int)app->player->GetPosition().x;
+	destination.y = (int)app->player->GetPosition().y;
+
+	//convert meters to pixels
+	destination.x = METERS_TO_PIXELS(destination.x);
+	destination.y = METERS_TO_PIXELS(destination.y);
+	origin.x = METERS_TO_PIXELS(origin.x);
+	origin.y = METERS_TO_PIXELS(origin.y);
+
+	//convert Pixels to Tiles
+	destination = app->map->WorldToMap(destination.x, destination.y);
+	origin = app->map->WorldToMap((int)origin.x, (int)origin.y);
+
+	pathfinding->CreatePath(origin, destination);
+}
+
+void Musher::Move()
+{
 }
