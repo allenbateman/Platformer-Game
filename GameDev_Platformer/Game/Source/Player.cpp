@@ -84,8 +84,6 @@ bool ModulePlayer::Start()
 
 		}
 	}
-
-
 	return true;
 }
 

@@ -50,7 +50,7 @@ bool Musher::Start()
 
 	currentAnim = &idleAnim;
 
-	position = { 350, 300 };
+	position = { 370, 300 };
 	physBody = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, { 0,250,125,255 });
 	physBody->listener = app->levelManagement->currentScene;
 	physBody->color = {255,125,0,255};
@@ -58,7 +58,7 @@ bool Musher::Start()
 	physBody->body->SetFixedRotation(true);
 	app->physics->entities.add(physBody);
 
-
+	state = MOVE_TOWARDS;
 
 	//make the path 
 	pathfinding = new PathFinding(true);
@@ -75,13 +75,75 @@ bool Musher::Start()
 bool Musher::PreUpdate()
 {
 	position.x = physBody->body->GetPosition().x;
-	position.y = physBody->body->GetPosition().x;
-	UpdatePath();
+	position.y = physBody->body->GetPosition().y;
+
+	origin.x = (int)position.x;
+	origin.y = (int)position.y;
+
+	//convert meters to pixels
+	destination.x = METERS_TO_PIXELS(destination.x);
+	destination.y = METERS_TO_PIXELS(destination.y);
+	origin.x = METERS_TO_PIXELS(origin.x);
+	origin.y = METERS_TO_PIXELS(origin.y);
+
+
+	switch (state)
+	{
+	case PATROL:
+
+		//destination
+
+		UpdatePath(destination);
+		if (origin.DistanceTo(destination) < detectionDistance)
+		{
+		//	state = MOVE_TOWARDS;
+		}
+		break;
+	case MOVE_TOWARDS:
+		destination.x = (int)app->player->GetPosition().x;
+		destination.y = (int)app->player->GetPosition().y;
+		//convert meters to pixels
+		destination.x = METERS_TO_PIXELS(destination.x);
+		destination.y = METERS_TO_PIXELS(destination.y);
+
+		UpdatePath(destination);
+		if (origin.DistanceTo(destination) > detectionDistance)
+		{
+		//	state = PATROL;
+		}
+		break;
+	case JUMP:
+		break;
+	case DEATH:
+		if (deathAnim.HasFinished())
+		{
+			CleanUp();
+		}
+		break;
+	default:
+		break;
+	}
+
 	return true;
 }
 
 bool Musher::Update(float dt)
 {
+	switch(state)
+	{
+	case PATROL:
+		Move();
+		break;
+	case MOVE_TOWARDS:
+		Move();
+		break;
+	case JUMP:
+		break;
+	case DEATH:
+		break;
+	default:
+		break;
+	}
 
 	return true;
 }
@@ -95,7 +157,6 @@ bool Musher::PostUpdate()
 
 	for (uint i = 0; i < path->Count(); ++i)
 	{
-		
 		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
 		rect.x = (pos.x);
 		rect.y = (pos.y);
@@ -132,20 +193,8 @@ bool Musher::SaveState(pugi::xml_node& data) const
 	return true;
 }
 
-void Musher::UpdatePath()
+void Musher::UpdatePath(iPoint _destination)
 {
-	iPoint origin, destination;
-	origin.x = (int)position.x;
-	origin.y = (int)position.y;
-	destination.x = (int)app->player->GetPosition().x;
-	destination.y = (int)app->player->GetPosition().y;
-
-	//convert meters to pixels
-	destination.x = METERS_TO_PIXELS(destination.x);
-	destination.y = METERS_TO_PIXELS(destination.y);
-	origin.x = METERS_TO_PIXELS(origin.x);
-	origin.y = METERS_TO_PIXELS(origin.y);
-
 	//convert Pixels to Tiles
 	destination = app->map->WorldToMap(destination.x, destination.y);
 	origin = app->map->WorldToMap((int)origin.x, (int)origin.y);
@@ -155,4 +204,12 @@ void Musher::UpdatePath()
 
 void Musher::Move()
 {
+	const DynArray<iPoint>* path = pathfinding->GetLastPath();
+
+	iPoint currentTile;
+	currentTile.x = METERS_TO_PIXELS(position.x);
+	currentTile.y = METERS_TO_PIXELS(position.y);
+	
+	iPoint nextTile;
+
 }

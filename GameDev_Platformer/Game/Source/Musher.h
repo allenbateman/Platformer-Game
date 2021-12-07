@@ -7,6 +7,8 @@
 #include "Render.h"
 #include "Pathfinding.h"
 
+
+
 class Musher : public Module
 {
 public:
@@ -26,7 +28,7 @@ public:
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
 
-	void UpdatePath();
+	void UpdatePath(iPoint _destination);
 	void Move();
 
 	SDL_Texture* texture;
@@ -36,13 +38,26 @@ public:
 	Animation idleAnim, walkingAnim, jumpingAnim, deathAnim;
 
 	float jumpForce = 0.2f;
-	bool doubleJump = false;
 	bool onGround = false;
+
+	float detectionDistance = 100; // in pixels
+
+
 	SDL_RendererFlip direction;
 	fPoint position;
 	fPoint speed = { 2,2 };
 	PhysBody* physBody;
 
 	PathFinding* pathfinding;
+	iPoint destination;
+	iPoint origin;
 
+	enum MusherState {
+		PATROL = 0,
+		MOVE_TOWARDS = 1,
+		JUMP = 2,
+		DEATH = 3
+	};
+	MusherState state;
+		
 };
