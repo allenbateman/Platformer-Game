@@ -209,7 +209,6 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			break;
 		}
 
-
 	}
 	else if (bodyB->type == Collider_Type::PLAYER)
 	{
