@@ -30,9 +30,9 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-	void SetPosition(fPoint pos) { position = pos; };
+	void SetPosition(iPoint pos);
 	fPoint GetPosition() { return position; };
-	void Spawn(fPoint pos);
+	void Spawn(iPoint pos);
 	void Disable();
 
 	// Load / Save
@@ -49,10 +49,13 @@ public:
 	bool doubleJump = false;
 	bool onGround = false;
 	bool onAir = false;
+
 	PlayerState state;
 	SDL_RendererFlip direction;
 	fPoint position;
+	iPoint spawnPosition;
 	fPoint speed = {5,5};
+
 	PhysBody* physBody;
 	PhysBody* leftSensor;
 	PhysBody* rightSensor;
