@@ -27,9 +27,9 @@ public:
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
-
+	bool CalculateNextPatrolPoint();
 	void UpdatePath(iPoint _destination);
-	void Move();
+	void Move(float dt);
 
 	SDL_Texture* texture;
 
@@ -40,17 +40,21 @@ public:
 	float jumpForce = 0.2f;
 	bool onGround = false;
 
-	float detectionDistance = 100; // in pixels
+	float detectionDistance = 15; // in pixels
 
 
 	SDL_RendererFlip direction;
 	fPoint position;
-	fPoint speed = { 2,2 };
 	PhysBody* physBody;
 
 	PathFinding* pathfinding;
 	iPoint destination;
 	iPoint origin;
+	//in Tiles
+	iPoint patrolPoint1;
+	iPoint patrolPoint2;
+
+	float speedMultiplier = 0.2f;// 1-0   1->slowest-> 0.1 fastest;
 
 	enum MusherState {
 		PATROL = 0,
@@ -60,4 +64,6 @@ public:
 	};
 	MusherState state;
 		
+
+	int curretnTileIndex =0;
 };

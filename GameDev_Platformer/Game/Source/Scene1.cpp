@@ -40,8 +40,11 @@ bool Scene1::Start()
 	app->map->Load("level1.tmx");
 
 	KeysToTake = 2;
-	app->player->Spawn({ 20, 400 });
-	app->musher->Spawn({ 350, 400});
+	app->player->Spawn({ 2, 26 });
+
+	app->musher->Spawn({ 24, 27});
+	app->musher->patrolPoint1 = { 27,27 };
+	app->musher->patrolPoint2 = { 22,27 };
 
 	return true;
 }

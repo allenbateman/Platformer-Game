@@ -5,6 +5,7 @@
 #include "LevelManagement.h"
 #include "Render.h"
 #include "Player.h"
+#include "Map.h"
 #include <SDL/include/SDL_scancode.h>
 
 ModulePlayer::ModulePlayer(bool isActive) : Module(isActive)
@@ -93,8 +94,11 @@ bool ModulePlayer::CleanUp()
 void ModulePlayer::SetPosition(iPoint pos)
 {
 	b2Vec2 newPos;
-	newPos.x = PIXEL_TO_METERS(pos.x);
-	newPos.y = PIXEL_TO_METERS(pos.y);
+
+	iPoint pixelPos = app->map->MapToWorld(pos.x, pos.y);
+
+	newPos.x = PIXEL_TO_METERS(pixelPos.x);
+	newPos.y = PIXEL_TO_METERS(pixelPos.y);
 
 	physBody->body->SetTransform(newPos, physBody->body->GetAngle());
 }
