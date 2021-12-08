@@ -21,7 +21,7 @@ bool LevelManagement::Start()
 	return true;
 }
 
-bool LevelManagement::Update(float dt)
+bool LevelManagement::PreUpdate()
 {
 	switch (gameState)
 	{
@@ -38,6 +38,14 @@ bool LevelManagement::Update(float dt)
 		{
 			gameState = SCENE1;
 		}
+		if ((app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) && currentScene->active == true)
+		{
+			gameState = SCENE1;
+		}
+		if ((app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) && currentScene->active == true)
+		{
+			gameState = SCENE2;
+		}
 		break;
 	case SCENE1:
 		cout << "Scene 1 \n";
@@ -45,12 +53,20 @@ bool LevelManagement::Update(float dt)
 		{
 			gameState = SCENE2;
 		}
+		if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && currentScene->active == true)
+		{
+			RestartLevel();
+		}
 		break;
 	case SCENE2:
 		cout << "Scene 2 \n";
 		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = GAME_OVER;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && currentScene->active == true)
+		{
+			RestartLevel();
 		}
 		break;
 	case GAME_OVER:
@@ -63,6 +79,12 @@ bool LevelManagement::Update(float dt)
 	default:
 		break;
 	}
+	return true;
+}
+
+bool LevelManagement::Update(float dt)
+{
+
 
 	switch (gameState)
 	{

@@ -25,50 +25,52 @@ bool Musher::Awake()
 
 bool Musher::Start()
 {
-	texture = app->tex->Load("Assets/Spritesx16/characters.png");
-	//Idle anim
-	idleAnim.PushBack({ 41, 274, 14, 14 });
-	idleAnim.PushBack({ 73, 276 , 14, 12 });
-	idleAnim.loop = true;
-	idleAnim.mustFlip = true;
-	idleAnim.speed = 0.01f;
-	//Walking anim
-	walkingAnim.PushBack({ 9, 274, 14, 14 });
-	walkingAnim.PushBack({ 41, 274, 14, 14});
-	walkingAnim.PushBack({ 73, 276 , 14, 12 });
-	walkingAnim.loop = true;
-	walkingAnim.mustFlip = true;
-	walkingAnim.speed = 0.1f;
-	//Jump anim
-	jumpingAnim.PushBack({ 137, 274, 14, 14 });
-	jumpingAnim.PushBack({ 168, 272, 14, 14 });
-	jumpingAnim.PushBack({ 201, 272, 14, 15 });
-	jumpingAnim.PushBack({ 233, 275, 14, 13 });
-	jumpingAnim.loop = true;
-	jumpingAnim.mustFlip = true;
-	jumpingAnim.speed = 0.1f;
-
-	currentAnim = &idleAnim;
-
-	position = { 370, 300 };
-	physBody = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, { 0,250,125,255 });
-	physBody->listener = app->levelManagement->currentScene;
-	physBody->color = {255,125,0,255};
-
-	physBody->body->SetFixedRotation(true);
-	app->physics->entities.add(physBody);
-
-	state = MOVE_TOWARDS;
-
-	//make the path 
-	pathfinding = new PathFinding(true);
-
-	int w, h;
-	uchar* data = NULL;
-	if (app->map->CreateWalkabilityMap(w, h, &data)) pathfinding->SetMap(w, h, data);
-	RELEASE_ARRAY(data);
-
 	LOG("MUSER START");
+	if (physBody == NULL)
+	{
+		texture = app->tex->Load("Assets/Spritesx16/characters.png");
+		//Idle anim
+		idleAnim.PushBack({ 41, 274, 14, 14 });
+		idleAnim.PushBack({ 73, 276 , 14, 12 });
+		idleAnim.loop = true;
+		idleAnim.mustFlip = true;
+		idleAnim.speed = 0.01f;
+		//Walking anim
+		walkingAnim.PushBack({ 9, 274, 14, 14 });
+		walkingAnim.PushBack({ 41, 274, 14, 14 });
+		walkingAnim.PushBack({ 73, 276 , 14, 12 });
+		walkingAnim.loop = true;
+		walkingAnim.mustFlip = true;
+		walkingAnim.speed = 0.1f;
+		//Jump anim
+		jumpingAnim.PushBack({ 137, 274, 14, 14 });
+		jumpingAnim.PushBack({ 168, 272, 14, 14 });
+		jumpingAnim.PushBack({ 201, 272, 14, 15 });
+		jumpingAnim.PushBack({ 233, 275, 14, 13 });
+		jumpingAnim.loop = true;
+		jumpingAnim.mustFlip = true;
+		jumpingAnim.speed = 0.1f;
+
+		currentAnim = &idleAnim;
+
+		position = { 0, 400 };
+		physBody = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, { 0,400,125,255 });
+		physBody->listener = app->levelManagement->currentScene;
+		physBody->color = { 255,125,0,255 };
+
+		physBody->body->SetFixedRotation(true);
+		app->physics->entities.add(physBody);
+
+		state = MOVE_TOWARDS;
+	
+		//make the path 
+		pathfinding = new PathFinding(true);
+
+		int w, h;
+		uchar* data = NULL;
+		if (app->map->CreateWalkabilityMap(w, h, &data)) pathfinding->SetMap(w, h, data);
+		RELEASE_ARRAY(data);
+	}
 	return true;
 }
 
@@ -152,21 +154,22 @@ bool Musher::PostUpdate()
 {
 
 	const DynArray<iPoint>* path = pathfinding->GetLastPath();
-	SDL_Rect rect;
-
-
-	for (uint i = 0; i < path->Count(); ++i)
+	if (DEBUG)
 	{
-		iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-		rect.x = (pos.x);
-		rect.y = (pos.y);
-		rect.w = (16);
-		rect.h = (16);
-		app->render->DrawRectangle(rect,255,125,0,150);
+		SDL_Rect rect;
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			rect.x = (pos.x);
+			rect.y = (pos.y);
+			rect.w = (16);
+			rect.h = (16);
+			app->render->DrawRectangle(rect, 255, 125, 0, 150);
+		}
 	}
-
 	currentAnim->Update();
-	if(texture!=nullptr)
+
+	if(texture!=nullptr && active)
 	app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x-14), METERS_TO_PIXELS(physBody->body->GetPosition().y-14),
 		&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 	return true;
@@ -177,7 +180,7 @@ bool Musher::CleanUp()
 	return true;
 }
 
-void Musher::Spawn(fPoint pos)
+void Musher::Spawn(iPoint pos)
 {
 	Enable();
 	SetPosition(pos);
@@ -212,4 +215,13 @@ void Musher::Move()
 	
 	iPoint nextTile;
 
+}
+
+void Musher::SetPosition(iPoint pos)
+{
+	b2Vec2 newPos;
+	newPos.x = PIXEL_TO_METERS(pos.x);
+	newPos.y = PIXEL_TO_METERS(pos.y);
+
+	physBody->body->SetTransform(newPos, physBody->body->GetAngle());
 }

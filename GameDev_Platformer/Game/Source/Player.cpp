@@ -24,12 +24,10 @@ bool ModulePlayer::Awake()
 // Load assets
 bool ModulePlayer::Start()
 {
-	state = IDLE;
-
 	//Initializing player struct data
 	if (physBody == NULL)
 	{
-		
+		state = IDLE;
 
 		playerTexture = app->tex->Load("Assets/Spritesx16/characters.png");
 		//Idle anim
@@ -62,27 +60,23 @@ bool ModulePlayer::Start()
 		currentAnim = &idlePlayerAnim;
 		state = IDLE;
 
-		if (physBody == NULL)
-		{
-			position = { 20, 300 };
-			physBody = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, { 0,250,125,255 });
-			physBody->listener = app->levelManagement->currentScene;
-			physBody->type = Collider_Type::PLAYER;
-			physBody->body->SetFixedRotation(true);
-			app->physics->entities.add(physBody);
+		position = { 0, 300 };
+		physBody = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, { 0,250,125,255 });
+		physBody->listener = app->levelManagement->currentScene;
+		physBody->type = Collider_Type::PLAYER;
+		physBody->body->SetFixedRotation(true);
+		app->physics->entities.add(physBody);
 
 
-			//sensors
-			leftSensor = app->physics->CreateRectangleSensor(position.x-7, position.y-5,7,10, b2_kinematicBody, { 255,165,0,255 });
-			rightSensor = app->physics->CreateRectangleSensor(position.x, position.y-5,7,10, b2_kinematicBody, { 255,165,0,255 });
-			topSensor = app->physics->CreateRectangleSensor(position.x-7, position.y,7,5, b2_kinematicBody, { 255,165,0,255 });
-			botSensor = app->physics->CreateRectangleSensor(position.x-7, position.y+5,7,5, b2_kinematicBody, { 255,165,0,255 });
-			app->physics->entities.add(leftSensor);
-			app->physics->entities.add(rightSensor);
-			app->physics->entities.add(topSensor);
-			app->physics->entities.add(botSensor);
-
-		}
+		//sensors
+		leftSensor = app->physics->CreateRectangleSensor(position.x-7, position.y-5,7,10, b2_kinematicBody, { 255,165,0,255 });
+		rightSensor = app->physics->CreateRectangleSensor(position.x, position.y-5,7,10, b2_kinematicBody, { 255,165,0,255 });
+		topSensor = app->physics->CreateRectangleSensor(position.x-7, position.y,7,5, b2_kinematicBody, { 255,165,0,255 });
+		botSensor = app->physics->CreateRectangleSensor(position.x-7, position.y+5,7,5, b2_kinematicBody, { 255,165,0,255 });
+		app->physics->entities.add(leftSensor);
+		app->physics->entities.add(rightSensor);
+		app->physics->entities.add(topSensor);
+		app->physics->entities.add(botSensor);
 	}
 	return true;
 }
@@ -96,7 +90,16 @@ bool ModulePlayer::CleanUp()
 	return true;
 }
 
-void ModulePlayer::Spawn(fPoint pos)
+void ModulePlayer::SetPosition(iPoint pos)
+{
+	b2Vec2 newPos;
+	newPos.x = PIXEL_TO_METERS(pos.x);
+	newPos.y = PIXEL_TO_METERS(pos.y);
+
+	physBody->body->SetTransform(newPos, physBody->body->GetAngle());
+}
+
+void ModulePlayer::Spawn(iPoint pos)
 {
 	Enable();
 	SetPosition(pos);

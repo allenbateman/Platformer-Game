@@ -40,8 +40,8 @@ bool Scene1::Start()
 	app->map->Load("level1.tmx");
 
 	KeysToTake = 2;
-	app->player->Spawn({ 20, 300 });
-	app->musher->Spawn({20, 300});
+	app->player->Spawn({ 20, 400 });
+	app->musher->Spawn({ 350, 400});
 
 	return true;
 }

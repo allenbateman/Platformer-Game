@@ -91,6 +91,7 @@ public:
 
 	SString name;
 	bool active;
+	bool DEBUG = false;
 };
 
 #endif // __MODULE_H__

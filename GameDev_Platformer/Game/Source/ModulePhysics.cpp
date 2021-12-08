@@ -279,10 +279,7 @@ b2PrismaticJoint* ModulePhysics::CreatePrismaticJoint(PhysBody* A, b2Vec2 anchor
 bool ModulePhysics::PostUpdate()
 {
 
-	if (app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN)
-		debug = !debug;
-
-	if (!debug)
+	if (!DEBUG)
 		return true;
 
 	// Bonus code: this will iterate all objects in the world and draw the circles

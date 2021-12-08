@@ -20,6 +20,7 @@ public:
 	LevelManagement(bool isActive);
 	~LevelManagement();
 	bool Start() override;
+	bool PreUpdate() override;
 	bool Update(float dt) override;
 	bool CleanUp() override;
 	Module* currentScene = nullptr;

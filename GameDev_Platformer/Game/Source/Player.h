@@ -30,9 +30,9 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-	void SetPosition(fPoint pos) { position = pos; };
+	void SetPosition(iPoint pos);
 	fPoint GetPosition() { return position; };
-	void Spawn(fPoint pos);
+	void Spawn(iPoint pos);
 	void Disable();
 
 	// Load / Save

@@ -216,7 +216,7 @@ void App::FinishUpdate()
 	sprintf_s(title, 256, "Av.FPS: %.2f FPS: %i Delta Time: %.3f Time since startup: %.3f Frame Count: %I64u ",
 		averageFps, framesPerSecond, dt, secondsSinceStartup, frameCount);
 
-	if (input->GetKey(SDL_SCANCODE_5) == KEY_DOWN)
+	if (input->GetKey(SDL_SCANCODE_F11) == KEY_DOWN)
 		FPSCapTo30 = !FPSCapTo30;
 
 	if (FPSCapTo30)
@@ -249,6 +249,10 @@ bool App::PreUpdate()
 	for(item = modules.start; item != NULL && ret == true; item = item->next)
 	{
 		pModule = item->data;
+
+
+		if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
+			item->data->DEBUG = !item->data->DEBUG;
 
 		if(pModule->active == false) {
 			continue;
