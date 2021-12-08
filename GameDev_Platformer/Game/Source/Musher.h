@@ -21,9 +21,9 @@ public:
 	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
-	void SetPosition(iPoint pos);
+	void SetPosition(fPoint pos) { position = pos; };
 	fPoint GetPosition() { return position; };
-	void Spawn(iPoint pos);
+	void Spawn(fPoint pos);
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;

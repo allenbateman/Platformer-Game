@@ -52,6 +52,7 @@ bool ModulePhysics::Start()
 	return true;
 }
 
+// 
 bool ModulePhysics::PreUpdate()
 {
 	world->Step(app->dt/1000, 6, 2);//add delta time
@@ -59,7 +60,6 @@ bool ModulePhysics::PreUpdate()
 	static bool temp = false;
 
 	p2List_item<PhysBody*>* current = allPhysicBodies.getFirst();
-
 	while (current != NULL)
 	{
 		bool removeItem = false;
@@ -76,6 +76,8 @@ bool ModulePhysics::PreUpdate()
 		}
 	}
 
+
+
 	for (p2List_item<PhysBody*>* pb = collectables.getFirst(); pb; pb = pb->next)
 	{
 		if (!allPhysicBodies.find(pb->data))
@@ -84,7 +86,6 @@ bool ModulePhysics::PreUpdate()
 			LOG("Adding new collectable collider");
 		}
 	}
-
 	for(p2List_item<PhysBody*>* pb = groundColliders.getFirst(); pb; pb = pb->next)
 	{
 		if (!allPhysicBodies.find(pb->data))
@@ -93,7 +94,6 @@ bool ModulePhysics::PreUpdate()
 			LOG("Adding new ground collider"); 
 		}
 	}
-
 	for(p2List_item<PhysBody*>* pb = deathColliders.getFirst(); pb; pb = pb->next)
 	{
 		if (!allPhysicBodies.find(pb->data))
@@ -102,7 +102,6 @@ bool ModulePhysics::PreUpdate()
 			LOG("Adding new death collider");
 		}
 	}
-
 	for (p2List_item<PhysBody*>* pb = entities.getFirst(); pb; pb = pb->next)
 	{
 		if (!allPhysicBodies.find(pb->data))
@@ -111,7 +110,6 @@ bool ModulePhysics::PreUpdate()
 			LOG("Adding new entity collider");
 		}
 	}
-
 	for (p2List_item<PhysBody*>* pb = checkPoints.getFirst(); pb; pb = pb->next)
 	{
 		if (!allPhysicBodies.find(pb->data))
@@ -208,6 +206,7 @@ PhysBody* ModulePhysics::CreateRectangleSensor(int x, int y, int width, int heig
 	return pbody;
 }
 
+
 PhysBody* ModulePhysics::CreateChain(int x, int y, int* points, int size, b2BodyType type, b2Color color)
 {
 	b2BodyDef body;
@@ -276,6 +275,7 @@ b2PrismaticJoint* ModulePhysics::CreatePrismaticJoint(PhysBody* A, b2Vec2 anchor
 	return (b2PrismaticJoint*)world->CreateJoint(&prismaticJointDef);
 }
 
+// 
 bool ModulePhysics::PostUpdate()
 {
 
@@ -370,6 +370,10 @@ void ModulePhysics::Disable()
 	checkPoints.clear();
 }
 
+
+
+
+// Called before quitting
 bool ModulePhysics::CleanUp()
 {
 	LOG("Clean up Phiscis Module ");

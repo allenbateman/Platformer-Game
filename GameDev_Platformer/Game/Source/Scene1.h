@@ -50,8 +50,6 @@ public:
 private:
 	SDL_Texture* img;
 	p2List_item<PhysBody*>* collider;
-
-
 };
 
 #endif // __SCENE1_H__

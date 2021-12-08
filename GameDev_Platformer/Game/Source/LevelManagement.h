@@ -22,13 +22,11 @@ public:
 	bool Start() override;
 	bool Update(float dt) override;
 	bool CleanUp() override;
-	bool PreUpdate() override;
 	Module* currentScene = nullptr;
 	void NextLevel();
 	void ReturnToMainMenu();
 	void ReturnToLevelSelection();
 	void RestartLevel();
-	
 
 	enum GameState {
 		NONE = 0,

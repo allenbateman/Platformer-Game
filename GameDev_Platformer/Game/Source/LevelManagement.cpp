@@ -21,7 +21,7 @@ bool LevelManagement::Start()
 	return true;
 }
 
-bool LevelManagement::PreUpdate()
+bool LevelManagement::Update(float dt)
 {
 	switch (gameState)
 	{
@@ -38,14 +38,6 @@ bool LevelManagement::PreUpdate()
 		{
 			gameState = SCENE1;
 		}
-		if ((app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) && currentScene->active == true)
-		{
-			gameState = SCENE1;
-		}
-		if ((app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) && currentScene->active == true)
-		{
-			gameState = SCENE2;
-		}
 		break;
 	case SCENE1:
 		cout << "Scene 1 \n";
@@ -53,20 +45,12 @@ bool LevelManagement::PreUpdate()
 		{
 			gameState = SCENE2;
 		}
-		if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && currentScene->active == true)
-		{
-			RestartLevel();
-		}
 		break;
 	case SCENE2:
 		cout << "Scene 2 \n";
 		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = GAME_OVER;
-		}
-		if (app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN && currentScene->active == true)
-		{
-			RestartLevel();
 		}
 		break;
 	case GAME_OVER:
@@ -77,14 +61,9 @@ bool LevelManagement::PreUpdate()
 		}
 		break;
 	default:
-		return false;
 		break;
 	}
-	return true;
-}
 
-bool LevelManagement::Update(float dt)
-{
 	switch (gameState)
 	{
 	case INTRO:
@@ -119,6 +98,8 @@ bool LevelManagement::Update(float dt)
 
 		if (currentScene != (Module*)app->scene2)
 		{
+			//Load level
+
 			if (app->fade->Fade(currentScene, (Module*)app->scene2, 30))
 			{
 				currentScene = (Module*)app->scene2;
@@ -145,6 +126,7 @@ bool LevelManagement::Update(float dt)
 	frameCounter++;
 	return true;
 }
+
 
 void LevelManagement::NextLevel()
 {
@@ -186,6 +168,7 @@ void LevelManagement::RestartLevel()
 		app->fade->Fade(currentScene, currentScene, 60.0f);
 	}
 }
+
 
 bool LevelManagement::CleanUp()
 {
