@@ -15,7 +15,6 @@
 #include "ModulePhysics.h"
 #include "Player.h"
 #include "Musher.h"
-#include "Bat.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -44,7 +43,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	gameOver = new GameOver(false);
 	player = new ModulePlayer(false);
 	musher = new Musher(false);
-	bat = new Bat(false);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -63,7 +61,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gameOver);
 	AddModule(player);
 	AddModule(musher);
-	AddModule(bat);
 
 	// Render last to swap buffer
 	AddModule(render);
@@ -145,6 +142,8 @@ bool App::Start()
 		item = item->next;
 	}
 
+
+
 	return ret;
 }
 
@@ -167,7 +166,6 @@ bool App::Update()
 		ret = PostUpdate();
 
 	FinishUpdate();
-
 	return ret;
 }
 
@@ -181,6 +179,8 @@ pugi::xml_node App::LoadConfig(pugi::xml_document& configFile) const
 
 	if (result == NULL) LOG("Could not load xml file: %s. pugi error: %s", CONFIG_FILENAME, result.description());
 	else ret = configFile.child("config");
+
+
 
 	return ret;
 }
@@ -209,6 +209,8 @@ void App::FinishUpdate()
 		lastSecFrameCount = 0;
 		averageFps = (averageFps + framesPerSecond) / 2;
 	}
+
+
 
 	static char title[256];
 	sprintf_s(title, 256, "Av.FPS: %.2f FPS: %i Delta Time: %.3f Time since startup: %.3f Frame Count: %I64u ",
