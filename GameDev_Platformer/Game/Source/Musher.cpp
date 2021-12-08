@@ -161,7 +161,7 @@ bool Musher::PostUpdate()
 
 	if(texture!=nullptr && active)
 	app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x-14), METERS_TO_PIXELS(physBody->body->GetPosition().y-14),
-		&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
+		&(currentAnim->GetCurrentFrame()), 1, spriteRotation,position.x-8, position.y-8, 1.8f, spriteDir);
 	return true;
 }
 
@@ -260,6 +260,24 @@ void Musher::Move(float dt)
 			direction.x =  nextTile.x - currentTile.x;
 			direction.y =  nextTile.y - currentTile.y;
 			
+			if (direction.x >= 0)
+				spriteDir = SDL_FLIP_NONE;
+			if(direction.x < 0)
+				spriteDir = SDL_FLIP_HORIZONTAL;
+
+			if (direction.y <= 0 && spriteDir == SDL_FLIP_NONE)
+			{
+				spriteRotation = -90;
+
+			}else if (direction.y <= 0 && spriteDir == SDL_FLIP_HORIZONTAL)
+			{
+				spriteRotation = 90;
+			}
+			else {
+				spriteRotation = 0;
+			}
+
+
 			if (speedMultiplier > 1)
 				speedMultiplier = 1;
 			if (speedMultiplier < 0.1f)

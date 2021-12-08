@@ -43,7 +43,8 @@ public:
 	float detectionDistance = 15; // in pixels
 
 
-	SDL_RendererFlip direction;
+	SDL_RendererFlip spriteDir;
+	int spriteRotation = 0;
 	fPoint position;
 	PhysBody* physBody;
 
