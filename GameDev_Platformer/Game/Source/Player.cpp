@@ -174,6 +174,17 @@ bool ModulePlayer::PreUpdate()
 		state = DOUBLE_JUMP;
 	}
 
+	//Player melee attack
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+	{
+		state = ATTACK;
+		PhysBody* melee = app->physics->CreateRectangleSensor(position.x, position.y, 12, 20, b2_staticBody);
+		melee->color = { 155, 50, 50, 155 };
+		melee->listener = app->levelManagement->currentScene;
+		melee->type = Collider_Type::PLAYER_ATTACK;
+		app->physics->playerSensors.add(melee);
+	}
+
 	return true;
 }
 
@@ -181,7 +192,6 @@ bool ModulePlayer::PreUpdate()
 bool ModulePlayer::Update(float dt)
 {
 	bool ret = true;
-
 	b2Vec2 vel = physBody->body->GetLinearVelocity();
 	float desiredVel = 0;
 
@@ -189,7 +199,6 @@ bool ModulePlayer::Update(float dt)
 	pos.x = leftSensor->body->GetPosition().x + position.x;
 	pos.y = leftSensor->body->GetPosition().y + position.x;
 	leftSensor->body->SetTransform(pos, physBody->body->GetAngle());
-
 
 	switch (state)
 	{
@@ -219,6 +228,7 @@ bool ModulePlayer::Update(float dt)
 	}
 	currentAnim->Update();
 	return ret;
+
 }
 
 bool ModulePlayer::PostUpdate()

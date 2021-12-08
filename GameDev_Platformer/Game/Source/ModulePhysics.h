@@ -29,8 +29,9 @@ enum Collider_Type {
 	DEATH = 4,
 	WIN = 5,
 	PLAYER = 6,
-	GROUND = 7,
-	ENEMY = 8
+	PLAYER_ATTACK = 7,
+	GROUND = 8,
+	ENEMY = 9
 };
 struct Color {
 	float r, g, b, a;
@@ -98,6 +99,7 @@ public:
 	bool debug;
 	b2MouseJoint* mouse_joint;
 	p2List<PhysBody*> groundColliders;
+	p2List<PhysBody*> playerSensors;
 	p2List<PhysBody*> collectables;
 	p2List<PhysBody*> deathColliders;
 	p2List<PhysBody*> checkPoints;
@@ -114,6 +116,4 @@ private:
 
 	b2Body* mouseBody;
 	b2Vec2 p;
-
-	
 };

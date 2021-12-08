@@ -15,6 +15,7 @@
 #include "ModulePhysics.h"
 #include "Player.h"
 #include "Musher.h"
+#include "Bat.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -43,6 +44,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	gameOver = new GameOver(false);
 	player = new ModulePlayer(false);
 	musher = new Musher(false);
+	bat = new Bat(false);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -61,6 +63,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gameOver);
 	AddModule(player);
 	AddModule(musher);
+	AddModule(bat);
 
 	// Render last to swap buffer
 	AddModule(render);
