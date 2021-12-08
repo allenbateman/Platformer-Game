@@ -118,6 +118,14 @@ bool ModulePhysics::PreUpdate()
 			LOG("Adding new checkpoint collider");
 		}
 	}
+	for (p2List_item<PhysBody*>* pb = playerSensors.getFirst(); pb; pb = pb->next)
+	{
+		if (!allPhysicBodies.find(pb->data))
+		{
+			allPhysicBodies.add(pb->data);
+			LOG("Adding new player sensor collider");
+		}
+	}
 
 	return true;
 }

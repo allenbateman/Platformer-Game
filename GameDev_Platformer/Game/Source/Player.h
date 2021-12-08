@@ -43,7 +43,7 @@ public:
 
 public:
 	Animation* currentAnim = nullptr;
-	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim;
+	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim, meleePlayerAnim;
 	
 	float jumpForce = 5;
 	bool doubleJump = false;
@@ -59,5 +59,5 @@ public:
 	PhysBody* botSensor;
 	PhysBody* topSensor;
 	
-
+	int frameCounter;
 };

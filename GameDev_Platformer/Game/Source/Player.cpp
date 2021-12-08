@@ -37,7 +37,7 @@ bool ModulePlayer::Start()
 		idlePlayerAnim.PushBack({ 327, 43, 16, 21 });
 		idlePlayerAnim.loop = false;
 		idlePlayerAnim.mustFlip = true;
-		idlePlayerAnim.speed = 0.2f;
+		idlePlayerAnim.speed = 0.04f;
 		//Walking anim
 		walkingPlayerAnim.PushBack({ 390, 43, 16, 21 });
 		walkingPlayerAnim.PushBack({ 454, 43, 16, 21 });
@@ -57,6 +57,13 @@ bool ModulePlayer::Start()
 		deathPlayerAnim.loop = false;
 		deathPlayerAnim.mustFlip = true;
 		deathPlayerAnim.speed = 1.0f;
+		//Melee attack anim
+		idlePlayerAnim.PushBack({ 262, 43, 16, 21 });
+		idlePlayerAnim.PushBack({ 294, 43, 16, 21 });
+		idlePlayerAnim.PushBack({ 327, 43, 16, 21 });
+		meleePlayerAnim.loop = false;
+		meleePlayerAnim.mustFlip = true;
+		meleePlayerAnim.speed = 0.1f;
 
 		currentAnim = &idlePlayerAnim;
 		state = IDLE;
@@ -146,12 +153,12 @@ bool ModulePlayer::PreUpdate()
 	rayLength = 25;
 	physBody->RayCast(position.x, position.y, position.x + rayLength, position.y,normal1,normal2);
 	//Right
-	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && state != ATTACK)
 	{
 		physBody->body->SetLinearVelocity({ speed.x, physBody->body->GetLinearVelocity().y });
 		state = MOVE_RIGHT;
 
-	}else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	}else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && state != ATTACK)
 	{
 		physBody->body->SetLinearVelocity({ -speed.x, physBody->body->GetLinearVelocity().y });
 		state = MOVE_LEFT;
@@ -162,7 +169,7 @@ bool ModulePlayer::PreUpdate()
 		state = IDLE;
 	}
 	//Jump
-	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && onGround)
+	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && onGround && state != ATTACK)
 	{
 		physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(),true);
 		doubleJump = true;
@@ -170,8 +177,8 @@ bool ModulePlayer::PreUpdate()
 		state = JUMP;
 
 
-	}else////DoubleJump
-	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && doubleJump)
+	}else//DoubleJump
+	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && doubleJump && state != ATTACK)
 	{
 		physBody->body->ApplyLinearImpulse( b2Vec2(0,-jumpForce) , physBody->body->GetWorldCenter(), true);
 		doubleJump = false;
@@ -179,14 +186,20 @@ bool ModulePlayer::PreUpdate()
 	}
 
 	//Player melee attack
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN)
+	int dir = 0;
+	if (direction == 1) dir = -25;
+	else dir = 20;
+
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && frameCounter < 15 && currentAnim != &meleePlayerAnim)
 	{
-		state = ATTACK;
-		PhysBody* melee = app->physics->CreateRectangleSensor(position.x, position.y, 12, 20, b2_staticBody);
-		melee->color = { 155, 50, 50, 155 };
+		PhysBody* melee = app->physics->CreateRectangleSensor(METERS_TO_PIXELS(physBody->body->GetPosition().x) + dir,
+					METERS_TO_PIXELS(physBody->body->GetPosition().y), 18, 20, b2_staticBody);
+		melee->color = { 120, 50, 100, 155 };
 		melee->listener = app->levelManagement->currentScene;
 		melee->type = Collider_Type::PLAYER_ATTACK;
-		app->physics->playerSensors.add(melee);
+		app->physics->groundColliders.add(melee);
+
+		state = ATTACK;
 	}
 
 	return true;
@@ -207,30 +220,35 @@ bool ModulePlayer::Update(float dt)
 	switch (state)
 	{
 	case IDLE:
-
 		idlePlayerAnim.Update();
 		walkingPlayerAnim.Reset();
+		meleePlayerAnim.Reset();
 		break;
 	case JUMP:
-
 		jumpingPlayerAnim.Update();
 		idlePlayerAnim.Reset();
 		walkingPlayerAnim.Reset();
+		meleePlayerAnim.Reset();
 		break;
 	case MOVE_LEFT:
 		walkingPlayerAnim.Update();
 		idlePlayerAnim.Reset();
+		meleePlayerAnim.Reset();
 		direction = SDL_FLIP_HORIZONTAL;
 		break;
 	case MOVE_RIGHT:
 		walkingPlayerAnim.Update();
 		idlePlayerAnim.Reset();
+		meleePlayerAnim.Reset();
 		direction = SDL_FLIP_NONE;
 		break;
 	case ATTACK:
+		meleePlayerAnim.Update();
+		idlePlayerAnim.Reset();
 		break;
 	}
 	currentAnim->Update();
+
 	return ret;
 
 }
@@ -251,6 +269,8 @@ bool ModulePlayer::PostUpdate()
 	case JUMP:
 		currentAnim = &jumpingPlayerAnim;
 		break;
+	case ATTACK:
+		currentAnim = &meleePlayerAnim;
 	case DEAD:
 		currentAnim = &deathPlayerAnim;
 		direction = SDL_FLIP_HORIZONTAL;
@@ -260,6 +280,13 @@ bool ModulePlayer::PostUpdate()
 	if (playerTexture != NULL)
 		app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 16), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
 			&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
-	
+
+	if (meleePlayerAnim.HasFinished())
+	{
+		app->physics->playerSensors;
+		meleePlayerAnim.Reset();
+		state = IDLE;
+	}
+
 	return true;
 }
