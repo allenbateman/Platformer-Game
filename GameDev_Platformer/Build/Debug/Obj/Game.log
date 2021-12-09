@@ -1,16 +1,76 @@
-﻿  Musher.cpp
-C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Log.h(4,1): warning C4005: 'LOG': redefinición de macro
-C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Globals.h(5): message : vea la definición anterior de 'LOG'
-C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Musher.cpp(54,60): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+﻿  Player.cpp
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(55,19): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Animation.h(57,30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(84,61): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
           with
           [
               TYPE=float
           ]
-C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Musher.cpp(54,48): warning C4244: 'argumento': conversión de 'TYPE' a 'int'; posible pérdida de datos
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(84,49): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
           with
           [
               TYPE=float
           ]
-  Game.vcxproj -> C:\Users\allenbn\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(92,76): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(92,62): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(93,75): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(93,61): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(94,73): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(94,61): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(95,75): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(95,61): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(142,57): warning C4244: '=': conversion from 'int' to 'float32', possible loss of data
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(143,57): warning C4244: '=': conversion from 'int' to 'float32', possible loss of data
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(166,76): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(166,55): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(166,40): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Game\Source\Player.cpp(166,28): warning C4244: 'argument': conversion from 'TYPE' to 'int', possible loss of data
+          with
+          [
+              TYPE=float
+          ]
+  Game.vcxproj -> C:\Users\ivjoc\Documents\GitHub\GameDev_Platformer\GameDev_Platformer\Build\Debug\Game.exe

@@ -50,7 +50,7 @@ bool ModulePlayer::Start()
 		jumpingPlayerAnim.PushBack({ 454, 43, 16, 21 });
 		jumpingPlayerAnim.PushBack({ 486, 47, 16, 16 });
 		jumpingPlayerAnim.loop = false;
-		walkingPlayerAnim.mustFlip = true;
+		jumpingPlayerAnim.mustFlip = true;
 		jumpingPlayerAnim.speed = 0.1f;
 		//Death anim
 		deathPlayerAnim.PushBack({ 262, 43, 16, 21 });
@@ -75,7 +75,7 @@ bool ModulePlayer::Start()
 		meleePlayerAnim.PushBack({ 308, 0, 28, 20 });
 		meleePlayerAnim.loop = false;
 		meleePlayerAnim.mustFlip = true;
-		meleePlayerAnim.speed = 0.1f;
+		meleePlayerAnim.speed = 0.5f;
 
 		currentAnim = &idlePlayerAnim;
 		state = IDLE;
@@ -176,7 +176,7 @@ bool ModulePlayer::PreUpdate()
 		state = MOVE_LEFT;
 
 	}
-	else if(onGround){
+	else if(onGround && state != ATTACK){
 		physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
 		state = IDLE;
 	}
@@ -202,8 +202,10 @@ bool ModulePlayer::PreUpdate()
 	if (direction == 1) dir = -25;
 	else dir = 20;
 
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && currentAnim != &meleePlayerAnim)
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && state != ATTACK && onGround)
 	{
+		physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
+
 		PhysBody* melee = app->physics->CreateRectangleSensor(METERS_TO_PIXELS(physBody->body->GetPosition().x) + dir,
 					METERS_TO_PIXELS(physBody->body->GetPosition().y), 18, 20, b2_staticBody);
 		melee->color = { 120, 50, 100, 155 };
@@ -283,6 +285,7 @@ bool ModulePlayer::PostUpdate()
 		break;
 	case ATTACK:
 		currentAnim = &meleePlayerAnim;
+		break;
 	case DEAD:
 		currentAnim = &deathPlayerAnim;
 		direction = SDL_FLIP_HORIZONTAL;
@@ -290,14 +293,25 @@ bool ModulePlayer::PostUpdate()
 	}
 
 	if (playerTexture != NULL)
-		app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 16), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
-			&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
-
-	if (meleePlayerAnim.HasFinished())
 	{
-		app->physics->playerSensors.clear();
-		meleePlayerAnim.Reset();
+		if (state == ATTACK && direction == 1)
+		{
+			app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 36), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
+				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
+		}
+		else app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 16), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
+			&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
+	}
+		
+
+	if (state == ATTACK && frameCounter < 30)
+	{
+		frameCounter++;
+	}
+	else if (frameCounter >= 30)
+	{
 		state = IDLE;
+		frameCounter = 0;
 	}
 
 	return true;
