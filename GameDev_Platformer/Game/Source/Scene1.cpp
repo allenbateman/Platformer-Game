@@ -11,6 +11,7 @@
 #include "LevelManagement.h"
 #include "player.h"
 #include "Musher.h"
+#include "Bat.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -45,6 +46,9 @@ bool Scene1::Start()
 	app->musher->Spawn({ 24, 27});
 	app->musher->patrolPoint1 = { 27,27 };
 	app->musher->patrolPoint2 = { 22,27 };
+
+	app->bat->Spawn({54,19});
+
 
 	return true;
 }

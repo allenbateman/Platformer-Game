@@ -1,5 +1,7 @@
 #pragma once
 #include "Module.h"
+#include "ModulePhysics.h"
+#include "App.h"
 
 enum EnemyType {
 	MUSHER,
@@ -18,7 +20,10 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void AddEnemy();
-	void RemoveEnemy();
+	PhysBody* AddEnemy(EnemyType type);
+
+	p2List<PhysBody*> enemies;
+
+	void RemoveEnemy(PhysBody* enemy);
 };
 

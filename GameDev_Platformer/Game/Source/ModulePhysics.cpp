@@ -76,8 +76,6 @@ bool ModulePhysics::PreUpdate()
 		}
 	}
 
-
-
 	for (p2List_item<PhysBody*>* pb = collectables.getFirst(); pb; pb = pb->next)
 	{
 		if (!allPhysicBodies.find(pb->data))
@@ -373,45 +371,14 @@ void ModulePhysics::Disable()
 	collectables.clear();
 	deathColliders.clear();
 	checkPoints.clear();
+	active = false;
 }
-
-
-
 
 // Called before quitting
 bool ModulePhysics::CleanUp()
 {
 	LOG("Clean up Phiscis Module ");
-	//p2List_item<PhysBody*>* current = allPhysicBodies.getFirst();
-	//int counter = allPhysicBodies.count();
-	//while (current != NULL)
-	//{
-	//	bool removeItem = false;
-	//	current->data->pendingToDelete = true;
-	//	p2List_item<PhysBody*>* itemToRemove = current;
-	//	if (itemToRemove->data->pendingToDelete) {
-	//		removeItem = true;
-	//	}
-	//	current = current->next;
-	//	if (removeItem && itemToRemove->data->body != NULL)
-	//	{
-	//		LOG("Removing item %i ",counter);
-	//		if (itemToRemove->data->body != nullptr)
-	//		{
-	//			RemoveBodyFromWorld(itemToRemove->data->body);
-	//			allPhysicBodies.del(itemToRemove);
-	//			counter--;
-	//		}
-	//	}
-	//}
-	//p2List_item<PhysBody*>* current = allPhysicBodies.getFirst();
-	//
-	//while (current != NULL)
-	//{
-	//	current->data->pendingToDelete = true;
 
-	//	current = current->next;
-	//}
 	// Delete the whole physics world!
 	if(world!=NULL)
 		delete world;

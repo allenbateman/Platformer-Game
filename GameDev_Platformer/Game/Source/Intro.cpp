@@ -14,7 +14,7 @@
 
 Intro::Intro(bool isActive) : Module(isActive)
 {
-	name.Create("scene");
+	name.Create("intro");
 }
 
 // Destructor
@@ -34,6 +34,7 @@ bool Intro::Awake()
 bool Intro::Start()
 {
 	img = app->tex->Load("Assets/Spritesx16/intro.png");
+	//img = app->tex->Load("Assets/Spritesx16/StartTitle.png");
 	return true;
 }
 
@@ -50,8 +51,8 @@ bool Intro::Update(float dt)
 	rect.y = 0;
 	rect.w = 1280;
 	rect.h = 480;
-
-	app->render->DrawTexture(img, 0, 0, &rect, 1.0f, 0.0f, 1, 1, 1, SDL_FLIP_NONE);
+	if (img != nullptr && active)
+		app->render->DrawTexture(img, 0, 0, &rect, 1.0f, 0.0f, 1, 1, 1, SDL_FLIP_NONE);
 	return true;
 }
 
@@ -67,6 +68,7 @@ bool Intro::PostUpdate()
 bool Intro::CleanUp()
 {
 	LOG("Freeing scene intro");
-
+	active = false;
+	img = nullptr;
 	return true;
 }
