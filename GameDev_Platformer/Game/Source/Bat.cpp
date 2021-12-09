@@ -65,15 +65,15 @@ bool Bat::Start()
 
 		currentAnim = &idleAnim;
 
-		position = { 0, 400 };
-		physBody = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, { 0,400,125,255 });
+		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_kinematicBody, { 0,400,125,255 });
 		physBody->listener = app->levelManagement->currentScene;
 		physBody->color = { 255,125,0,255 };
 
 		physBody->body->SetFixedRotation(true);
 		app->physics->entities.add(physBody);
+		
 
-		state = MOVE_TOWARDS;
+		state = PATROL;
 
 		//make the path 
 		pathfinding = new PathFinding(true);
@@ -91,40 +91,30 @@ bool Bat::PreUpdate()
 	position.x = physBody->body->GetPosition().x;
 	position.y = physBody->body->GetPosition().y;
 
-	origin.x = (int)position.x;
-	origin.y = (int)position.y;
-
-	//convert meters to pixels
-	destination.x = METERS_TO_PIXELS(destination.x);
-	destination.y = METERS_TO_PIXELS(destination.y);
-	origin.x = METERS_TO_PIXELS(origin.x);
-	origin.y = METERS_TO_PIXELS(origin.y);
-
+	float distanceToPlayer = position.DistanceTo(app->player->position);
 
 	switch (state)
 	{
 	case PATROL:
-
-		//destination
-
-		UpdatePath(destination);
-		if (origin.DistanceTo(destination) < detectionDistance)
+		if (OnPatrolPoint)
 		{
-			//	state = MOVE_TOWARDS;
+			CalculateNextPatrolPoint();
 		}
+		if (distanceToPlayer < detectionDistance)
+		{
+			state = MOVE_TOWARDS;
+		}
+
 		break;
 	case MOVE_TOWARDS:
-		destination.x = (int)app->player->GetPosition().x;
-		destination.y = (int)app->player->GetPosition().y;
-		//convert meters to pixels
-		destination.x = METERS_TO_PIXELS(destination.x);
-		destination.y = METERS_TO_PIXELS(destination.y);
-
-		UpdatePath(destination);
-		if (origin.DistanceTo(destination) > detectionDistance)
+		UpdatePath();
+		if (distanceToPlayer > detectionDistance)
 		{
-			//	state = PATROL;
+			state = PATROL;
 		}
+
+		break;
+	case JUMP:
 		break;
 	case DEATH:
 		if (deathAnim.HasFinished())
@@ -181,17 +171,7 @@ bool Bat::PostUpdate()
 
 	if (texture != nullptr && active)
 		app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 14), METERS_TO_PIXELS(physBody->body->GetPosition().y - 14),
-			&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
-
-	if (state == PATROL)
-	{
-		idleAnim.Update();
-	}
-	if (state == DEATH)
-	{
-		deathAnim.Update();
-	}
-
+			&(currentAnim->GetCurrentFrame()), 1, spriteRotation, position.x - 8, position.y - 8, 1.8f, spriteDir);
 	return true;
 }
 
@@ -218,10 +198,11 @@ bool Bat::SaveState(pugi::xml_node& data) const
 
 bool Bat::CalculateNextPatrolPoint()
 {
-	return false;
+	//otherwise continue
+	return true;
 }
 
-void Bat::UpdatePath(iPoint _destination)
+void Bat::UpdatePath()
 {
 	iPoint destination;
 	destination.x = (int)app->player->GetPosition().x;
@@ -241,13 +222,53 @@ void Bat::UpdatePath(iPoint _destination)
 	destination = app->map->WorldToMap(destination.x, destination.y);
 	origin = app->map->WorldToMap((int)origin.x, (int)origin.y);
 
-	pathfinding->CreatePath(origin, destination);
+	//pathfinding->CreatePath(origin, destination);
 }
 
 void Bat::Move(float dt)
 {
-}
+	const DynArray<iPoint>* path = pathfinding->GetLastPath();
+	if (path->At(1) != nullptr)
+	{
+		iPoint currentTile;
+		iPoint nextTile;
 
+		currentTile.x = METERS_TO_PIXELS(position.x) - 8;
+		currentTile.y = METERS_TO_PIXELS(position.y) - 8;
+
+		b2Vec2 distance;
+		b2Vec2 direction;
+
+		nextTile = app->map->MapToWorld(path->At(1)->x, path->At(1)->y);
+
+		if (nextTile != currentTile)
+		{
+			position.x = physBody->body->GetPosition().x;
+			position.y = physBody->body->GetPosition().y;
+			currentTile.x = METERS_TO_PIXELS(position.x) - 8;
+			currentTile.y = METERS_TO_PIXELS(position.y) - 8;
+
+			direction.x = nextTile.x - currentTile.x;
+			direction.y = nextTile.y - currentTile.y;
+
+			if (direction.x >= 0)
+				spriteDir = SDL_FLIP_NONE;
+			if (direction.x < 0)
+				spriteDir = SDL_FLIP_HORIZONTAL;
+
+			if (speedMultiplier > 1)
+				speedMultiplier = 1;
+			if (speedMultiplier < 0.1f)
+				speedMultiplier = 0.1f;
+
+			direction.x *= speedMultiplier;
+			direction.y *= speedMultiplier;
+
+			physBody->body->SetLinearVelocity(direction);
+		}
+
+	}
+}
 
 void Bat::SetPosition(iPoint pos)
 {

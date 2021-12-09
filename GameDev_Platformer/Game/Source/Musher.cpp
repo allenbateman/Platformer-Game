@@ -69,7 +69,7 @@ bool Musher::Start()
 		if (app->map->CreateWalkabilityMap(w, h, &data)) pathfinding->SetMap(w, h, data);
 		RELEASE_ARRAY(data);
 
-		state = MOVE_TOWARDS;
+		state = PATROL;
 	
 	}
 	
@@ -81,26 +81,26 @@ bool Musher::PreUpdate()
 	position.x = physBody->body->GetPosition().x;
 	position.y = physBody->body->GetPosition().y;
 
-	float distanceToPlayer = origin.DistanceTo(destination);
+	float distanceToPlayer = position.DistanceTo(app->player->position);
 
 	switch (state)
 	{
 	case PATROL:
-		CalculateNextPatrolPoint();
+		if (OnPatrolPoint)
+		{
+			CalculateNextPatrolPoint();
+		}
 		if (distanceToPlayer < detectionDistance)
 		{
-			//state = MOVE_TOWARDS;
+			state = MOVE_TOWARDS;
 		}
+
 		break;
 	case MOVE_TOWARDS:
-
-
-
-		UpdatePath(destination);
-		
+		UpdatePath();
 		if (distanceToPlayer > detectionDistance)
 		{
-			//state = PATROL;
+			state = PATROL;
 		}
 
 		break;
@@ -188,6 +188,8 @@ bool Musher::SaveState(pugi::xml_node& data) const
 
 bool Musher::CalculateNextPatrolPoint()
 {
+	iPoint destination;
+	iPoint origin;
 	// in the destination calculate a new point
 	origin.x = METERS_TO_PIXELS(origin.x);
 	origin.y = METERS_TO_PIXELS(origin.y);
@@ -211,7 +213,7 @@ bool Musher::CalculateNextPatrolPoint()
 		return true;
 }
 
-void Musher::UpdatePath(iPoint _destination)
+void Musher::UpdatePath()
 {
 	iPoint destination;
 	destination.x = (int)app->player->GetPosition().x;
