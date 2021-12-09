@@ -58,9 +58,21 @@ bool ModulePlayer::Start()
 		deathPlayerAnim.mustFlip = true;
 		deathPlayerAnim.speed = 1.0f;
 		//Melee attack anim
-		idlePlayerAnim.PushBack({ 262, 43, 16, 21 });
-		idlePlayerAnim.PushBack({ 294, 43, 16, 21 });
-		idlePlayerAnim.PushBack({ 327, 43, 16, 21 });
+		meleePlayerAnim.PushBack({ 0, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 0, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 0, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 0, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 28, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 56, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 84, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 112, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 140, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 168, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 196, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 224, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 252, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 280, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 308, 0, 28, 20 });
 		meleePlayerAnim.loop = false;
 		meleePlayerAnim.mustFlip = true;
 		meleePlayerAnim.speed = 0.1f;
@@ -190,7 +202,7 @@ bool ModulePlayer::PreUpdate()
 	if (direction == 1) dir = -25;
 	else dir = 20;
 
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && frameCounter < 15 && currentAnim != &meleePlayerAnim)
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && currentAnim != &meleePlayerAnim)
 	{
 		PhysBody* melee = app->physics->CreateRectangleSensor(METERS_TO_PIXELS(physBody->body->GetPosition().x) + dir,
 					METERS_TO_PIXELS(physBody->body->GetPosition().y), 18, 20, b2_staticBody);
@@ -283,7 +295,7 @@ bool ModulePlayer::PostUpdate()
 
 	if (meleePlayerAnim.HasFinished())
 	{
-		app->physics->playerSensors;
+		app->physics->playerSensors.clear();
 		meleePlayerAnim.Reset();
 		state = IDLE;
 	}
