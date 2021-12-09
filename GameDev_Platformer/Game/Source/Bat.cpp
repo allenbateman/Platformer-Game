@@ -144,10 +144,10 @@ bool Bat::Update(float dt)
 	switch (state)
 	{
 	case PATROL:
-		Move();
+		Move(dt);
 		break;
 	case MOVE_TOWARDS:
-		Move();
+		Move(dt);
 		break;
 	case JUMP:
 		break;
@@ -216,8 +216,27 @@ bool Bat::SaveState(pugi::xml_node& data) const
 	return true;
 }
 
+bool Bat::CalculateNextPatrolPoint()
+{
+	return false;
+}
+
 void Bat::UpdatePath(iPoint _destination)
 {
+	iPoint destination;
+	destination.x = (int)app->player->GetPosition().x;
+	destination.y = (int)app->player->GetPosition().y;
+	//convert meters to pixels
+	destination.x = METERS_TO_PIXELS(destination.x);
+	destination.y = METERS_TO_PIXELS(destination.y);
+
+	iPoint origin;
+	origin.x = (int)physBody->body->GetPosition().x;
+	origin.y = (int)physBody->body->GetPosition().y;
+	//convert meters to pixels
+	origin.x = METERS_TO_PIXELS(origin.x);
+	origin.y = METERS_TO_PIXELS(origin.y);
+
 	//convert Pixels to Tiles
 	destination = app->map->WorldToMap(destination.x, destination.y);
 	origin = app->map->WorldToMap((int)origin.x, (int)origin.y);
@@ -225,23 +244,19 @@ void Bat::UpdatePath(iPoint _destination)
 	pathfinding->CreatePath(origin, destination);
 }
 
-void Bat::Move()
+void Bat::Move(float dt)
 {
-	const DynArray<iPoint>* path = pathfinding->GetLastPath();
-
-	iPoint currentTile;
-	currentTile.x = METERS_TO_PIXELS(position.x);
-	currentTile.y = METERS_TO_PIXELS(position.y);
-
-	iPoint nextTile;
-
 }
+
 
 void Bat::SetPosition(iPoint pos)
 {
 	b2Vec2 newPos;
-	newPos.x = PIXEL_TO_METERS(pos.x);
-	newPos.y = PIXEL_TO_METERS(pos.y);
+
+	iPoint pixelPos = app->map->MapToWorld(pos.x, pos.y);
+
+	newPos.x = PIXEL_TO_METERS(pixelPos.x);
+	newPos.y = PIXEL_TO_METERS(pixelPos.y);
 
 	physBody->body->SetTransform(newPos, physBody->body->GetAngle());
 }

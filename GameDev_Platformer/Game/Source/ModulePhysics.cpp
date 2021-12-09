@@ -32,7 +32,6 @@ bool ModulePhysics::Awake()
 {
 	world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 	world->SetContactListener(this);
-	// needed to create joints like mouse joint
 	b2BodyDef bd;
 	ground = world->CreateBody(&bd);
 
@@ -45,7 +44,6 @@ bool ModulePhysics::Start()
 	{
 		world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
 		world->SetContactListener(this);
-		// needed to create joints like mouse joint
 		b2BodyDef bd;
 		ground = world->CreateBody(&bd);
 	}
@@ -285,8 +283,40 @@ b2PrismaticJoint* ModulePhysics::CreatePrismaticJoint(PhysBody* A, b2Vec2 anchor
 bool ModulePhysics::PostUpdate()
 {
 
+	return true;
+}
+
+void ModulePhysics::Disable()
+{
+	groundColliders.clear();
+	collectables.clear();
+	deathColliders.clear();
+	checkPoints.clear();
+	active = false;
+}
+
+// Called before quitting
+bool ModulePhysics::CleanUp()
+{
+	LOG("Clean up Phiscis Module ");
+
+	// Delete the whole physics world!
+	if(world!=NULL)
+		delete world;
+
+	return true;
+}
+
+void ModulePhysics::RemoveBodyFromWorld(b2Body *body)
+{
+	 world->DestroyBody(body);
+}
+
+void ModulePhysics::DrawColliders()
+{
+
 	if (!DEBUG)
-		return true;
+		return;
 
 	// Bonus code: this will iterate all objects in the world and draw the circles
 	// You need to provide your own macro to translate meters to pixels
@@ -361,34 +391,7 @@ bool ModulePhysics::PostUpdate()
 			}
 		}
 	}
-	
-	return true;
-}
 
-void ModulePhysics::Disable()
-{
-	groundColliders.clear();
-	collectables.clear();
-	deathColliders.clear();
-	checkPoints.clear();
-	active = false;
-}
-
-// Called before quitting
-bool ModulePhysics::CleanUp()
-{
-	LOG("Clean up Phiscis Module ");
-
-	// Delete the whole physics world!
-	if(world!=NULL)
-		delete world;
-
-	return true;
-}
-
-void ModulePhysics::RemoveBodyFromWorld(b2Body *body)
-{
-	 world->DestroyBody(body);
 }
 
 void PhysBody::GetPosition(int& x, int& y) const

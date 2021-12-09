@@ -69,8 +69,7 @@ bool Scene1::Update(float dt)
 	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		app->SaveGameRequest();
 
-	// Draw map
-	app->map->Draw();
+
 
 
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
@@ -88,6 +87,10 @@ bool Scene1::Update(float dt)
 bool Scene1::PostUpdate()
 {
 	bool ret = true;
+
+	// Draw functions
+	app->map->Draw();
+	app->physics->DrawColliders();
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;

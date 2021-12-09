@@ -76,6 +76,7 @@ public:
 	void Disable();
 	bool CleanUp();
 	void RemoveBodyFromWorld(b2Body *body);
+	void DrawColliders();
 
 	PhysBody* CreateCircle(int x, int y, int radius, b2BodyType type = b2_dynamicBody, b2Color color = { 255,255,255,255 });
 	PhysBody* CreateRectangle(int x, int y, int width, int height, b2BodyType type = b2_dynamicBody, b2Color color = { 255,255,255,255 });

@@ -27,9 +27,9 @@ public:
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
-
+	bool CalculateNextPatrolPoint();
 	void UpdatePath(iPoint _destination);
-	void Move();
+	void Move(float dt);
 
 	SDL_Texture* texture;
 

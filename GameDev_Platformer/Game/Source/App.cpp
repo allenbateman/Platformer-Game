@@ -54,11 +54,14 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(map);
 	AddModule(physics);
 
-	AddModule(map);
+	
 	AddModule(levelManagement);
 	AddModule(enemies);
+
+	AddModule(fade);
 
 	AddModule(intro);
 	AddModule(start);
@@ -66,7 +69,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene2);
 	AddModule(gameOver);
 
-	AddModule(fade);
+	
 
 	AddModule(player);
 	AddModule(musher);
@@ -287,7 +290,6 @@ bool App::DoUpdate()
 	{
 		pModule = item->data;
 
-		std::cout << pModule->name.GetString() << ": " << pModule->active <<"\n";
 		if(pModule->active == false) {
 			continue;
 		}

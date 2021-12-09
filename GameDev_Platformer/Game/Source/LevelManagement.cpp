@@ -99,7 +99,6 @@ bool LevelManagement::Update(float dt)
 			if (app->fade->Fade(currentScene, (Module*)app->start, 30))
 			{
 				currentScene = (Module*)app->start;
-				currentScene->active = true;
 				LOG("START");
 			}
 		}
@@ -110,9 +109,7 @@ bool LevelManagement::Update(float dt)
 			if (app->fade->Fade(currentScene, (Module*)app->scene1, 30))
 			{
 				currentScene = (Module*)app->scene1;
-				currentScene->Start();
-				currentScene->active = true;
-				LOG("SCENE 1");
+				LOG("LEVEL 1");
 			}
 		}
 		break;
@@ -120,24 +117,19 @@ bool LevelManagement::Update(float dt)
 
 		if (currentScene != (Module*)app->scene2)
 		{
-			//Load level
-
 			if (app->fade->Fade(currentScene, (Module*)app->scene2, 30))
 			{
 				currentScene = (Module*)app->scene2;
-				currentScene->active = true;
-				LOG("SCENE 2");
+				LOG("LEVEL 2");
 			}
 		}
 		break;
 	case GAME_OVER:
 
 		if (currentScene != (Module*)app->gameOver) {
-			//Load game over
 			if (app->fade->Fade(currentScene, (Module*)app->gameOver, 30))
 			{
 				currentScene = (Module*)app->gameOver;
-				currentScene->active = true;
 				LOG("GAME OVER");
 			}
 		}

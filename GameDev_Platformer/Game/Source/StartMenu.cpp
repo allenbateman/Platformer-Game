@@ -69,5 +69,6 @@ bool StartMenu::CleanUp()
 {
 	LOG("Freeing scene main menu ");
 	img = nullptr;
+
 	return true;
 }
