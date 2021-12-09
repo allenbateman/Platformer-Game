@@ -26,8 +26,10 @@ class GameOver;
 class Map;
 class ModulePhysics;
 class ModulePlayer;
+class ModuleEnemies;
 class Musher;
 class Bat;
+
 
 class App
 {
@@ -108,6 +110,7 @@ public:
 	Map* map;
 	ModulePhysics* physics;
 	ModulePlayer* player;
+	ModuleEnemies* enemies;
 	Musher* musher;
 	Bat* bat;
 	

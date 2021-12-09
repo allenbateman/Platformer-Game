@@ -13,6 +13,7 @@
 #include "GameOver.h"
 #include "Map.h"
 #include "ModulePhysics.h"
+#include "ModuleEnemies.h"
 #include "Player.h"
 #include "Musher.h"
 #include "Bat.h"
@@ -36,6 +37,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	levelManagement = new LevelManagement(true);
 	physics = new ModulePhysics(true);
 	map = new Map(true);
+	enemies = new ModuleEnemies(true);
 	fade = new FadeToBlack(true);
 	intro = new Intro(true);
 	start = new StartMenu(false);
@@ -55,6 +57,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(physics);
 	AddModule(map);
 	AddModule(levelManagement);
+	AddModule(enemies);
 	AddModule(fade);
 	AddModule(intro);
 	AddModule(start);
