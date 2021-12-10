@@ -4,7 +4,6 @@
 	<input />
 	<textures />
 	<audio />
-	<physics />
 	<map>
 		<map_data height="30" width="80" tile_height="16" tile_width="16" red_backgroundcolor="0" green_backgroundcolor="0" blue_backgroundcolor="0" alpha_backgroundcolor="0">
 			<tile_set>
@@ -19,19 +18,19 @@
 			<object_layer>
 				<Gems name="Gems" height="0" width="0" texture="true" texture="false">
 					<Gem id="26" type="0" x="176" y="448" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="39" type="0" x="256" y="416" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="40" type="0" x="336" y="448" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="41" type="0" x="464" y="384" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="42" type="0" x="496" y="352" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="43" type="0" x="864" y="432" height="16" width="16">
 						<Draw name="Draw" value="1" />
@@ -79,13 +78,16 @@
 				<Death name="Death" height="30" width="80" />
 				<Overlaybackground name="Overlaybackground" height="30" width="80" />
 				<Overlay name="Overlay" height="30" width="80" />
-				<Navigation name="Navigation" height="30" width="80" />
+				<MusherNavigationMap name="MusherNavigationMap" height="30" width="80" />
+				<BatNavigationMap name="BatNavigationMap" height="30" width="80" />
 			</map_layer>
 		</map_data>
 	</map>
+	<physics />
 	<:anonymous />
 	<:anonymous />
-	<scene />
+	<:anonymous />
+	<intro />
 	<start_menu />
 	<level1>
 		<level1 keys_to_collect="2" />
@@ -93,10 +95,14 @@
 	<level2 />
 	<game_over />
 	<player>
-		<player x="0.399999976" y="8.49500465" state="0" />
+		<player x="36.5293159" y="22.5575676" state="0" />
 	</player>
-	<pathfinding />
-	<Musher />
+	<Musher>
+		<musher x="30.4901352" y="25.0640736" state="1" />
+	</Musher>
+	<Bat>
+		<bat x="45.4815941" y="21.8460655" state="1" />
+	</Bat>
 	<renderer>
 		<camera x="0" y="0" />
 	</renderer>

@@ -181,12 +181,25 @@ void Musher::Spawn(iPoint pos)
 
 bool Musher::LoadState(pugi::xml_node& data)
 {
-	return true;
+	bool ret = true;
+
+	b2Vec2 position;
+	position.x = data.child("musher").attribute("x").as_int();
+	position.y = data.child("musher").attribute("y").as_int();
+	state = static_cast<MusherState>(data.child("muhser").attribute("state").as_int());
+
+	physBody->body->SetTransform(position, physBody->body->GetAngle());
+	return ret;
 }
 
 bool Musher::SaveState(pugi::xml_node& data) const
 {
-	return true;
+	bool ret = true;
+	pugi::xml_node musher = data.append_child("musher");
+	musher.append_attribute("x") = physBody->body->GetPosition().x;
+	musher.append_attribute("y") = physBody->body->GetPosition().y;
+	musher.append_attribute("state") = state;
+	return ret;
 }
 
 bool Musher::CalculateNextPatrolPoint()

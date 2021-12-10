@@ -141,7 +141,7 @@ private:
 	uint64 frameCount = 0;
 	uint32 framesPerSecond = 0;
 	uint32 lastSecFrameCount = 0;
-	bool FPSCapTo30 = true;
+	bool FPSCapTo30 = false;
 	float averageFps = 0.0f;
 
 	uint32 maxFrameRate =0;

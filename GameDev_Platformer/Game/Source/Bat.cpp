@@ -30,16 +30,16 @@ bool Bat::Start()
 	{
 		texture = app->tex->Load("Assets/Spritesx16/bat.png");
 		//Idle anim
-		idleAnim.PushBack({ 0, 0, 32, 32 });
-		idleAnim.PushBack({ 32, 0, 32, 32 });
-		idleAnim.PushBack({ 64, 0, 32, 32 });
-		idleAnim.PushBack({ 96, 0, 32, 32 });
-		idleAnim.PushBack({ 128, 0, 32, 32 });
-		idleAnim.PushBack({ 160, 0, 32, 32 });
-		idleAnim.PushBack({ 192, 0, 32, 32 });
-		idleAnim.PushBack({ 224, 0, 32, 32 });
-		idleAnim.PushBack({ 256, 0, 32, 32 });
-		idleAnim.PushBack({ 288, 0, 32, 32 });
+		idleAnim.PushBack({ 7, 0, 18, 8 });
+		idleAnim.PushBack({ 40, 0, 16, 9  });
+		idleAnim.PushBack({ 74, 0, 12, 10 });
+		idleAnim.PushBack({ 105, 0, 14, 11 });
+		idleAnim.PushBack({ 135, 2 , 18, 9 });
+		idleAnim.PushBack({ 166, 2, 20, 8 });
+		idleAnim.PushBack({ 198, 2, 21, 7 });
+		idleAnim.PushBack({ 232, 1, 17, 7  });
+		idleAnim.PushBack({ 264, 0, 17, 7 });
+		idleAnim.PushBack({ 295, 0, 19, 8 });
 		idleAnim.loop = true;
 		idleAnim.mustFlip = true;
 		idleAnim.speed = 0.1f;
@@ -203,12 +203,25 @@ void Bat::Spawn(iPoint pos)
 
 bool Bat::LoadState(pugi::xml_node& data)
 {
-	return true;
+	bool ret = true;
+
+	b2Vec2 position;
+	position.x = data.child("bat").attribute("x").as_int();
+	position.y = data.child("bat").attribute("y").as_int();
+	state = static_cast<BatState>(data.child("bat").attribute("state").as_int());
+
+	physBody->body->SetTransform(position, physBody->body->GetAngle());
+	return ret;
 }
 
 bool Bat::SaveState(pugi::xml_node& data) const
 {
-	return true;
+	bool ret = true;
+	pugi::xml_node bat = data.append_child("bat");
+	bat.append_attribute("x") = physBody->body->GetPosition().x;
+	bat.append_attribute("y") = physBody->body->GetPosition().y;
+	bat.append_attribute("state") = state;
+	return ret;
 }
 
 bool Bat::CalculateNextPatrolPoint()
