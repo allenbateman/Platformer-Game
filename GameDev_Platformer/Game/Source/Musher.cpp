@@ -121,6 +121,7 @@ bool Musher::PreUpdate()
 
 bool Musher::Update(float dt)
 {
+
 	switch(state)
 	{
 	case PATROL:
@@ -136,7 +137,7 @@ bool Musher::Update(float dt)
 	default:
 		break;
 	}
-
+	currentAnim->Update();
 	return true;
 }
 
@@ -157,12 +158,13 @@ bool Musher::PostUpdate()
 		}
 	}
 
-	//pathfinding->DrawPath();
-	currentAnim->Update();
 
+
+	SDL_Rect* rect;
+	rect = &currentAnim->GetCurrentFrame();
 	if(texture!=nullptr && active)
-	app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x-14), METERS_TO_PIXELS(physBody->body->GetPosition().y-14),
-		&(currentAnim->GetCurrentFrame()), 1, spriteRotation,position.x-8, position.y-8, 1.8f, spriteDir);
+	app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x-rect->w), METERS_TO_PIXELS(physBody->body->GetPosition().y-rect->h),
+		&currentAnim->GetCurrentFrame(), 1, spriteRotation, rect->w, rect->h, 1.8f, spriteDir);
 	return true;
 }
 
