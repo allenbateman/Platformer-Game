@@ -24,7 +24,7 @@ Intro::~Intro()
 // Called before render is available
 bool Intro::Awake()
 {
-	LOG("Loading Scene");
+	LOG("Loading Intro Scene");
 	bool ret = true;
 
 	return ret;

@@ -9,6 +9,20 @@
 
 struct SDL_Texture;
 
+enum PortalState
+{
+	P_IDLE,
+	P_TRANSITION,
+	P_OPEN
+};
+
+enum ShrineState
+{
+	S_IDLE,
+	S_TRANSITION,
+	S_OPEN
+};
+
 class Scene1 : public Module
 {
 public:
@@ -49,7 +63,20 @@ public:
 	//fPoint playerSpawnPos; 
 private:
 	SDL_Texture* img;
+	SDL_Texture* props;
 	p2List_item<PhysBody*>* collider;
+
+	Animation* currentPortalAnim = nullptr;
+	Animation* currentShrineAnim = nullptr;
+	Animation* currentLivesAnim = nullptr;
+	Animation idlePortalAnim, transitionPortalAnim, openPortalAnim, idleShrineAnim, transitionShrineAnim, openShrineAnim, lives1Anim,
+		lives2Anim, lives3Anim;
+
+	PortalState portalState;
+	ShrineState shrineState;
+
+	int frameCounter1;
+	int frameCounter2;
 };
 
 #endif // __SCENE1_H__

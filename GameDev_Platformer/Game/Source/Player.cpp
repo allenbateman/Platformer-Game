@@ -97,6 +97,8 @@ bool ModulePlayer::Start()
 		app->physics->entities.add(rightSensor);
 		app->physics->entities.add(topSensor);
 		app->physics->entities.add(botSensor);
+
+		lives = 1;
 	}
 	return true;
 }
@@ -231,6 +233,8 @@ bool ModulePlayer::Update(float dt)
 	pos.y = leftSensor->body->GetPosition().y + position.x;
 	leftSensor->body->SetTransform(pos, physBody->body->GetAngle());
 
+	if (lives <= 0) state = DEAD;
+
 	switch (state)
 	{
 	case IDLE:
@@ -304,11 +308,11 @@ bool ModulePlayer::PostUpdate()
 	}
 		
 
-	if (state == ATTACK && frameCounter < 30)
+	if (state == ATTACK && frameCounter < 25)
 	{
 		frameCounter++;
 	}
-	else if (frameCounter >= 30)
+	else if (frameCounter >= 25)
 	{
 		state = IDLE;
 		frameCounter = 0;

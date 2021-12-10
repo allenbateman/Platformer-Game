@@ -31,7 +31,8 @@ enum Collider_Type {
 	PLAYER = 6,
 	PLAYER_ATTACK = 7,
 	GROUND = 8,
-	ENEMY = 9
+	ENEMY = 9,
+	POTION = 10
 };
 struct Color {
 	float r, g, b, a;

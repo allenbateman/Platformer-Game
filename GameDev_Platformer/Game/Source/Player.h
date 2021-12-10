@@ -58,7 +58,14 @@ public:
 	PhysBody* rightSensor;
 	PhysBody* botSensor;
 	PhysBody* topSensor;
+<<<<<<< Updated upstream
 	
 	int score = 0;
+=======
+
+	int lives;
+	bool isGodmodeOn;
+
+>>>>>>> Stashed changes
 	int frameCounter;
 };
