@@ -49,10 +49,7 @@ bool Scene1::Start()
 	app->musher->patrolPoint1 = { 28,27 };
 	app->musher->patrolPoint2 = { 22,27 };
 
-<<<<<<< Updated upstream
 	app->bat->Spawn({54,22});
-
-=======
 	app->bat->Spawn({54,100});
 
 	props = app->tex->Load("Assets/Spritesx16/props.png");
@@ -123,7 +120,6 @@ bool Scene1::Start()
 
 	frameCounter1 = 0;
 	frameCounter2 = 0;
->>>>>>> Stashed changes
 
 	return true;
 }
