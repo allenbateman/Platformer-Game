@@ -29,7 +29,8 @@
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\Musher.cpp" />
     <ClCompile Include="Source\Bat.cpp" />
-    <ClCompile Include="Source\ModuleEnemies.cpp" />
+    <ClCompile Include="Source\ModuleEntities.cpp" />
+    <ClCompile Include="Source\Entity.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -83,7 +84,8 @@
     <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\Musher.h" />
     <ClInclude Include="Source\Bat.h" />
-    <ClInclude Include="Source\ModuleEnemies.h" />
+    <ClInclude Include="Source\ModuleEntities.h" />
+    <ClInclude Include="Source\Entity.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">

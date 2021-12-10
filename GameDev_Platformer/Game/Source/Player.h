@@ -59,5 +59,6 @@ public:
 	PhysBody* botSensor;
 	PhysBody* topSensor;
 	
+	int score = 0;
 	int frameCounter;
 };

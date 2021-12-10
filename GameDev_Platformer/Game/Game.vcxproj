@@ -21,7 +21,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -90,6 +90,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Bat.cpp" />
+    <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\FadeToBlack.cpp" />
     <ClCompile Include="Source\GameOver.cpp" />
     <ClCompile Include="Source\Intro.cpp" />
@@ -99,7 +100,7 @@
     <ClCompile Include="Source\Audio.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Map.cpp" />
-    <ClCompile Include="Source\ModuleEnemies.cpp" />
+    <ClCompile Include="Source\ModuleEntities.cpp" />
     <ClCompile Include="Source\ModulePhysics.cpp" />
     <ClCompile Include="Source\Musher.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
@@ -114,13 +115,14 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Bat.h" />
+    <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\FadeToBlack.h" />
     <ClInclude Include="Source\GameOver.h" />
     <ClInclude Include="Source\Globals.h" />
     <ClInclude Include="Source\Intro.h" />
     <ClInclude Include="Source\LevelManagement.h" />
     <ClInclude Include="Source\Map.h" />
-    <ClInclude Include="Source\ModuleEnemies.h" />
+    <ClInclude Include="Source\ModuleEntities.h" />
     <ClInclude Include="Source\ModulePhysics.h" />
     <ClInclude Include="Source\Musher.h" />
     <ClInclude Include="Source\p2List.h" />
