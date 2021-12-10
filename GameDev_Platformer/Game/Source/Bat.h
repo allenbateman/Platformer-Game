@@ -41,6 +41,7 @@ public:
 	bool onGround = false;
 
 	float detectionDistance = 10; // in pixels
+	int counter = 0;
 
 	SDL_RendererFlip spriteDir;
 	int spriteRotation = 0;
@@ -51,6 +52,8 @@ public:
 	PathFinding* pathfinding;
 
 	//in Tiles
+	iPoint patrolPoint1;
+	iPoint patrolPoint2;
 	bool OnPatrolPoint = false;
 
 	float speedMultiplier = 0.2f;// 1-0   1->slowest-> 0.1 fastest;
@@ -58,8 +61,12 @@ public:
 	enum BatState {
 		PATROL = 0,
 		MOVE_TOWARDS = 1,
-		DEATH = 2
+		JUMP = 2,
+		DEATH = 3
 	};
 	BatState state;
+
+
+	int curretnTileIndex = 0;
 
 };

@@ -65,7 +65,7 @@ bool Bat::Start()
 
 		currentAnim = &idleAnim;
 
-		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_kinematicBody, { 0,400,125,255 });
+		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
 		physBody->listener = app->levelManagement->currentScene;
 		physBody->color = { 255,125,0,255 };
 
@@ -80,7 +80,7 @@ bool Bat::Start()
 
 		int w, h;
 		uchar* data = NULL;
-		if (app->map->CreateWalkabilityMap(w, h, &data)) pathfinding->SetMap(w, h, data);
+		if (app->map->CreateWalkabilityMap(w, h, &data,2)) pathfinding->SetMap(w, h, data);
 		RELEASE_ARRAY(data);
 	}
 	return true;
@@ -92,10 +92,13 @@ bool Bat::PreUpdate()
 	position.y = physBody->body->GetPosition().y;
 
 	float distanceToPlayer = position.DistanceTo(app->player->position);
+	b2Vec2 impulse = { 0,-5 };
 
 	switch (state)
 	{
 	case PATROL:
+
+
 		if (OnPatrolPoint)
 		{
 			CalculateNextPatrolPoint();
@@ -104,7 +107,12 @@ bool Bat::PreUpdate()
 		{
 			state = MOVE_TOWARDS;
 		}
-
+		if (counter > 10)
+		{
+			physBody->body->ApplyLinearImpulse(impulse, physBody->body->GetPosition(), false);
+			counter = 0;
+		}
+		counter++;
 		break;
 	case MOVE_TOWARDS:
 		UpdatePath();
@@ -112,7 +120,12 @@ bool Bat::PreUpdate()
 		{
 			state = PATROL;
 		}
-
+		if (counter > 10)
+		{
+			physBody->body->ApplyLinearImpulse(impulse, physBody->body->GetPosition(), false);
+			counter = 0;
+		}
+		counter++;
 		break;
 	case JUMP:
 		break;
@@ -134,7 +147,7 @@ bool Bat::Update(float dt)
 	switch (state)
 	{
 	case PATROL:
-		Move(dt);
+		//Move(dt);
 		break;
 	case MOVE_TOWARDS:
 		Move(dt);
@@ -171,7 +184,7 @@ bool Bat::PostUpdate()
 
 	if (texture != nullptr && active)
 		app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 14), METERS_TO_PIXELS(physBody->body->GetPosition().y - 14),
-			&(currentAnim->GetCurrentFrame()), 1, spriteRotation, position.x - 8, position.y - 8, 1.8f, spriteDir);
+			&(currentAnim->GetCurrentFrame()), 1, spriteRotation, position.x, position.y, 1.8f, spriteDir);
 	return true;
 }
 
@@ -198,7 +211,9 @@ bool Bat::SaveState(pugi::xml_node& data) const
 
 bool Bat::CalculateNextPatrolPoint()
 {
-	//otherwise continue
+	iPoint destination;
+	iPoint origin;
+
 	return true;
 }
 
@@ -222,7 +237,7 @@ void Bat::UpdatePath()
 	destination = app->map->WorldToMap(destination.x, destination.y);
 	origin = app->map->WorldToMap((int)origin.x, (int)origin.y);
 
-	//pathfinding->CreatePath(origin, destination);
+	pathfinding->CreatePath(origin, destination);
 }
 
 void Bat::Move(float dt)

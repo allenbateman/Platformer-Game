@@ -1,6 +1,7 @@
 #include "App.h"
 #include "PathFinding.h"
 #include "Render.h"
+#include "Map.h"
 #include "Defs.h"
 #include "Log.h"
 
@@ -62,20 +63,21 @@ uchar PathFinding::GetTileAt(const iPoint& pos) const
 
 void PathFinding::DrawPath()
 {
+	if (DEBUG)
+	{
+		const DynArray<iPoint>* path = GetLastPath();
+		SDL_Rect rect;
 
-	//const DynArray<iPoint>* path = app->pathfinding->GetLastPath();
-	//SDL_Rect rect;
-	//
-
-	//for (uint i = 0; i < path->Count(); ++i)
-	//{
-	//	iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
-	//	rect.x = pos.x;
-	//	rect.y = pos.y;
-	//	rect.w = 16;
-	//	rect.h = 16;
-	//	app->render->DrawRectangle(rect,255,125,0,150);
-	//}
+		for (uint i = 0; i < path->Count(); ++i)
+		{
+			iPoint pos = app->map->MapToWorld(path->At(i)->x, path->At(i)->y);
+			rect.x = pos.x;
+			rect.y = pos.y;
+			rect.w = 16;
+			rect.h = 16;
+			app->render->DrawRectangle(rect, 255, 125, 0, 150);
+		}
+	}
 }
 
 // To request all tiles involved in the last generated path
@@ -201,6 +203,7 @@ int PathFinding::CreatePath(const iPoint& origin, const iPoint& destination)
 	ListItem<PathNode>* current = open.list.start;
 	ListItem<PathNode>* lowest;
 	lastPath.Clear();
+
 	if (IsWalkable(origin) && IsWalkable(destination))
 	{
 		while (open.list.count() > 0)

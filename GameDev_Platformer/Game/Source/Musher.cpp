@@ -66,7 +66,7 @@ bool Musher::Start()
 
 		int w, h;
 		uchar* data = NULL;
-		if (app->map->CreateWalkabilityMap(w, h, &data)) pathfinding->SetMap(w, h, data);
+		if (app->map->CreateWalkabilityMap(w, h, &data,1)) pathfinding->SetMap(w, h, data);
 		RELEASE_ARRAY(data);
 
 		state = PATROL;
@@ -142,10 +142,9 @@ bool Musher::Update(float dt)
 
 bool Musher::PostUpdate()
 {
-
-	const DynArray<iPoint>* path = pathfinding->GetLastPath();
 	if (DEBUG)
 	{
+		const DynArray<iPoint>* path = pathfinding->GetLastPath();
 		SDL_Rect rect;
 		for (uint i = 0; i < path->Count(); ++i)
 		{
@@ -157,6 +156,8 @@ bool Musher::PostUpdate()
 			app->render->DrawRectangle(rect, 255, 125, 0, 150);
 		}
 	}
+
+	//pathfinding->DrawPath();
 	currentAnim->Update();
 
 	if(texture!=nullptr && active)

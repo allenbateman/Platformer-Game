@@ -38,7 +38,7 @@ bool ModuleEntities::PreUpdate()
 
 bool ModuleEntities::Update(float dt)
 {
-    HandleEnemySpawn();
+ //   HandleEnemySpawn();
 
     for (uint i = 0; i < MAX_ENTITIES; ++i)
     {
@@ -64,40 +64,40 @@ bool ModuleEntities::PostUpdate()
     return true;
 }
 
-bool ModuleEntities::CleanUp()
-{
-    LOG("Freeing all entities");
-
-    for (uint i = 0; i < MAX_ENTITIES; ++i)
-    {
-        if (entities[i] != nullptr)
-        {
-            delete entities[i];
-            entities[i] = nullptr;
-        }
-    }
-
-    return true;
-}
-
-void ModuleEntities::HandleEnemySpawn()
-{
-    // Iterate all the entities queue
-    for (uint i = 0; i < MAX_ENTITIES; ++i)
-    {
-        if (spawnQueue[i].type != EntityType::NO_TYPE)
-        {
-            // Spawn a new Entitie if the screen has reached a spawn position
-            if (spawnQueue[i].x * SCREEN_SIZE < app->render->camera.x + (app->render->camera.w * SCREEN_SIZE) + SPAWN_MARGIN)
-            {
-                LOG("Spawning Entity at %d", spawnQueue[i].x * SCREEN_SIZE);
-
-                SpawnEntity(spawnQueue[i]);
-                spawnQueue[i].type = EntityType::NO_TYPE; // Removing the newly spawned Entitie from the queue
-            }
-        }
-    }
-}
+//bool ModuleEntities::CleanUp()
+//{
+//    LOG("Freeing all entities");
+//
+//    for (uint i = 0; i < MAX_ENTITIES; ++i)
+//    {
+//        if (entities[i] != nullptr)
+//        {
+//            delete entities[i];
+//            entities[i] = nullptr;
+//        }
+//    }
+//
+//    return true;
+//}
+//
+//void ModuleEntities::HandleEnemySpawn()
+//{
+//    // Iterate all the entities queue
+//    for (uint i = 0; i < MAX_ENTITIES; ++i)
+//    {
+//        if (spawnQueue[i].type != EntityType::NO_TYPE)
+//        {
+//            // Spawn a new Entitie if the screen has reached a spawn position
+//            if (spawnQueue[i].x * SCREEN_SIZE < app->render->camera.x + (app->render->camera.w * SCREEN_SIZE) + SPAWN_MARGIN)
+//            {
+//                LOG("Spawning Entity at %d", spawnQueue[i].x * SCREEN_SIZE);
+//
+//                SpawnEntity(spawnQueue[i]);
+//                spawnQueue[i].type = EntityType::NO_TYPE; // Removing the newly spawned Entitie from the queue
+//            }
+//        }
+//    }
+//}
 
 void ModuleEntities::HandleEnemyDespawn()
 {

@@ -192,7 +192,7 @@ iPoint Map::WorldToMap(int x, int y) const
 	return ret;
 }
 
-bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
+bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer,int layerValue) const
 {
 	bool ret = false;
 	ListItem<MapLayer*>* item;
@@ -202,9 +202,9 @@ bool Map::CreateWalkabilityMap(int& width, int& height, uchar** buffer) const
 	{
 		MapLayer* layer = item->data;
 
-		if (layer->properties.GetProperty("Navigation", 0) == 0)
+		if (layer->properties.GetProperty("Navigation", 0) != layerValue)
 			continue;
-
+		
 		uchar* map = new uchar[layer->width * layer->height];
 		memset(map, 1, layer->width * layer->height);
 

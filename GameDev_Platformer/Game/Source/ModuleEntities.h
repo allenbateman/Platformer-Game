@@ -33,11 +33,11 @@ public:
 	bool PreUpdate() override;
 	bool Update(float dt) override;
 	bool PostUpdate() override;
-	bool CleanUp() override;
+	//bool CleanUp() override;
 
 
 	// Iterates the queue and checks for camera position
-	void HandleEnemySpawn();
+	//void HandleEnemySpawn();
 
 	// Destroys any enemies that have moved outside the camera limits
 	void HandleEnemyDespawn();
