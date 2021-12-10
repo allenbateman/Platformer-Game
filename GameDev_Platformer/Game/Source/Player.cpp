@@ -53,10 +53,21 @@ bool ModulePlayer::Start()
 		jumpingPlayerAnim.mustFlip = true;
 		jumpingPlayerAnim.speed = 0.1f;
 		//Death anim
-		deathPlayerAnim.PushBack({ 262, 43, 16, 21 });
+		deathPlayerAnim.PushBack({ 0, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 19, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 38, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 57, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 76, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 95, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 114, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 133, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 152, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 171, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 171, 212, 19, 44 });
+		deathPlayerAnim.PushBack({ 171, 212, 19, 44 });
 		deathPlayerAnim.loop = false;
 		deathPlayerAnim.mustFlip = true;
-		deathPlayerAnim.speed = 1.0f;
+		deathPlayerAnim.speed = 0.1f;
 		//Melee attack anim
 		meleePlayerAnim.PushBack({ 0, 0, 28, 20 });
 		meleePlayerAnim.PushBack({ 0, 0, 28, 20 });
@@ -167,23 +178,23 @@ bool ModulePlayer::PreUpdate()
 	rayLength = 25;
 	physBody->RayCast(position.x, position.y, position.x + rayLength, position.y,normal1,normal2);
 	//Right
-	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && state != ATTACK)
+	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && state != ATTACK && state != DEAD)
 	{
 		physBody->body->SetLinearVelocity({ speed.x, physBody->body->GetLinearVelocity().y });
 		state = MOVE_RIGHT;
 
-	}else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && state != ATTACK)
+	}else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && state != ATTACK && state != DEAD)
 	{
 		physBody->body->SetLinearVelocity({ -speed.x, physBody->body->GetLinearVelocity().y });
 		state = MOVE_LEFT;
 
 	}
-	else if(onGround && state != ATTACK){
+	else if(onGround && state != ATTACK && state != DEAD){
 		physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
 		state = IDLE;
 	}
 	//Jump
-	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && onGround && state != ATTACK)
+	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && onGround && state != ATTACK && state != DEAD)
 	{
 		physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(),true);
 		doubleJump = true;
@@ -192,7 +203,7 @@ bool ModulePlayer::PreUpdate()
 
 
 	}else//DoubleJump
-	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && doubleJump && state != ATTACK)
+	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && doubleJump && state != ATTACK && state != DEAD)
 	{
 		physBody->body->ApplyLinearImpulse( b2Vec2(0,-jumpForce) , physBody->body->GetWorldCenter(), true);
 		doubleJump = false;
@@ -204,7 +215,7 @@ bool ModulePlayer::PreUpdate()
 	if (direction == 1) dir = -25;
 	else dir = 20;
 
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && state != ATTACK && onGround)
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && state != ATTACK && state != DEAD && onGround)
 	{
 		physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
 
@@ -292,7 +303,6 @@ bool ModulePlayer::PostUpdate()
 		break;
 	case DEAD:
 		currentAnim = &deathPlayerAnim;
-		direction = SDL_FLIP_HORIZONTAL;
 		break;
 	}
 
@@ -301,6 +311,16 @@ bool ModulePlayer::PostUpdate()
 		if (state == ATTACK && direction == 1)
 		{
 			app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 36), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
+				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
+		}
+		else if (state == DEAD)
+		{
+			if (direction == 1)
+			{
+				app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x) - 19, METERS_TO_PIXELS(physBody->body->GetPosition().y) - 72,
+					&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
+			}
+			else app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 17), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 72,
 				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 		}
 		else app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 16), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
