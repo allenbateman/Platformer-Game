@@ -71,6 +71,7 @@ private:
 	Animation* currentLivesAnim = nullptr;
 	Animation idlePortalAnim, transitionPortalAnim, openPortalAnim, idleShrineAnim, transitionShrineAnim, openShrineAnim, lives1Anim,
 		lives2Anim, lives3Anim;
+	uint music;
 
 	PortalState portalState;
 	ShrineState shrineState;

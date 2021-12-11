@@ -52,6 +52,8 @@ bool Scene1::Start()
 	app->bat->Spawn({54,22});
 
 	props = app->tex->Load("Assets/Spritesx16/props.png");
+	music = app->audio->LoadFx("Assets/audio/music/level1.wav");
+	app->audio->PlayFx(music);
 
 	//Portal animations
 	//Idle anim
