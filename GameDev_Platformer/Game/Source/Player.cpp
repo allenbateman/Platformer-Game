@@ -168,7 +168,10 @@ bool ModulePlayer::PreUpdate()
 			onGround = false;
 			state = JUMP;
 
-
+			if (physBody->body->GetLinearVelocity().y > speed.y)
+			{
+				physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y });
+			}
 		}
 		else//DoubleJump
 			if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && doubleJump && state != ATTACK && state != DEAD)
@@ -176,6 +179,11 @@ bool ModulePlayer::PreUpdate()
 				physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(), true);
 				doubleJump = false;
 				state = DOUBLE_JUMP;
+
+				if (physBody->body->GetLinearVelocity().y > speed.y)
+				{
+					physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y });
+				}
 			}
 	}
 	else
@@ -295,12 +303,10 @@ bool ModulePlayer::Update(float dt)
 		if (isGodmodeOn) 
 		{
 			isGodmodeOn = false;
-			physBody->body->SetType(b2_dynamicBody);
 		}
 		else
 		{
 			isGodmodeOn = true;
-			/*physBody->body->SetType(b2_kinematicBody);*/
 		}
 	}
 
@@ -370,7 +376,7 @@ bool ModulePlayer::PostUpdate()
 
 		if (state == ATTACK && direction == 1)
 		{
-			app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 36), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
+			app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 52), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
 				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 		}
 		else if (state == DEAD)
