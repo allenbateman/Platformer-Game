@@ -25,7 +25,7 @@ bool Musher::Awake()
 
 bool Musher::Start()
 {
-	LOG("MUSER START");
+	LOG("MUShER START");
 	if (physBody == NULL)
 	{
 		texture = app->tex->Load("Assets/Spritesx16/characters.png");
@@ -329,5 +329,6 @@ void Musher::SetPosition(iPoint pos)
 	newPos.x = PIXEL_TO_METERS(pixelPos.x);
 	newPos.y = PIXEL_TO_METERS(pixelPos.y);
 
-	physBody->body->SetTransform(newPos, physBody->body->GetAngle());
+	if(physBody->body != nullptr)
+		physBody->body->SetTransform(newPos, physBody->body->GetAngle());
 }

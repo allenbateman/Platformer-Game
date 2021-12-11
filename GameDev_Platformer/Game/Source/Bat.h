@@ -9,6 +9,7 @@
 
 
 
+
 class Bat : public Module
 {
 public:
@@ -46,6 +47,7 @@ public:
 	SDL_RendererFlip spriteDir;
 	int spriteRotation = 0;
 	fPoint position;
+	fPoint lastPosition;
 	fPoint playerPos;
 	PhysBody* physBody;
 

@@ -64,15 +64,18 @@ bool Bat::Start()
 		deathAnim.speed = 0.15f;
 
 		currentAnim = &idleAnim;
-
-		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_kinematicBody, { 0,400,125,255 });
+		position = { 54,22 };
+		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
 		physBody->listener = app->levelManagement->currentScene;
 		physBody->color = { 255,255,0,255 };
 		physBody->type = Collider_Type::ENEMY;
 
 		physBody->body->SetFixedRotation(true);
 		app->physics->entities.add(physBody);
-		
+
+		position.x = physBody->body->GetPosition().x;
+		position.y = physBody->body->GetPosition().y;
+		lastPosition = position;
 
 		state = PATROL;
 
@@ -86,7 +89,7 @@ bool Bat::Start()
 	}
 	else if (physBody->body == NULL)
 	{
-		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_kinematicBody, { 0,400,125,255 });
+		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
 		physBody->listener = app->levelManagement->currentScene;
 		physBody->color = { 255,255,0,255 };
 		physBody->type = Collider_Type::ENEMY;
@@ -104,13 +107,12 @@ bool Bat::PreUpdate()
 	position.y = physBody->body->GetPosition().y;
 
 	float distanceToPlayer = position.DistanceTo(app->player->position);
-	b2Vec2 impulse = { 0,-5 };
 
 	switch (state)
 	{
 	case PATROL:
 
-
+		physBody->body->SetLinearVelocity({ 0,-0.2f });
 		if (OnPatrolPoint)
 		{
 			CalculateNextPatrolPoint();
@@ -119,14 +121,6 @@ bool Bat::PreUpdate()
 		{
 			state = MOVE_TOWARDS;
 		}
-		if (counter > 10)
-		{
-			physBody->body->SetLinearVelocity({ 0,0 });
-
-			//physBody->body->ApplyLinearImpulse(impulse, physBody->body->GetPosition(), false);
-			counter = 0;
-		}
-		counter++;
 		break;
 	case MOVE_TOWARDS:
 		UpdatePath();
@@ -136,7 +130,6 @@ bool Bat::PreUpdate()
 		}
 		if (counter > 10)
 		{
-			//physBody->body->ApplyLinearImpulse(impulse, physBody->body->GetPosition(), false);
 			counter = 0;
 		}
 		counter++;
@@ -161,7 +154,7 @@ bool Bat::Update(float dt)
 	switch (state)
 	{
 	case PATROL:
-		//Move(dt);
+		
 		break;
 	case MOVE_TOWARDS:
 		Move(dt);
@@ -195,6 +188,27 @@ bool Bat::PostUpdate()
 		}
 	}
 
+	b2Vec2 newPos;
+	newPos.x = lastPosition.x;
+	newPos.y = lastPosition.y;
+
+	switch (state)
+	{
+	case PATROL:
+	//	physBody->body->SetLinearVelocity({ 0,0 });
+		break;
+	case MOVE_TOWARDS:
+		break;
+	case JUMP:
+		break;
+	case DEATH:
+		break;
+	default:
+		break;
+	}
+
+
+	lastPosition = position;
 
 	SDL_Rect* rect;
 	rect = &currentAnim->GetCurrentFrame();

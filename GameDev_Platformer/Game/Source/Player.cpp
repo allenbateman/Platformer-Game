@@ -426,8 +426,8 @@ void ModulePlayer::SetPosition(iPoint pos)
 
 	newPos.x = PIXEL_TO_METERS(pixelPos.x);
 	newPos.y = PIXEL_TO_METERS(pixelPos.y);
-
-	physBody->body->SetTransform(newPos, physBody->body->GetAngle());
+	if(physBody->body != nullptr)
+		physBody->body->SetTransform(newPos, physBody->body->GetAngle());
 }
 
 void ModulePlayer::Spawn(iPoint pos)
