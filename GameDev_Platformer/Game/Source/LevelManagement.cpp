@@ -71,9 +71,13 @@ bool LevelManagement::PreUpdate()
 		break;
 	case GAME_OVER:
 		//cout << "GAME OVER \n";
-		if (app->input->GetKey(SDL_SCANCODE_F4) == KEY_DOWN && currentScene->active == true)
+		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = START;
+		}
+		if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN && currentScene->active == true)
+		{
+			app->LoadGameRequest();
 		}
 		break;
 	default:

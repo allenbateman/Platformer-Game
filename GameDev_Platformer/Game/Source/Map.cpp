@@ -625,13 +625,17 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 
 			obj->type = Collider_Type::KEY;
 			
-		}else if (strcmp(object.attribute("type").as_string(), "win") == 0)
+		}else if (strcmp(object.attribute("type").as_string(), "Win") == 0)
 		{
 			obj->type = Collider_Type::WIN;
 
 		}else if (strcmp(object.attribute("type").as_string(), "Spawner") == 0) {
 
 			obj->type = Collider_Type::SPAWNER;
+		}
+		else if (strcmp(object.attribute("type").as_string(), "Checkpoint") == 0) {
+
+			obj->type = Collider_Type::CHECK_POINT;
 		}
 		layer->objects.add(obj);
 		//send current object node and obj to store the properties
@@ -780,6 +784,16 @@ bool Map::SetMapColliders()
 				pb->color = { 255,0,250,255 };
 				pb->id = object->data->id;
 				pb->type = Collider_Type::SPAWNER;
+				app->physics->checkPoints.add(pb);
+
+				LOG("SETTING SPAWNER COLLIDER...");
+			}
+			else if (object->data->type == Collider_Type::CHECK_POINT)
+			{
+				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y + (r.h * 0.5f), r.w, r.h, b2_staticBody);
+				pb->color = { 255,0,250,255 };
+				pb->id = object->data->id;
+				pb->type = Collider_Type::CHECK_POINT;
 				app->physics->checkPoints.add(pb);
 
 				LOG("SETTING SPAWNER COLLIDER...");

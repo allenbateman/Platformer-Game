@@ -45,10 +45,12 @@ bool Scene1::Start()
 
 	app->player->Spawn({ 2, 26 });
 
+	app->musher->Enable();
 	app->musher->Spawn({ 24, 27});
 	app->musher->patrolPoint1 = { 28,27 };
 	app->musher->patrolPoint2 = { 22,27 };
 
+	app->bat->Enable();
 	app->bat->Spawn({54,22});
 
 	props = app->tex->Load("Assets/Spritesx16/props.png");
@@ -316,7 +318,7 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	p2List_item<PhysBody*>* ToRemove;
 	p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
-	if (bodyA->type == Collider_Type::PLAYER && app->player->isGodmodeOn == 0)
+	if (bodyA->type == Collider_Type::PLAYER )
 	{
 		//LOG("I got touched! A");
 		switch (bodyB->type)
@@ -371,165 +373,24 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			}
 			break;
 		case Collider_Type::DEATH:
+
+			if(!app->player->isGodmodeOn)
 				app->player->state = PlayerState::DEAD;
-				LOG("KILL ME!");
-			break;
-		case Collider_Type::WIN:
-			if (KeysToTake == 0)
-			{
-				app->levelManagement->NextLevel();
-				LOG("I WON, GIVE ME TREAT!");
-			}
-			break;
-		case Collider_Type::GROUND:
-			app->player->onGround = true;
-			app->player->doubleJump= false;
-			LOG("ON GROUND");
-			break;
-		default:
-			break;
-		}
 
-	}
-	else if (bodyB->type == Collider_Type::PLAYER && app->player->isGodmodeOn == 0)
-	{
-		//LOG("I got touched! B");
-		switch (bodyA->type)
-		{
-		case Collider_Type::GEM:
-
-			while (current != NULL)
-			{
-				bool removeItem = false;
-				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyB) {
-					removeItem = true;
-					LOG("REMOVE GEM");
-				}
-				current = current->next;
-				if (removeItem)
-				{
-					itemToRemove->data->pendingToDelete = true;
-
-					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
-					if (!obj->properties.SetProperty("Draw", 0))
-					{
-						LOG("Could not change object property");
-					}
-					app->physics->collectables.del(itemToRemove);
-				}
-			}
-			break;
-		case Collider_Type::KEY:
-			while (current != NULL)
-			{
-				bool removeItem = false;
-				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyB) {
-					removeItem = true;
-					KeysToTake--;
-					LOG("REMOVE KEY");
-				}
-				current = current->next;
-				if (removeItem)
-				{
-					itemToRemove->data->pendingToDelete = true;
-
-					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
-					if (!obj->properties.SetProperty("Draw", 0))
-					{
-						LOG("Could not change object property");
-					}
-					app->physics->collectables.del(itemToRemove);
-				}
-			}
-			break;
-		case Collider_Type::POTION:
-			app->player->lives++;
-			LOG("I GET AN EXTRA HEART!");
-			break;
-		case Collider_Type::DEATH:
-			app->player->lives = 0;
 			LOG("KILL ME!");
-			break;
-		case Collider_Type::WIN:
-			if (KeysToTake == 0)
-			{
-				app->levelManagement->NextLevel();
-				LOG("I WON, GIVE ME TREAT!");
-			}
-			break;
-		case Collider_Type::GROUND:
-			app->player->onGround = true;
-			app->player->doubleJump = false;
-			LOG("ON GROUND");
+
 			break;
 		case Collider_Type::ENEMY:
-			app->player->lives--;
-			LOG("OUCH! I GOT HIT");
-			break;
-		default:
-			break;
-		}
-	}
-	//PLAYER GODMODE ON -----------------------------
-	else if (bodyA->type == Collider_Type::PLAYER && app->player->isGodmodeOn)
-	{
-		//LOG("I got touched! A");
-		switch (bodyB->type)
-		{
-		case Collider_Type::GEM:
-			while (current != NULL)
+			if (!app->player->isGodmodeOn)
 			{
-				bool removeItem = false;
-				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyB) {
-					removeItem = true;
-					LOG("REMOVE GEM");
-				}
-				current = current->next;
-				if (removeItem)
+				app->player->lives--;
+				LOG("OUCH GOT HIT!");
+				if (app->player->lives <= 0)
 				{
-					itemToRemove->data->pendingToDelete = true;
-
-					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
-					if (!obj->properties.SetProperty("Draw", 0))
-					{
-						LOG("Could not change object property");
-					}
-
-					app->physics->collectables.del(itemToRemove);
+					app->player->state = PlayerState::DEAD;
+					LOG("KILL ME!");
 				}
 			}
-			break;
-		case Collider_Type::KEY:
-			while (current != NULL)
-			{
-				bool removeItem = false;
-				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyB) {
-					removeItem = true;
-					KeysToTake--;
-					LOG("REMOVE KEY");
-				}
-				current = current->next;
-				if (removeItem)
-				{
-					itemToRemove->data->pendingToDelete = true;
-
-					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
-					if (!obj->properties.SetProperty("Draw", 0))
-					{
-						LOG("Could not change object property");
-					}
-
-					app->physics->collectables.del(itemToRemove);
-				}
-			}
-			break;
-		case Collider_Type::DEATH:
-			app->player->state = PlayerState::DEAD;
-			LOG("KILL ME!");
 			break;
 		case Collider_Type::WIN:
 			if (KeysToTake == 0)
@@ -548,81 +409,26 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		}
 
 	}
-	else if (bodyB->type == Collider_Type::PLAYER && app->player->isGodmodeOn)
+	
+	//Entities Collision
+	current = app->physics->entities.getFirst();
+
+	if (bodyA->type == Collider_Type::ENEMY && bodyB->type == Collider_Type::PLAYER_ATTACK)
 	{
-		//LOG("I got touched! B");
-		switch (bodyA->type)
+		while (current != NULL)
 		{
-		case Collider_Type::GEM:
-
-			while (current != NULL)
-			{
-				bool removeItem = false;
-				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyB) {
-					removeItem = true;
-					LOG("REMOVE GEM");
-				}
-				current = current->next;
-				if (removeItem)
-				{
-					itemToRemove->data->pendingToDelete = true;
-
-					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
-					if (!obj->properties.SetProperty("Draw", 0))
-					{
-						LOG("Could not change object property");
-					}
-					app->physics->collectables.del(itemToRemove);
-				}
+			bool removeEntity = false;
+			p2List_item<PhysBody*>* entityToRemove = current;
+			if (current->data == bodyA) {
+				removeEntity = true;
+				LOG("REMOVE ENEMY");
 			}
-			break;
-		case Collider_Type::KEY:
-			while (current != NULL)
+			current = current->next;
+			if (removeEntity)
 			{
-				bool removeItem = false;
-				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyB) {
-					removeItem = true;
-					KeysToTake--;
-					LOG("REMOVE KEY");
-				}
-				current = current->next;
-				if (removeItem)
-				{
-					itemToRemove->data->pendingToDelete = true;
-
-					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
-					if (!obj->properties.SetProperty("Draw", 0))
-					{
-						LOG("Could not change object property");
-					}
-					app->physics->collectables.del(itemToRemove);
-				}
+				entityToRemove->data->pendingToDelete = true;
+				app->physics->entities.del(entityToRemove);
 			}
-			break;
-		case Collider_Type::POTION:
-			app->player->lives++;
-			LOG("I GET AN EXTRA HEART!");
-			break;
-		case Collider_Type::WIN:
-			if (KeysToTake == 0)
-			{
-				app->levelManagement->NextLevel();
-				LOG("I WON, GIVE ME TREAT!");
-			}
-			break;
-		case Collider_Type::GROUND:
-			app->player->onGround = true;
-			app->player->doubleJump = false;
-			LOG("ON GROUND");
-			break;
-		default:
-			break;
 		}
 	}
-	//if (bodyA->type == Collider_Type::ENEMY && bodyB->type == Collider_Type::PLAYER_ATTACK)
-	//{
-	//	
-	//}
 }

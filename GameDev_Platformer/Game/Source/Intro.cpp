@@ -34,7 +34,6 @@ bool Intro::Awake()
 bool Intro::Start()
 {
 	img = app->tex->Load("Assets/Spritesx16/intro.png");
-	//img = app->tex->Load("Assets/Spritesx16/StartTitle.png");
 	return true;
 }
 

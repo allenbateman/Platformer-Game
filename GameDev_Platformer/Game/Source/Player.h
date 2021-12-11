@@ -65,7 +65,7 @@ public:
 	int score = 0;
 
 	int lives;
-	bool isGodmodeOn;
+	bool isGodmodeOn = false;
 
 	int frameCounter;
 };
