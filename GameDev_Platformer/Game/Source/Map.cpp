@@ -797,9 +797,7 @@ bool Map::SetMapColliders()
 
 void Map::ClearColliders()
 {
-	app->physics->collectables.clear();
-	app->physics->groundColliders.clear();
-	app->physics->checkPoints.clear();
+	app->physics->ClearAllCollidersLists();
 }
 
 bool Map::LoadState(pugi::xml_node& data)
@@ -906,7 +904,7 @@ bool Map::LoadState(pugi::xml_node& data)
 		mapLayerNode = mapLayerNode.next_sibling();
 	}
 
-	//now we set all map colliders 
+	//now we set all loaded map colliders 
 	SetMapColliders();
 
 	return ret;

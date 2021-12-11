@@ -50,7 +50,6 @@ bool Scene1::Start()
 	app->musher->patrolPoint2 = { 22,27 };
 
 	app->bat->Spawn({54,22});
-	app->bat->Spawn({54,100});
 
 	props = app->tex->Load("Assets/Spritesx16/props.png");
 
@@ -271,6 +270,8 @@ bool Scene1::CleanUp()
 {
 	LOG("Disable scene 1");
 	app->player->Disable();
+	app->musher->Disable();
+	app->bat->Disable();
 	app->map->CleanUp();
 	app->physics->Disable();
 	
@@ -296,6 +297,7 @@ bool Scene1::LoadState(pugi::xml_node& data)
 	bool ret = true;
 	pugi::xml_node level = data.child("level1");
 	KeysToTake = level.attribute("keys_to_collect").as_int();
+	playerInCheckPoint = level.attribute("player_in_check_point").as_bool();
 	return ret;
 }
 
@@ -305,6 +307,7 @@ bool Scene1::SaveState(pugi::xml_node& data) const
 	pugi::xml_node level = data.append_child("level1");
 
 	level.append_attribute("keys_to_collect") = KeysToTake;
+	level.append_attribute("player_in_check_point") = playerInCheckPoint;
 
 	return ret;
 }

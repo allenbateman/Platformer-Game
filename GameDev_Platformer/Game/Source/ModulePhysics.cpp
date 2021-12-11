@@ -122,7 +122,14 @@ bool ModulePhysics::PreUpdate()
 			LOG("Adding new player sensor collider");
 		}
 	}
-
+	for (p2List_item<PhysBody*>* pb = playerAttackSensors.getFirst(); pb; pb = pb->next)
+	{
+		if (!allPhysicBodies.find(pb->data))
+		{
+			allPhysicBodies.add(pb->data);
+			LOG("Adding new player attack sensor collider");
+		}
+	}
 	return true;
 }
 
@@ -288,10 +295,7 @@ bool ModulePhysics::PostUpdate()
 
 void ModulePhysics::Disable()
 {
-	groundColliders.clear();
-	collectables.clear();
-	deathColliders.clear();
-	checkPoints.clear();
+	ClearAllCollidersLists();
 	active = false;
 }
 
@@ -394,6 +398,18 @@ void ModulePhysics::DrawColliders()
 
 }
 
+void ModulePhysics::ClearAllCollidersLists()
+{
+	groundColliders.clear();
+	playerSensors.clear();
+	collectables.clear();
+	deathColliders.clear();
+	checkPoints.clear();
+	entities.clear();
+	allPhysicBodies.clear();
+	LOG("All colliders list have been cleared...");
+}
+
 void PhysBody::GetPosition(int& x, int& y) const
 {
 	b2Vec2 pos = body->GetPosition();
@@ -472,10 +488,21 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 
 bool ModulePhysics::LoadState(pugi::xml_node& data)
 {
-	return false;
+	bool ret = true;
+
+	pugi::xml_node physics = data.child("physics");
+
+
+	return ret;
 }
 
 bool ModulePhysics::SaveState(pugi::xml_node& data) const
 {
-	return false;
+
+	bool ret = true;
+
+	pugi::xml_node physics = data.append_child("physics");
+
+
+	return ret;
 }

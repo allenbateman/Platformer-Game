@@ -65,7 +65,7 @@ bool Bat::Start()
 
 		currentAnim = &idleAnim;
 
-		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
+		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_kinematicBody, { 0,400,125,255 });
 		physBody->listener = app->levelManagement->currentScene;
 		physBody->color = { 255,125,0,255 };
 		physBody->type = Collider_Type::ENEMY;
@@ -110,7 +110,9 @@ bool Bat::PreUpdate()
 		}
 		if (counter > 10)
 		{
-			physBody->body->ApplyLinearImpulse(impulse, physBody->body->GetPosition(), false);
+			physBody->body->SetLinearVelocity({ 0,0 });
+
+			//physBody->body->ApplyLinearImpulse(impulse, physBody->body->GetPosition(), false);
 			counter = 0;
 		}
 		counter++;
@@ -123,7 +125,7 @@ bool Bat::PreUpdate()
 		}
 		if (counter > 10)
 		{
-			physBody->body->ApplyLinearImpulse(impulse, physBody->body->GetPosition(), false);
+			//physBody->body->ApplyLinearImpulse(impulse, physBody->body->GetPosition(), false);
 			counter = 0;
 		}
 		counter++;
@@ -283,9 +285,11 @@ void Bat::Move(float dt)
 			direction.y = nextTile.y - currentTile.y;
 
 			if (direction.x >= 0)
-				spriteDir = SDL_FLIP_NONE;
-			if (direction.x < 0)
 				spriteDir = SDL_FLIP_HORIZONTAL;
+			//	spriteDir = SDL_FLIP_NONE;
+			if (direction.x < 0)
+				spriteDir = SDL_FLIP_NONE
+				;
 
 			if (speedMultiplier > 1)
 				speedMultiplier = 1;

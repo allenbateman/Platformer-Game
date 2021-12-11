@@ -83,7 +83,9 @@
 			</map_layer>
 		</map_data>
 	</map>
-	<physics />
+	<physics>
+		<physics />
+	</physics>
 	<:anonymous />
 	<:anonymous />
 	<:anonymous />
@@ -95,13 +97,13 @@
 	<level2 />
 	<game_over />
 	<player>
-		<player x="36.5293159" y="22.5575676" state="0" />
+		<player x="43.5135727" y="27.4906864" state="0" />
 	</player>
 	<Musher>
-		<musher x="30.4901352" y="25.0640736" state="1" />
+		<musher x="30.446064" y="25.4950047" state="0" />
 	</Musher>
 	<Bat>
-		<bat x="45.4815941" y="21.8460655" state="1" />
+		<bat x="54" y="20.5282383" state="0" />
 	</Bat>
 	<renderer>
 		<camera x="0" y="0" />

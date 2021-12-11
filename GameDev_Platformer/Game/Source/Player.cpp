@@ -180,7 +180,7 @@ bool ModulePlayer::PreUpdate()
 		melee->color = { 120, 50, 100, 155 };
 		melee->listener = app->levelManagement->currentScene;
 		melee->type = Collider_Type::PLAYER_ATTACK;
-		app->physics->groundColliders.add(melee);
+		app->physics->playerAttackSensors.add(melee);
 
 		state = ATTACK;
 	}
@@ -216,16 +216,16 @@ bool ModulePlayer::Update(float dt)
 		meleePlayerAnim.Reset();
 		break;
 	case MOVE_LEFT:
+		direction = SDL_FLIP_HORIZONTAL;
 		walkingPlayerAnim.Update();
 		idlePlayerAnim.Reset();
 		meleePlayerAnim.Reset();
-		direction = SDL_FLIP_HORIZONTAL;
 		break;
 	case MOVE_RIGHT:
+		direction = SDL_FLIP_NONE;
 		walkingPlayerAnim.Update();
 		idlePlayerAnim.Reset();
 		meleePlayerAnim.Reset();
-		direction = SDL_FLIP_NONE;
 		break;
 	case ATTACK:
 		meleePlayerAnim.Update();
@@ -233,9 +233,6 @@ bool ModulePlayer::Update(float dt)
 		break;
 	}
 	currentAnim->Update();
-
-
-
 
 	return ret;
 
@@ -298,6 +295,9 @@ bool ModulePlayer::PostUpdate()
 
 	if (playerTexture != NULL)
 	{
+		SDL_Rect* rect;
+		rect = &currentAnim->GetCurrentFrame();
+
 		if (state == ATTACK && direction == 1)
 		{
 			app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 36), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
@@ -307,13 +307,13 @@ bool ModulePlayer::PostUpdate()
 		{
 			if (direction == 1)
 			{
-				app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x) - 19, METERS_TO_PIXELS(physBody->body->GetPosition().y) - 72,
+				app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 19), METERS_TO_PIXELS(physBody->body->GetPosition().y - 65),
 					&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 			}
-			else app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 17), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 72,
+			else app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 19), METERS_TO_PIXELS(physBody->body->GetPosition().y - 65),
 				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 		}
-		else app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 16), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
+		else app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 16), METERS_TO_PIXELS(physBody->body->GetPosition().y - 26),
 			&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 	}
 		
@@ -326,6 +326,8 @@ bool ModulePlayer::PostUpdate()
 	{
 		state = IDLE;
 		frameCounter = 0;
+		app->physics->playerAttackSensors.getFirst()->data->pendingToDelete = true;
+		app->physics->playerAttackSensors.clear();
 	}
 
 	return true;

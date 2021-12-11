@@ -60,7 +60,7 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 	int KeysToTake = 2;
-	//fPoint playerSpawnPos; 
+	bool playerInCheckPoint = false;
 private:
 	SDL_Texture* img;
 	SDL_Texture* props;
