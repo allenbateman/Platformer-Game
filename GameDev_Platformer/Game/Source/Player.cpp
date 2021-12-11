@@ -70,24 +70,21 @@ bool ModulePlayer::Start()
 		deathPlayerAnim.mustFlip = true;
 		deathPlayerAnim.speed = 0.1f;
 		//Melee attack anim
-		meleePlayerAnim.PushBack({ 0, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 0, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 0, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 0, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 28, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 56, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 84, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 112, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 140, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 168, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 196, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 224, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 252, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 280, 0, 28, 20 });
-		meleePlayerAnim.PushBack({ 308, 0, 28, 20 });
+		meleePlayerAnim.PushBack({ 0, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 0, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 37, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 74, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 111, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 148, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 185, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 222, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 259, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 296, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 333, 0, 37, 28 });
+		meleePlayerAnim.PushBack({ 333, 0, 37, 28 });
 		meleePlayerAnim.loop = false;
 		meleePlayerAnim.mustFlip = true;
-		meleePlayerAnim.speed = 0.5f;
+		meleePlayerAnim.speed = 0.3f;
 
 		currentAnim = &idlePlayerAnim;
 		state = IDLE;
@@ -391,11 +388,11 @@ bool ModulePlayer::PostUpdate()
 	}
 		
 
-	if (state == ATTACK && frameCounter < 25)
+	if (state == ATTACK && frameCounter < 20)
 	{
 		frameCounter++;
 	}
-	else if (frameCounter >= 25)
+	else if (frameCounter >= 20)
 	{
 		state = IDLE;
 		frameCounter = 0;
