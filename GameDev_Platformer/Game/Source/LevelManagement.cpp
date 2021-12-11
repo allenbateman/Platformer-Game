@@ -75,8 +75,7 @@ bool LevelManagement::PreUpdate()
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = START;
-			app->physics->CleanUp();
-			app->map->CleanUp();
+			app->physics->ClearAllCollidersLists();
 		
 		}
 		if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN && currentScene->active == true)
