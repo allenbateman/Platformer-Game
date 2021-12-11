@@ -6,6 +6,7 @@
 #include "Render.h"
 #include "Player.h"
 #include "Map.h"
+#include "Log.h"
 #include <SDL/include/SDL_scancode.h>
 
 ModulePlayer::ModulePlayer(bool isActive) : Module(isActive)
@@ -91,15 +92,20 @@ bool ModulePlayer::Start()
 		currentAnim = &idlePlayerAnim;
 		state = IDLE;
 
-		position = { 0, 300 };
-		physBody = app->physics->CreateCircle(position.x, position.y, 7, b2_dynamicBody, { 0,250,125,255 });
+		position = { 20, 300 };
+		physBody = app->physics->CreateCircle(position.x, position.y, colliderRadius, b2_dynamicBody, { 0,250,125,255 });
 		physBody->listener = app->levelManagement->currentScene;
 		physBody->type = Collider_Type::PLAYER;
 		physBody->body->SetFixedRotation(true);
 		app->physics->entities.add(physBody);
 
+		position.x = physBody->body->GetPosition().x;
+		position.y = physBody->body->GetPosition().y;
+		lastPosition = position;
 
 		//sensors
+		position.x = physBody->body->GetPosition().x;
+		position.y = physBody->body->GetPosition().y;
 		leftSensor = app->physics->CreateRectangleSensor(position.x-7, position.y-5,7,10, b2_kinematicBody, { 255,165,0,255 });
 		rightSensor = app->physics->CreateRectangleSensor(position.x, position.y-5,7,10, b2_kinematicBody, { 255,165,0,255 });
 		topSensor = app->physics->CreateRectangleSensor(position.x-7, position.y,7,5, b2_kinematicBody, { 255,165,0,255 });
@@ -114,69 +120,19 @@ bool ModulePlayer::Start()
 	return true;
 }
 
-// Unload assets
-bool ModulePlayer::CleanUp()
-{
-	state = IDLE;
-	delete physBody;
-	currentAnim = nullptr;
-	return true;
-}
 
-void ModulePlayer::SetPosition(iPoint pos)
-{
-	b2Vec2 newPos;
-
-	iPoint pixelPos = app->map->MapToWorld(pos.x, pos.y);
-
-	newPos.x = PIXEL_TO_METERS(pixelPos.x);
-	newPos.y = PIXEL_TO_METERS(pixelPos.y);
-
-	physBody->body->SetTransform(newPos, physBody->body->GetAngle());
-}
-
-void ModulePlayer::Spawn(iPoint pos)
-{
-	Enable();
-	SetPosition(pos);
-	state = IDLE;
-}
-
-void ModulePlayer::Disable()
-{
-	active = false;
-}
-
-bool ModulePlayer::LoadState(pugi::xml_node& data)
-{
-	bool ret = true;
-
-	b2Vec2 position; 
-	position.x = data.child("player").attribute("x").as_int();
-	position.y = data.child("player").attribute("y").as_int();
-	state = static_cast<PlayerState>(data.child("player").attribute("state").as_int());
-
-	physBody->body->SetTransform(position, physBody->body->GetAngle());
-	return ret;
-}
-
-bool ModulePlayer::SaveState(pugi::xml_node& data) const
-{
-	bool ret = true;
-	pugi::xml_node player = data.append_child("player");
-	player.append_attribute("x") = physBody->body->GetPosition().x;
-	player.append_attribute("y") = physBody->body->GetPosition().y;
-	player.append_attribute("state") = state;
-	return ret;
-}
 
 bool ModulePlayer::PreUpdate()
 {
 	position.x = physBody->body->GetPosition().x;
 	position.y = physBody->body->GetPosition().y;
+
+
 	float normal1, normal2,rayLength;
 	rayLength = 25;
 	physBody->RayCast(position.x, position.y, position.x + rayLength, position.y,normal1,normal2);
+
+
 	//Right
 	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && state != ATTACK && state != DEAD)
 	{
@@ -194,7 +150,7 @@ bool ModulePlayer::PreUpdate()
 		state = IDLE;
 	}
 	//Jump
-	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && onGround && state != ATTACK && state != DEAD)
+	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && onGround && state != ATTACK && state != DEAD)
 	{
 		physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(),true);
 		doubleJump = true;
@@ -240,8 +196,8 @@ bool ModulePlayer::Update(float dt)
 	float desiredVel = 0;
 
 	b2Vec2 pos;
-	pos.x = leftSensor->body->GetPosition().x + position.x;
-	pos.y = leftSensor->body->GetPosition().y + position.x;
+	pos.x = 20 + position.x;
+	pos.y = 20 + position.y;
 	leftSensor->body->SetTransform(pos, physBody->body->GetAngle());
 
 	if (lives <= 0) state = DEAD;
@@ -278,12 +234,42 @@ bool ModulePlayer::Update(float dt)
 	}
 	currentAnim->Update();
 
+
+
+
 	return ret;
 
 }
 
 bool ModulePlayer::PostUpdate()
 {
+	//check if player in map boundaries; Screen size is in pixels
+	fPoint pixelPosition;
+	pixelPosition.x = METERS_TO_PIXELS(position.x);
+	pixelPosition.y = METERS_TO_PIXELS(position.y);
+
+	b2Vec2 newPos;
+	newPos.x = lastPosition.x;
+	newPos.y = lastPosition.y;
+
+	//Left Right boundaries
+	if ((pixelPosition.x + colliderRadius) > SCREEN_WIDTH || (pixelPosition.x - colliderRadius) < 0)
+	{
+		physBody->body->SetTransform(newPos, physBody->body->GetAngle());
+		physBody->body->SetLinearVelocity({ 0, physBody->body->GetLinearVelocity().y });
+	}
+
+	//Top Bot boundaries
+	if ((pixelPosition.y + colliderRadius) > SCREEN_HEIGHT || (pixelPosition.y - colliderRadius) < 0)
+	{
+		physBody->body->SetTransform(newPos, physBody->body->GetAngle());
+		physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, 0 });
+	}
+
+	//store Lats position after all the update
+	lastPosition = position;
+
+
 	switch (state)
 	{
 	case IDLE:
@@ -303,6 +289,10 @@ bool ModulePlayer::PostUpdate()
 		break;
 	case DEAD:
 		currentAnim = &deathPlayerAnim;
+		if (currentAnim->HasFinished())
+		{
+			app->levelManagement->gameState = LevelManagement::GameState::GAME_OVER;
+		}
 		break;
 	}
 
@@ -339,4 +329,61 @@ bool ModulePlayer::PostUpdate()
 	}
 
 	return true;
+}
+
+// Unload assets
+bool ModulePlayer::CleanUp()
+{
+	state = IDLE;
+	delete physBody;
+	currentAnim = nullptr;
+	return true;
+}
+
+void ModulePlayer::SetPosition(iPoint pos)
+{
+	b2Vec2 newPos;
+
+	iPoint pixelPos = app->map->MapToWorld(pos.x, pos.y);
+
+	newPos.x = PIXEL_TO_METERS(pixelPos.x);
+	newPos.y = PIXEL_TO_METERS(pixelPos.y);
+
+	physBody->body->SetTransform(newPos, physBody->body->GetAngle());
+}
+
+void ModulePlayer::Spawn(iPoint pos)
+{
+	Enable();
+	SetPosition(pos);
+	state = IDLE;
+	lives = 1;
+}
+
+void ModulePlayer::Disable()
+{
+	active = false;
+}
+
+bool ModulePlayer::LoadState(pugi::xml_node& data)
+{
+	bool ret = true;
+
+	b2Vec2 position;
+	position.x = data.child("player").attribute("x").as_int();
+	position.y = data.child("player").attribute("y").as_int();
+	state = static_cast<PlayerState>(data.child("player").attribute("state").as_int());
+
+	physBody->body->SetTransform(position, physBody->body->GetAngle());
+	return ret;
+}
+
+bool ModulePlayer::SaveState(pugi::xml_node& data) const
+{
+	bool ret = true;
+	pugi::xml_node player = data.append_child("player");
+	player.append_attribute("x") = physBody->body->GetPosition().x;
+	player.append_attribute("y") = physBody->body->GetPosition().y;
+	player.append_attribute("state") = state;
+	return ret;
 }

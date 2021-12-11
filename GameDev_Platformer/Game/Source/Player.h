@@ -51,6 +51,7 @@ public:
 	bool onAir = false;
 	PlayerState state;
 	SDL_RendererFlip direction;
+	fPoint lastPosition;
 	fPoint position;
 	fPoint speed = {5,5};
 	PhysBody* physBody;
@@ -59,6 +60,8 @@ public:
 	PhysBody* botSensor;
 	PhysBody* topSensor;
 	
+	int colliderRadius = 8;
+
 	int score = 0;
 
 	int lives;
