@@ -84,18 +84,18 @@ bool Scene1::Start()
 
 	//Shrine (checkpoint) animations
 	//Idle anim
-	idleShrineAnim.PushBack({ 0, 64, 18, 64 });
+	idleShrineAnim.PushBack({ 0, 84, 32, 60 });
 	idleShrineAnim.loop = false;
 	idleShrineAnim.mustFlip = false;
 	idleShrineAnim.speed = 0.05f;
 	//Transition anim
-	transitionShrineAnim.PushBack({ 18, 64, 18, 64 });
-	transitionShrineAnim.PushBack({ 36, 64, 18, 64 });
+	transitionShrineAnim.PushBack({ 32, 84, 32, 60 });
+	transitionShrineAnim.PushBack({ 64, 84, 32, 60 });
 	transitionShrineAnim.loop = false;
 	transitionShrineAnim.mustFlip = false;
-	transitionShrineAnim.speed = 0.05f;
+	transitionShrineAnim.speed = 0.01f;
 	//Open anim
-	openShrineAnim.PushBack({ 54, 64, 18, 64 });
+	openShrineAnim.PushBack({ 96, 84, 32, 60 });
 	openShrineAnim.loop = false;
 	openShrineAnim.mustFlip = false;
 	openShrineAnim.speed = 0.05f;
@@ -103,17 +103,17 @@ bool Scene1::Start()
 
 	//Player lives animations
 	//1 Life animation
-	lives1Anim.PushBack({ 73, 64, 72, 64 });
+	lives1Anim.PushBack({ 145, 82, 48, 64 });
 	lives1Anim.loop = false;
 	lives1Anim.mustFlip = false;
 	lives1Anim.speed = 0.05f;
 	//2 Lives animation
-	lives2Anim.PushBack({ 73, 64, 156, 64 });
+	lives2Anim.PushBack({ 145, 82, 96, 64 });
 	lives2Anim.loop = false;
 	lives2Anim.mustFlip = false;
 	lives2Anim.speed = 0.05f;
 	//3 Lives animation
-	lives3Anim.PushBack({ 73, 64, 238, 64 });
+	lives3Anim.PushBack({ 145, 82, 128, 64 });
 	lives3Anim.loop = false;
 	lives3Anim.mustFlip = false;
 	lives3Anim.speed = 0.05f;
@@ -190,9 +190,9 @@ bool Scene1::Update(float dt)
 
 	if (frameCounter2 >= 2)
 	{
-		shrineState = S_TRANSITION;
+		shrineState = S_OPEN;
 	}
-	if (KeysToTake <= 0 && shrineState != S_OPEN)
+	else if (playerInCheckPoint && shrineState != S_OPEN)
 	{
 		shrineState = S_TRANSITION;
 		frameCounter2++;
@@ -258,7 +258,7 @@ bool Scene1::PostUpdate()
 	if (props != NULL)
 	{
 		app->render->DrawTexture(props, 1235, 162, &(currentPortalAnim->GetCurrentFrame()));
-		app->render->DrawTexture(props, 852, 192, &(currentShrineAnim->GetCurrentFrame()));
+		app->render->DrawTexture(props, 852, 197, &(currentShrineAnim->GetCurrentFrame()));
 		if (app->player->lives >= 1) app->render->DrawTexture(props, 20, 20, &(currentLivesAnim->GetCurrentFrame()));
 	}
 
@@ -403,7 +403,6 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			if (!playerInCheckPoint)
 			{
 				app->SaveGameRequest();
-				shrineState = ShrineState::S_OPEN;
 				LOG("CHECKPOINT! PROGRESS SAVED!");
 			}
 			playerInCheckPoint = true;
