@@ -130,6 +130,16 @@ void Map::Draw()
 
 				if (objectLayer->data->texture != NULL)
 					app->render->DrawTexture(objectLayer->data->texture, object->data->x, object->data->y -r.h, &r);
+
+			}else if(object->data->type == Collider_Type::POTION && object->data->properties.GetProperty("Draw") == 1)
+			{
+				r.x = 144;
+				r.y = 128;
+				r.w = object->data->width;
+				r.h = object->data->height;
+
+				if (objectLayer->data->texture != NULL)
+					app->render->DrawTexture(objectLayer->data->texture, object->data->x, object->data->y -r.h, &r);
 			}
 			object = object->next;
 		}
@@ -596,6 +606,10 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 	}else if (strcmp(layer->name.GetString(), "checkpoints" )== 0)
 	{
 		layer->texture = NULL;
+
+	}else if (strcmp(layer->name.GetString(), "Potions" )== 0)
+	{
+		layer->texture = layer->texture = app->tex->Load("../Output/Assets/Spritesx16/props.png");;
 	}
 
 	LOG("LOADING OBJECT LAYER....");
@@ -625,8 +639,12 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 
 			obj->type = Collider_Type::KEY;
 			
-		}else if (strcmp(object.attribute("type").as_string(), "Win") == 0)
-		{
+		}else if (strcmp(object.attribute("type").as_string(), "Potion") == 0){
+
+			obj->type = Collider_Type::POTION;
+			
+		}else if (strcmp(object.attribute("type").as_string(), "Win") == 0){
+
 			obj->type = Collider_Type::WIN;
 
 		}else if (strcmp(object.attribute("type").as_string(), "Spawner") == 0) {
@@ -765,6 +783,18 @@ bool Map::SetMapColliders()
 				pb->id = object->data->id;
 				pb->type = Collider_Type::KEY;
 				app->physics->collectables.add(pb);
+
+				LOG("SETTING KEY COLLIDER...");
+
+			}else if (object->data->type == Collider_Type::POTION && object->data->properties.GetProperty("Draw") == 1)
+			{
+				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
+				pb->color = { 255,150,25,255 };
+				pb->id = object->data->id;
+				pb->type = Collider_Type::POTION;
+				app->physics->collectables.add(pb);
+
+				LOG("SETTING POTION COLLIDER...");
 
 			}
 			else if (object->data->type == Collider_Type::WIN)

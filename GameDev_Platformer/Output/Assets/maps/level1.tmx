@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="80" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="59">
+<map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="80" height="30" tilewidth="16" tileheight="16" infinite="0" nextlayerid="16" nextobjectid="63">
  <properties>
   <property name="Draw" type="int" value="1"/>
  </properties>
@@ -18,14 +18,6 @@
    <property name="Draw" type="int" value="1"/>
   </properties>
   <image source="../Spritesx16/Forest_Tileset_x2.png" width="320" height="112"/>
-  <wangsets>
-   <wangset name="Unnamed Set" type="mixed" tile="-1">
-    <properties>
-     <property name="Draw" type="int" value="1"/>
-     <property name="Moco" type="int" value="1"/>
-    </properties>
-   </wangset>
-  </wangsets>
  </tileset>
  <tileset firstgid="5361" name="Forest_Assets_x2" tilewidth="16" tileheight="16" tilecount="189" columns="27">
   <properties>
@@ -40,11 +32,10 @@
   <image source="../Spritesx16/Forest_Background_Assets_x2.png" width="432" height="80"/>
  </tileset>
  <tileset firstgid="5654" name="Gems" tilewidth="16" tileheight="16" tilecount="2" columns="2">
-  <properties>
-   <property name="Collectable" type="int" value="1"/>
-   <property name="Draw" type="int" value="1"/>
-  </properties>
   <image source="../Spritesx16/gems.png" width="32" height="16"/>
+ </tileset>
+ <tileset firstgid="5656" name="Props" tilewidth="16" tileheight="16" tilecount="216" columns="24">
+  <image source="../Spritesx16/props.png" width="384" height="144"/>
  </tileset>
  <layer id="3" name="Background3" width="80" height="30">
   <properties>
@@ -21792,6 +21783,18 @@
   <object id="54" name="Win" type="Win" x="1248" y="160" width="32" height="64"/>
   <object id="55" name="Spawner" type="Spawner" x="32" y="416" width="16" height="16"/>
   <object id="58" name="Checkpoint" type="Checkpoint" x="864" y="208" width="16" height="48"/>
+ </objectgroup>
+ <objectgroup id="15" name="Potions">
+  <object id="61" name="Potion" type="Potion" gid="5857" x="1104" y="416" width="16" height="16">
+   <properties>
+    <property name="Draw" type="int" value="1"/>
+   </properties>
+  </object>
+  <object id="62" name="Potion" type="Potion" gid="5857" x="448" y="448" width="16" height="16">
+   <properties>
+    <property name="Draw" type="int" value="1"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="13" name="MusherNavigationMap" width="80" height="30">
   <properties>

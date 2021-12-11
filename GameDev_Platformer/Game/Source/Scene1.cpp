@@ -369,6 +369,31 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 					app->physics->collectables.del(itemToRemove);
 				}
 			}
+			break;		
+		case Collider_Type::POTION:
+			while (current != NULL)
+			{
+				bool removeItem = false;
+				p2List_item<PhysBody*>* itemToRemove = current;
+				if (current->data == bodyB) {
+					removeItem = true;
+					app->player->lives++;
+					LOG("REMOVE POTION");
+				}
+				current = current->next;
+				if (removeItem)
+				{
+					itemToRemove->data->pendingToDelete = true;
+
+					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
+					if (!obj->properties.SetProperty("Draw", 0))
+					{
+						LOG("Could not change object property");
+					}
+
+					app->physics->collectables.del(itemToRemove);
+				}
+			}
 			break;
 		case Collider_Type::DEATH:
 

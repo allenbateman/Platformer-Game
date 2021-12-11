@@ -14,6 +14,7 @@
 				<Forest_Assets_x2 gid="5361" name="Forest_Assets_x2" tile_count="189" tile_height="16" tile_width="16" columns="27" margin="0" spacing="0" texture="true" source="../Spritesx16/Forest_Assets_x2.png" tex_height="0" tex_width="0" />
 				<Forest_Background_Assets_x2 gid="5550" name="Forest_Background_Assets_x2" tile_count="104" tile_height="16" tile_width="16" columns="26" margin="16" spacing="0" texture="true" source="../Spritesx16/Forest_Background_Assets_x2.png" tex_height="0" tex_width="0" />
 				<Gems gid="5654" name="Gems" tile_count="2" tile_height="16" tile_width="16" columns="2" margin="0" spacing="0" texture="true" source="../Spritesx16/gems.png" tex_height="0" tex_width="0" />
+				<Props gid="5656" name="Props" tile_count="216" tile_height="16" tile_width="16" columns="24" margin="0" spacing="0" texture="true" source="../Spritesx16/props.png" tex_height="0" tex_width="0" />
 			</tile_set>
 			<object_layer>
 				<Gems name="Gems" height="0" width="0" texture="true" texture="false">
@@ -33,7 +34,7 @@
 						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="43" type="0" x="864" y="432" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="44" type="0" x="752" y="288" height="16" width="16">
 						<Draw name="Draw" value="0" />
@@ -68,6 +69,14 @@
 					<Spawner id="55" type="3" x="32" y="416" height="16" width="16" />
 					<Checkpoint id="58" type="2" x="864" y="208" height="48" width="16" />
 				</Winspot>
+				<Potions name="Potions" height="0" width="0" texture="true" texture="false">
+					<Potion id="61" type="10" x="1104" y="416" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Potion>
+					<Potion id="62" type="10" x="448" y="448" height="16" width="16">
+						<Draw name="Draw" value="0" />
+					</Potion>
+				</Potions>
 			</object_layer>
 			<map_layer>
 				<Background3 name="Background3" height="30" width="80" />
@@ -98,7 +107,7 @@
 	<level2 />
 	<game_over />
 	<player>
-		<player x="53.5803185" y="13.7605562" state="2" />
+		<player x="53.5738258" y="13.515172" state="2" />
 	</player>
 	<Musher>
 		<musher x="-4.22016832e+37" y="-4.22016832e+37" state="0" />
