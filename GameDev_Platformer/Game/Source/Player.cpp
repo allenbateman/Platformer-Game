@@ -144,51 +144,95 @@ bool ModulePlayer::PreUpdate()
 	rayLength = 25;
 	physBody->RayCast(position.x, position.y, position.x + rayLength, position.y,normal1,normal2);
 
-
-	//Right
-	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && state != ATTACK && state != DEAD)
+	if (isGodmodeOn == false)
 	{
-		physBody->body->SetLinearVelocity({ speed.x, physBody->body->GetLinearVelocity().y });
+		//Right
+		if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && state != ATTACK && state != DEAD)
+		{
+			physBody->body->SetLinearVelocity({ speed.x, physBody->body->GetLinearVelocity().y });
+			state = MOVE_RIGHT;
+
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && state != ATTACK && state != DEAD)
+		{
+			physBody->body->SetLinearVelocity({ -speed.x, physBody->body->GetLinearVelocity().y });
+			state = MOVE_LEFT;
+
+		}
+		else if (onGround && state != ATTACK && state != DEAD) {
+			physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
+			state = IDLE;
+		}
+		//Jump
+		if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && onGround && state != ATTACK && state != DEAD)
+		{
+			physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(), true);
+			doubleJump = true;
+			onGround = false;
+			state = JUMP;
+
+
+		}
+		else//DoubleJump
+			if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && doubleJump && state != ATTACK && state != DEAD)
+			{
+				physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(), true);
+				doubleJump = false;
+				state = DOUBLE_JUMP;
+			}
+	}
+	else
+	{
+		if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && state != ATTACK && state != DEAD)
+		{
+		physBody->body->SetLinearVelocity({ speed.x * 1.5f, physBody->body->GetLinearVelocity().y });
 		state = MOVE_RIGHT;
-
-	}else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && state != ATTACK && state != DEAD)
-	{
-		physBody->body->SetLinearVelocity({ -speed.x, physBody->body->GetLinearVelocity().y });
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && state != ATTACK && state != DEAD)
+		{
+		physBody->body->SetLinearVelocity({ -speed.x * 1.5f, physBody->body->GetLinearVelocity().y });
 		state = MOVE_LEFT;
+		}
+		else physBody->body->SetLinearVelocity({ 0, physBody->body->GetLinearVelocity().y });
 
+		if ((app->input->GetKey(SDL_SCANCODE_UP) || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) && state != ATTACK && state != DEAD)
+		{
+			physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, -speed.y * 1.5f });
+			state = JUMP;
+		}
+		else if ((app->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT) && state != ATTACK && state != DEAD)
+		{
+			physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y * 1.5f });
+			state = JUMP;
+		}
+		else physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, 0 });
 	}
-	else if(onGround && state != ATTACK && state != DEAD){
-		physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
-		state = IDLE;
-	}
-	//Jump
-	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && onGround && state != ATTACK && state != DEAD)
-	{
-		physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(),true);
-		doubleJump = true;
-		onGround = false;
-		state = JUMP;
-
-
-	}else//DoubleJump
-	if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && doubleJump && state != ATTACK && state != DEAD)
-	{
-		physBody->body->ApplyLinearImpulse( b2Vec2(0,-jumpForce) , physBody->body->GetWorldCenter(), true);
-		doubleJump = false;
-		state = DOUBLE_JUMP;
-	}
+	
 
 	//Player melee attack
 	int dir = 0;
 	if (direction == 1) dir = -25;
 	else dir = 20;
 
-	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && state != ATTACK && state != DEAD && onGround)
+	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && state != ATTACK && state != DEAD && onGround && isGodmodeOn == false)
 	{
 		physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
 
 		PhysBody* melee = app->physics->CreateRectangleSensor(METERS_TO_PIXELS(physBody->body->GetPosition().x) + dir,
 					METERS_TO_PIXELS(physBody->body->GetPosition().y), 18, 20, b2_staticBody);
+		melee->color = { 120, 50, 100, 155 };
+		melee->listener = app->levelManagement->currentScene;
+		melee->type = Collider_Type::PLAYER_ATTACK;
+		app->physics->playerAttackSensors.add(melee);
+
+		state = ATTACK;
+	}
+	else if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && state != ATTACK && state != DEAD && onGround && isGodmodeOn)
+	{
+		physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
+
+		PhysBody* melee = app->physics->CreateRectangleSensor(METERS_TO_PIXELS(physBody->body->GetPosition().x) + dir,
+			METERS_TO_PIXELS(physBody->body->GetPosition().y), 18, 20, b2_staticBody);
 		melee->color = { 120, 50, 100, 155 };
 		melee->listener = app->levelManagement->currentScene;
 		melee->type = Collider_Type::PLAYER_ATTACK;
@@ -243,8 +287,25 @@ bool ModulePlayer::Update(float dt)
 		meleePlayerAnim.Update();
 		idlePlayerAnim.Reset();
 		break;
+	case DEAD:
+		physBody->body->SetType(b2_staticBody);
+		break;
 	}
 	currentAnim->Update();
+	
+	if (app->input->GetKey(SDL_SCANCODE_F10) == KEY_DOWN)
+	{
+		if (isGodmodeOn) 
+		{
+			isGodmodeOn = false;
+			physBody->body->SetType(b2_dynamicBody);
+		}
+		else
+		{
+			isGodmodeOn = true;
+			physBody->body->SetType(b2_kinematicBody);
+		}
+	}
 
 	return ret;
 
