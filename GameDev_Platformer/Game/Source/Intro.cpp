@@ -46,21 +46,21 @@ bool Intro::PreUpdate()
 // Called each loop iteration
 bool Intro::Update(float dt)
 {
+	bool ret = true;
 	rect.x = 0;
 	rect.y = 0;
 	rect.w = 1280;
 	rect.h = 480;
 	if (img != nullptr && active)
 		app->render->DrawTexture(img, 0, 0, &rect, 1.0f, 0.0f, 1, 1, 1, SDL_FLIP_NONE);
-	return true;
+	return ret;
 }
 
 // Called each loop iteration
 bool Intro::PostUpdate()
 {
-	bool ret = true;
 
-	return ret;
+	return true;
 }
 
 // Called before quitting

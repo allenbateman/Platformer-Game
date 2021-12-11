@@ -1,6 +1,7 @@
 #include "LevelManagement.h"
 #include "Log.h"
 #include "Player.h"
+#include "Map.h"
 #include <string>
 #include <iostream>
 using namespace std;
@@ -74,6 +75,9 @@ bool LevelManagement::PreUpdate()
 		if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && currentScene->active == true)
 		{
 			gameState = START;
+			app->physics->CleanUp();
+			app->map->CleanUp();
+		
 		}
 		if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN && currentScene->active == true)
 		{

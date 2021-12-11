@@ -21793,7 +21793,7 @@
   <object id="55" name="Spawner" type="Spawner" x="32" y="416" width="16" height="16"/>
   <object id="58" name="Checkpoint" type="Checkpoint" x="864" y="208" width="16" height="48"/>
  </objectgroup>
- <layer id="13" name="MusherNavigationMap" width="80" height="30" visible="0">
+ <layer id="13" name="MusherNavigationMap" width="80" height="30">
   <properties>
    <property name="Draw" type="int" value="0"/>
    <property name="Navigation" type="int" value="1"/>
@@ -23919,7 +23919,7 @@
    <tile/>
    <tile/>
    <tile gid="5259"/>
-   <tile gid="5259"/>
+   <tile/>
    <tile gid="5259"/>
    <tile gid="5259"/>
    <tile gid="5259"/>

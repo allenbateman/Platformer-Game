@@ -42,8 +42,8 @@ bool Bat::Start()
 		idleAnim.PushBack({ 295, 0, 19, 8 });
 		idleAnim.loop = true;
 		idleAnim.mustFlip = true;
-		idleAnim.speed = 0.1f;
-		//Jump anim
+		idleAnim.speed = 0.2f;
+		//death anim
 		deathAnim.PushBack({ 128, 0, 32, 32 });
 		deathAnim.PushBack({ 128, 32, 32, 32 });
 		deathAnim.PushBack({ 128, 64, 32, 32 });
@@ -67,7 +67,7 @@ bool Bat::Start()
 
 		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_kinematicBody, { 0,400,125,255 });
 		physBody->listener = app->levelManagement->currentScene;
-		physBody->color = { 255,125,0,255 };
+		physBody->color = { 255,255,0,255 };
 		physBody->type = Collider_Type::ENEMY;
 
 		physBody->body->SetFixedRotation(true);
@@ -83,6 +83,17 @@ bool Bat::Start()
 		uchar* data = NULL;
 		if (app->map->CreateWalkabilityMap(w, h, &data,2)) pathfinding->SetMap(w, h, data);
 		RELEASE_ARRAY(data);
+	}
+	else if (physBody->body == NULL)
+	{
+		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_kinematicBody, { 0,400,125,255 });
+		physBody->listener = app->levelManagement->currentScene;
+		physBody->color = { 255,255,0,255 };
+		physBody->type = Collider_Type::ENEMY;
+
+		physBody->body->SetFixedRotation(true);
+		app->physics->entities.add(physBody);
+
 	}
 	return true;
 }
@@ -286,10 +297,8 @@ void Bat::Move(float dt)
 
 			if (direction.x >= 0)
 				spriteDir = SDL_FLIP_HORIZONTAL;
-			//	spriteDir = SDL_FLIP_NONE;
 			if (direction.x < 0)
-				spriteDir = SDL_FLIP_NONE
-				;
+				spriteDir = SDL_FLIP_NONE;
 
 			if (speedMultiplier > 1)
 				speedMultiplier = 1;

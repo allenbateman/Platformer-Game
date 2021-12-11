@@ -45,12 +45,10 @@ bool Scene1::Start()
 
 	app->player->Spawn({ 2, 26 });
 
-	app->musher->Enable();
 	app->musher->Spawn({ 24, 27});
 	app->musher->patrolPoint1 = { 28,27 };
 	app->musher->patrolPoint2 = { 22,27 };
 
-	app->bat->Enable();
 	app->bat->Spawn({54,22});
 
 	props = app->tex->Load("Assets/Spritesx16/props.png");
@@ -398,6 +396,17 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 				app->levelManagement->NextLevel();
 				LOG("I WON, GIVE ME TREAT!");
 			}
+		case Collider_Type::CHECK_POINT:
+			
+			if (!playerInCheckPoint)
+			{
+				app->SaveGameRequest();
+				shrineState = ShrineState::S_OPEN;
+				LOG("CHECKPOINT! PROGRESS SAVED!");
+			}
+			playerInCheckPoint = true;
+		
+
 			break;
 		case Collider_Type::GROUND:
 			app->player->onGround = true;

@@ -53,7 +53,6 @@ bool Musher::Start()
 
 		currentAnim = &idleAnim;
 
-		position = { 0, 400 };
 		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
 		physBody->listener = app->levelManagement->currentScene;
 		physBody->color = { 255,125,0,255 };
@@ -72,6 +71,16 @@ bool Musher::Start()
 
 		state = PATROL;
 	
+	}
+	else if (physBody->body == NULL)
+	{
+		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
+		physBody->listener = app->levelManagement->currentScene;
+		physBody->color = { 255,125,0,255 };
+		physBody->type = Collider_Type::ENEMY;
+
+		physBody->body->SetFixedRotation(true);
+		app->physics->entities.add(physBody);
 	}
 	
 	return true;

@@ -117,6 +117,18 @@ bool ModulePlayer::Start()
 
 		lives = 1;
 	}
+	else if (physBody->body == NULL) {
+
+		physBody = app->physics->CreateCircle(position.x, position.y, colliderRadius, b2_dynamicBody, { 0,250,125,255 });
+		physBody->listener = app->levelManagement->currentScene;
+		physBody->type = Collider_Type::PLAYER;
+		physBody->body->SetFixedRotation(true);
+		app->physics->entities.add(physBody);
+
+		position.x = physBody->body->GetPosition().x;
+		position.y = physBody->body->GetPosition().y;
+		lastPosition = position;
+	}
 	return true;
 }
 

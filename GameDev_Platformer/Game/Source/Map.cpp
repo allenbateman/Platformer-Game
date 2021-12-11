@@ -796,7 +796,7 @@ bool Map::SetMapColliders()
 				pb->type = Collider_Type::CHECK_POINT;
 				app->physics->checkPoints.add(pb);
 
-				LOG("SETTING SPAWNER COLLIDER...");
+				LOG("SETTING CHECKPOINT COLLIDER...");
 			}
 
 			object = object->next;

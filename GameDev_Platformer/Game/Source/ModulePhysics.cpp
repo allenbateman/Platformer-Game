@@ -305,8 +305,9 @@ bool ModulePhysics::CleanUp()
 	LOG("Clean up Phiscis Module ");
 
 	// Delete the whole physics world!
-	if(world!=NULL)
+//	if(world!=NULL)
 		delete world;
+		world = nullptr;
 
 	return true;
 }

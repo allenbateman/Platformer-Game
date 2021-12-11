@@ -38,6 +38,7 @@ public:
 
 private:
 	SDL_Texture* img;
+	SDL_Rect rect;
 };
 
 #endif // __GAMEOVER_H__
