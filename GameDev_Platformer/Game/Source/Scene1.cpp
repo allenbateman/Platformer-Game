@@ -103,21 +103,20 @@ bool Scene1::Start()
 
 	//Player lives animations
 	//1 Life animation
-	lives1Anim.PushBack({ 145, 82, 48, 64 });
+	lives1Anim.PushBack({ 145, 82, 48, 28 });
 	lives1Anim.loop = false;
 	lives1Anim.mustFlip = false;
 	lives1Anim.speed = 0.05f;
 	//2 Lives animation
-	lives2Anim.PushBack({ 145, 82, 96, 64 });
+	lives2Anim.PushBack({ 145, 82, 96, 28 });
 	lives2Anim.loop = false;
 	lives2Anim.mustFlip = false;
 	lives2Anim.speed = 0.05f;
 	//3 Lives animation
-	lives3Anim.PushBack({ 145, 82, 128, 64 });
+	lives3Anim.PushBack({ 145, 82, 128, 28 });
 	lives3Anim.loop = false;
 	lives3Anim.mustFlip = false;
 	lives3Anim.speed = 0.05f;
-
 
 	frameCounter1 = 0;
 	frameCounter2 = 0;
@@ -142,9 +141,6 @@ bool Scene1::Update(float dt)
 
 	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
 		app->SaveGameRequest();
-
-
-
 
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
 				   app->map->mapData.width, app->map->mapData.height,
@@ -173,7 +169,6 @@ bool Scene1::Update(float dt)
 		portalState = P_TRANSITION;
 		frameCounter1++;
 	}
-	
 
 	switch (shrineState)
 	{
@@ -261,8 +256,6 @@ bool Scene1::PostUpdate()
 		app->render->DrawTexture(props, 852, 197, &(currentShrineAnim->GetCurrentFrame()));
 		if (app->player->lives >= 1) app->render->DrawTexture(props, 20, 20, &(currentLivesAnim->GetCurrentFrame()));
 	}
-
-
 
 	return ret;
 }
