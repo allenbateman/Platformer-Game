@@ -300,7 +300,7 @@ bool ModulePlayer::Update(float dt)
 		else
 		{
 			isGodmodeOn = true;
-			physBody->body->SetType(b2_kinematicBody);
+			/*physBody->body->SetType(b2_kinematicBody);*/
 		}
 	}
 
