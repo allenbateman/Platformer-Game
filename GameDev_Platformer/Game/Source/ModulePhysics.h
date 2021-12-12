@@ -45,7 +45,8 @@ public:
 	{}
 	~PhysBody()
 	{
-		body->GetWorld()->DestroyBody(body);
+		//if(body!=NULL)
+		//body->GetWorld()->DestroyBody(body);
 	}
 
 	void GetPosition(int& x, int& y) const;

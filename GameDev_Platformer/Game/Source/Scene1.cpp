@@ -193,9 +193,6 @@ bool Scene1::Update(float dt)
 		frameCounter2++;
 	}
 
-	//
-//	app->win->SetTitle(title.GetString());
-
 	return true;
 }
 

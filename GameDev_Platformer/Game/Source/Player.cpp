@@ -414,6 +414,7 @@ bool ModulePlayer::CleanUp()
 {
 	state = IDLE;
 	delete physBody;
+	physBody = nullptr;
 	currentAnim = nullptr;
 	return true;
 }
@@ -436,11 +437,6 @@ void ModulePlayer::Spawn(iPoint pos)
 	SetPosition(pos);
 	state = IDLE;
 	lives = 1;
-}
-
-void ModulePlayer::Disable()
-{
-	active = false;
 }
 
 bool ModulePlayer::LoadState(pugi::xml_node& data)

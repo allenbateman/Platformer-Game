@@ -182,6 +182,9 @@ bool Musher::PostUpdate()
 
 bool Musher::CleanUp()
 {
+	delete physBody;
+	physBody = nullptr;
+	currentAnim = nullptr;
 	return true;
 }
 

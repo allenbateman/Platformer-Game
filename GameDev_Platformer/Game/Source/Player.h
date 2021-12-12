@@ -33,7 +33,6 @@ public:
 	void SetPosition(iPoint pos);
 	fPoint GetPosition() { return position; };
 	void Spawn(iPoint pos);
-	void Disable();
 
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);

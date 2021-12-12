@@ -227,6 +227,9 @@ bool Bat::PostUpdate()
 
 bool Bat::CleanUp()
 {
+	delete physBody;
+	physBody = nullptr;
+	currentAnim = nullptr;
 	return true;
 }
 
