@@ -443,13 +443,34 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	if (bodyA->type == Collider_Type::ENEMY && bodyB->type == Collider_Type::PLAYER_ATTACK)
 	{
-		while (current != NULL)
+		if (bodyA == app->bat->physBody)
+		{
+			app->bat->state = app->bat->DEATH;
+		}
+		if (bodyA == app->musher->physBody)
+		{
+			app->musher->state = app->musher->DEATH;
+		}
+		/*while (current != NULL)
 		{
 			bool removeEntity = false;
 			p2List_item<PhysBody*>* entityToRemove = current;
 			if (current->data == bodyA) {
-				removeEntity = true;
-				LOG("REMOVE ENEMY");
+				if (bodyA == app->bat->physBody)
+				{
+					app->bat->state = app->bat->DEATH;
+					if (app->bat->currentAnim == &app->bat->deathAnim && app->bat->currentAnim->HasFinished())
+					{
+						removeEntity = true;
+						LOG("REMOVE ENEMY BAT");
+					}
+				}
+				else if (bodyA == app->musher->physBody)
+				{
+					app->musher->state = app->musher->DEATH;
+					removeEntity = true;
+					LOG("REMOVE ENEMY MUSHER");
+				}
 			}
 			current = current->next;
 			if (removeEntity)
@@ -457,6 +478,6 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 				entityToRemove->data->pendingToDelete = true;
 				app->physics->entities.del(entityToRemove);
 			}
-		}
+		}*/
 	}
 }

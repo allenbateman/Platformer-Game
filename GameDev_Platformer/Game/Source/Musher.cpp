@@ -143,6 +143,10 @@ bool Musher::Update(float dt)
 	case JUMP:
 		break;
 	case DEATH:
+		if (currentAnim->HasFinished())
+		{
+			physBody->pendingToDelete = true;
+		}
 		break;
 	default:
 		break;
@@ -167,8 +171,6 @@ bool Musher::PostUpdate()
 			app->render->DrawRectangle(rect, 255, 125, 0, 150);
 		}
 	}
-
-
 
 	SDL_Rect* rect;
 	rect = &currentAnim->GetCurrentFrame();
@@ -305,7 +307,6 @@ void Musher::Move(float dt)
 				spriteRotation = 0;
 			}
 
-
 			if (speedMultiplier > 1)
 				speedMultiplier = 1;
 			if (speedMultiplier < 0.1f)
@@ -316,7 +317,6 @@ void Musher::Move(float dt)
 
 			physBody->body->SetLinearVelocity(direction);
 		}
-		
 	}
 }
 

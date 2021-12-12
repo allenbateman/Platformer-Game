@@ -202,6 +202,10 @@ bool Bat::PostUpdate()
 	case JUMP:
 		break;
 	case DEATH:
+		if (currentAnim->HasFinished())
+		{
+			physBody->pendingToDelete = true;
+		}
 		break;
 	default:
 		break;
@@ -215,6 +219,9 @@ bool Bat::PostUpdate()
 	if (texture != nullptr && active)
 		app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - rect->w), METERS_TO_PIXELS(physBody->body->GetPosition().y - rect->h),
 			&currentAnim->GetCurrentFrame(), 1, spriteRotation, rect->w, rect->h, 1.8f, spriteDir);
+
+	
+
 	return true;
 }
 
