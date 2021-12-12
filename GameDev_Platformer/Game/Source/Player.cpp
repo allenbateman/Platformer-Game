@@ -133,6 +133,16 @@ bool ModulePlayer::Start()
 
 bool ModulePlayer::PreUpdate()
 {
+	if (LoadRequest)
+	{
+		iPoint p;
+		p.x = position.x;
+		p.y = position.y;
+		SetPosition(p);
+		LoadRequest = false;
+	}
+
+
 	position.x = physBody->body->GetPosition().x;
 	position.y = physBody->body->GetPosition().y;
 
@@ -443,12 +453,12 @@ bool ModulePlayer::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
 
-	b2Vec2 position;
 	position.x = data.child("player").attribute("x").as_int();
 	position.y = data.child("player").attribute("y").as_int();
 	state = static_cast<PlayerState>(data.child("player").attribute("state").as_int());
 
-	physBody->body->SetTransform(position, physBody->body->GetAngle());
+	LoadRequest = true;
+
 	return ret;
 }
 

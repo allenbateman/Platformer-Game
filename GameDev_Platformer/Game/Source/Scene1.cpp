@@ -45,7 +45,7 @@ bool Scene1::Start()
 
 	app->player->Spawn({ 2, 26 });
 
-	app->musher->Spawn({ 24, 27});
+	app->musher->Spawn({ 24, 28});
 	app->musher->patrolPoint1 = { 28,27 };
 	app->musher->patrolPoint2 = { 22,27 };
 
@@ -55,6 +55,8 @@ bool Scene1::Start()
 	music = app->audio->LoadFx("Assets/audio/music/level1.wav");
 	
 	app->audio->PlayFx(music);
+
+	playerInCheckPoint = false;
 
 	//Portal animations
 	//Idle anim
@@ -291,6 +293,9 @@ bool Scene1::LoadState(pugi::xml_node& data)
 	pugi::xml_node level = data.child("level1");
 	KeysToTake = level.attribute("keys_to_collect").as_int();
 	playerInCheckPoint = level.attribute("player_in_check_point").as_bool();
+	portalState = static_cast<PortalState>(data.child("level1").attribute("portal_state").as_int());
+	shrineState = static_cast<ShrineState>(data.child("level1").attribute("checkpoint_state").as_int());
+
 	return ret;
 }
 
@@ -301,6 +306,8 @@ bool Scene1::SaveState(pugi::xml_node& data) const
 
 	level.append_attribute("keys_to_collect") = KeysToTake;
 	level.append_attribute("player_in_check_point") = playerInCheckPoint;
+	level.append_attribute("portal_state") = portalState;
+	level.append_attribute("checkpoint_state") = shrineState;
 
 	return ret;
 }
@@ -449,26 +456,13 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		{
 			app->musher->state = app->musher->DEATH;
 		}
-		/*while (current != NULL)
+		while (current != NULL)
 		{
 			bool removeEntity = false;
 			p2List_item<PhysBody*>* entityToRemove = current;
 			if (current->data == bodyA) {
-				if (bodyA == app->bat->physBody)
-				{
-					app->bat->state = app->bat->DEATH;
-					if (app->bat->currentAnim == &app->bat->deathAnim && app->bat->currentAnim->HasFinished())
-					{
-						removeEntity = true;
-						LOG("REMOVE ENEMY BAT");
-					}
-				}
-				else if (bodyA == app->musher->physBody)
-				{
-					app->musher->state = app->musher->DEATH;
-					removeEntity = true;
-					LOG("REMOVE ENEMY MUSHER");
-				}
+				removeEntity = true;
+				LOG("REMOVE ENEMY");
 			}
 			current = current->next;
 			if (removeEntity)
@@ -476,6 +470,6 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 				entityToRemove->data->pendingToDelete = true;
 				app->physics->entities.del(entityToRemove);
 			}
-		}*/
+		}
 	}
 }

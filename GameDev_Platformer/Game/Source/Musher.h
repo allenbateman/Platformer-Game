@@ -55,6 +55,7 @@ public:
 	iPoint patrolPoint1;
 	iPoint patrolPoint2;
 	bool OnPatrolPoint = false;
+	bool LoadRequest = false;
 
 	float speedMultiplier = 0.2f;// 1-0   1->slowest-> 0.1 fastest;
 
@@ -65,7 +66,7 @@ public:
 		DEATH = 3
 	};
 	MusherState state;
-		
+
 
 	int curretnTileIndex =0;
 };

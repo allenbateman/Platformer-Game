@@ -33,8 +33,8 @@ bool Scene2::Awake()
 // Called before the first frame
 bool Scene2::Start()
 {
-	app->physics->Start();
-	app->player->Start();
+
+	img = app->tex->Load("Assets/Spritesx16/ToBeContinued.png");
 	//loadMap
 	return true;
 }
@@ -48,7 +48,12 @@ bool Scene2::PreUpdate()
 // Called each loop iteration
 bool Scene2::Update(float dt)
 {
-
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = 1280;
+	rect.h = 480;
+	if (img != nullptr && active)
+		app->render->DrawTexture(img, 0, 0, &rect, 1.0f, 0.0f, 1, 1, 1, SDL_FLIP_NONE);
 	return true;
 }
 
@@ -64,8 +69,7 @@ bool Scene2::PostUpdate()
 bool Scene2::CleanUp()
 {
 	LOG("Freeing scene 2");
-	app->map->CleanUp();
-	app->physics->Disable();
+
 	return true;
 }
 

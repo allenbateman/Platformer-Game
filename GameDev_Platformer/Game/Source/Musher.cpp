@@ -88,6 +88,15 @@ bool Musher::Start()
 
 bool Musher::PreUpdate()
 {
+	if (LoadRequest)
+	{
+		//iPoint p;
+		//p.x = position.x;
+		//p.y = position.y;
+		//SetPosition(p);
+		//LoadRequest = false;
+	}
+
 	position.x = physBody->body->GetPosition().x;
 	position.y = physBody->body->GetPosition().y;
 
@@ -112,15 +121,10 @@ bool Musher::PreUpdate()
 		{
 			state = PATROL;
 		}
-
 		break;
 	case JUMP:
 		break;
 	case DEATH:
-		if (deathAnim.HasFinished())
-		{
-			CleanUp();
-		}
 		break;
 	default:
 		break;
@@ -147,6 +151,7 @@ bool Musher::Update(float dt)
 		//{
 		//	physBody->pendingToDelete = true;
 		//	app->physics->entities.del(app->physics->entities.findNode(physBody));
+		//	active = false;
 		//}
 		break;
 	default:
@@ -199,12 +204,12 @@ bool Musher::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
 
-	b2Vec2 position;
 	position.x = data.child("musher").attribute("x").as_int();
 	position.y = data.child("musher").attribute("y").as_int();
 	state = static_cast<MusherState>(data.child("muhser").attribute("state").as_int());
 
-	physBody->body->SetTransform(position, physBody->body->GetAngle());
+	LoadRequest = true;
+
 	return ret;
 }
 

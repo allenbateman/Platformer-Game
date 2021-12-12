@@ -25,6 +25,7 @@ bool Bat::Awake()
 
 bool Bat::Start()
 {
+	active = true;
 	LOG("BAT START");
 	if (physBody == NULL)
 	{
@@ -93,6 +94,7 @@ bool Bat::Start()
 		physBody->listener = app->levelManagement->currentScene;
 		physBody->color = { 255,255,0,255 };
 		physBody->type = Collider_Type::ENEMY;
+		state = PATROL;
 
 		physBody->body->SetFixedRotation(true);
 		app->physics->entities.add(physBody);
@@ -103,6 +105,16 @@ bool Bat::Start()
 
 bool Bat::PreUpdate()
 {
+
+	if (LoadRequest)
+	{
+		//iPoint p;
+		//p.x = position.x;
+		//p.y = position.y;
+		//SetPosition(p);
+		//LoadRequest = false;
+	}
+
 	position.x = physBody->body->GetPosition().x;
 	position.y = physBody->body->GetPosition().y;
 
@@ -159,11 +171,6 @@ bool Bat::Update(float dt)
 	case JUMP:
 		break;
 	case DEATH:
-		if (currentAnim->HasFinished())
-		{
-			physBody->pendingToDelete = true;
-			app->physics->entities.del(app->physics->entities.findNode(physBody));
-		}
 		break;
 	default:
 		break;
@@ -194,6 +201,15 @@ bool Bat::PostUpdate()
 	newPos.x = lastPosition.x;
 	newPos.y = lastPosition.y;
 
+
+	lastPosition = position;
+
+	SDL_Rect* rect;
+	rect = &currentAnim->GetCurrentFrame();
+	if (texture != nullptr && active)
+		app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - rect->w), METERS_TO_PIXELS(physBody->body->GetPosition().y - rect->h),
+			&currentAnim->GetCurrentFrame(), 1, spriteRotation, rect->w, rect->h, 1.8f, spriteDir);
+
 	switch (state)
 	{
 	case PATROL:
@@ -203,20 +219,18 @@ bool Bat::PostUpdate()
 	case JUMP:
 		break;
 	case DEATH:
-
+		if (currentAnim->HasFinished())
+		{
+			//physBody->pendingToDelete = true;
+			//app->physics->entities.del(app->physics->entities.findNode(physBody));
+			//CleanUp();
+			//active = false;
+		}
 		break;
 	default:
 		break;
 	}
 
-	lastPosition = position;
-
-	SDL_Rect* rect;
-	rect = &currentAnim->GetCurrentFrame();
-	if (texture != nullptr && active)
-		app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - rect->w), METERS_TO_PIXELS(physBody->body->GetPosition().y - rect->h),
-			&currentAnim->GetCurrentFrame(), 1, spriteRotation, rect->w, rect->h, 1.8f, spriteDir);
-	
 	return true;
 }
 
@@ -232,18 +246,19 @@ void Bat::Spawn(iPoint pos)
 {
 	Enable();
 	SetPosition(pos);
+	state = PATROL;
 }
 
 bool Bat::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
 
-	b2Vec2 position;
 	position.x = data.child("bat").attribute("x").as_int();
 	position.y = data.child("bat").attribute("y").as_int();
 	state = static_cast<BatState>(data.child("bat").attribute("state").as_int());
 
-	physBody->body->SetTransform(position, physBody->body->GetAngle());
+	LoadRequest = true;
+
 	return ret;
 }
 

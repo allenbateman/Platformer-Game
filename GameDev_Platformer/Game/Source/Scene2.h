@@ -44,8 +44,13 @@ public:
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 private:
-	SDL_Texture* img;
 	p2List_item<PhysBody*>* collider;
+
+
+
+	//to remove
+	SDL_Texture* img;
+	SDL_Rect rect;
 };
 
 #endif // __SCENE2_H__

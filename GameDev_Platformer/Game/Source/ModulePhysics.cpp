@@ -9,11 +9,19 @@
 #include "math.h"
 #include "Log.h"
 #include "Globals.h"
+#include "Musher.h"
+#include "Bat.h"
 //#ifdef _DEBUG
 //#pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
 //#else
 //#pragma comment( lib, "Box2D/libx86/Release/Box2D.lib" )
 //#endif
+
+#ifdef _DEBUG
+#pragma comment( lib, "Source/External/Box2D/libx86/Release/Box2D.lib" )
+#else
+#pragma comment( lib, "Source/External/Box2D/libx86/Release/Box2D.lib" )
+#endif
 
 ModulePhysics::ModulePhysics(bool isActive) : Module(isActive)
 {
@@ -69,8 +77,10 @@ bool ModulePhysics::PreUpdate()
 		if (removeItem && itemToRemove->data->body != NULL)
 		{
 			LOG("Removing item ");
+			
 			RemoveBodyFromWorld(itemToRemove->data->body);
-			allPhysicBodies.del(itemToRemove);		
+			allPhysicBodies.del(itemToRemove);
+
 		}
 	}
 
@@ -304,7 +314,6 @@ bool ModulePhysics::CleanUp()
 	LOG("Clean up Phiscis Module ");
 
 	// Delete the whole physics world!
-//	if(world!=NULL)
 		delete world;
 		world = nullptr;
 
@@ -313,7 +322,7 @@ bool ModulePhysics::CleanUp()
 
 void ModulePhysics::RemoveBodyFromWorld(b2Body *body)
 {
-	 world->DestroyBody(body);
+	world->DestroyBody(body);
 }
 
 void ModulePhysics::DrawColliders()

@@ -65,6 +65,7 @@ public:
 
 	int lives;
 	bool isGodmodeOn = false;
+	bool LoadRequest = false;
 
 	int frameCounter;
 };
