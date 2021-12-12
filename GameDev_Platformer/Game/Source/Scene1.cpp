@@ -53,8 +53,7 @@ bool Scene1::Start()
 
 	props = app->tex->Load("Assets/Spritesx16/props.png");
 	music = app->audio->LoadFx("Assets/audio/music/level1.wav");
-	
-	app->audio->PlayFx(music);
+	app->audio->PlayMusic("Assets/audio/music/level1.wav", 2.0f);
 
 	//Portal animations
 	//Idle anim
@@ -267,6 +266,7 @@ bool Scene1::CleanUp()
 	app->bat->Disable();
 	app->map->CleanUp();
 	app->physics->Disable();
+	app->audio->PlayMusic("Assets/Audio/lol.wav", 0);
 	
 	return true;
 }
@@ -283,6 +283,7 @@ void Scene1::Disable()
 	app->player->Disable();
 	app->map->CleanUp();
 	app->physics->Disable();
+	app->audio->Disable();
 }
 
 bool Scene1::LoadState(pugi::xml_node& data)
