@@ -143,10 +143,11 @@ bool Musher::Update(float dt)
 	case JUMP:
 		break;
 	case DEATH:
-		if (currentAnim->HasFinished())
-		{
-			physBody->pendingToDelete = true;
-		}
+		//if (currentAnim->HasFinished())
+		//{
+		//	physBody->pendingToDelete = true;
+		//	app->physics->entities.del(app->physics->entities.findNode(physBody));
+		//}
 		break;
 	default:
 		break;

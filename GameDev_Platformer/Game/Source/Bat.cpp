@@ -137,10 +137,7 @@ bool Bat::PreUpdate()
 	case JUMP:
 		break;
 	case DEATH:
-		if (deathAnim.HasFinished())
-		{
-			CleanUp();
-		}
+		currentAnim = &deathAnim;
 		break;
 	default:
 		break;
@@ -162,6 +159,11 @@ bool Bat::Update(float dt)
 	case JUMP:
 		break;
 	case DEATH:
+		if (currentAnim->HasFinished())
+		{
+			physBody->pendingToDelete = true;
+			app->physics->entities.del(app->physics->entities.findNode(physBody));
+		}
 		break;
 	default:
 		break;
@@ -195,22 +197,17 @@ bool Bat::PostUpdate()
 	switch (state)
 	{
 	case PATROL:
-	//	physBody->body->SetLinearVelocity({ 0,0 });
 		break;
 	case MOVE_TOWARDS:
 		break;
 	case JUMP:
 		break;
 	case DEATH:
-		if (currentAnim->HasFinished())
-		{
-			physBody->pendingToDelete = true;
-		}
+
 		break;
 	default:
 		break;
 	}
-
 
 	lastPosition = position;
 
@@ -219,9 +216,7 @@ bool Bat::PostUpdate()
 	if (texture != nullptr && active)
 		app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - rect->w), METERS_TO_PIXELS(physBody->body->GetPosition().y - rect->h),
 			&currentAnim->GetCurrentFrame(), 1, spriteRotation, rect->w, rect->h, 1.8f, spriteDir);
-
 	
-
 	return true;
 }
 

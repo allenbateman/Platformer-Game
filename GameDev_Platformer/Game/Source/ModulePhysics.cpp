@@ -105,11 +105,6 @@ bool ModulePhysics::PreUpdate()
 			allPhysicBodies.add(pb->data);
 			LOG("Adding new entity collider");
 		}
-		p2List_item<PhysBody*>* itemToRemove = pb;
-
-		if (pb->data->pendingToDelete) {
-			entities.del(itemToRemove);
-		}
 	}
 	for (p2List_item<PhysBody*>* pb = checkPoints.getFirst(); pb; pb = pb->next)
 	{
