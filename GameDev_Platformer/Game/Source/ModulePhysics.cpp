@@ -79,6 +79,7 @@ bool ModulePhysics::PreUpdate()
 			LOG("Removing item ");
 			
 			RemoveBodyFromWorld(itemToRemove->data->body);
+			itemToRemove->data = NULL;
 			allPhysicBodies.del(itemToRemove);
 
 		}

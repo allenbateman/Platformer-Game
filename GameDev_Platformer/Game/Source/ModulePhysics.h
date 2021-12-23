@@ -47,6 +47,7 @@ public:
 	{
 		//if(body!=NULL)
 		//body->GetWorld()->DestroyBody(body);
+		listener = nullptr;
 	}
 
 	void GetPosition(int& x, int& y) const;

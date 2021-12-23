@@ -22,7 +22,7 @@
 						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="39" type="0" x="256" y="416" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="40" type="0" x="336" y="448" height="16" width="16">
 						<Draw name="Draw" value="0" />
@@ -31,19 +31,19 @@
 						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="42" type="0" x="496" y="352" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="43" type="0" x="864" y="432" height="16" width="16">
 						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="44" type="0" x="752" y="288" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="45" type="0" x="800" y="240" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="46" type="0" x="944" y="288" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="47" type="0" x="864" y="224" height="16" width="16">
 						<Draw name="Draw" value="1" />
@@ -61,7 +61,7 @@
 						<Draw name="Draw" value="1" />
 					</Key>
 					<Key id="53" type="1" x="528" y="448" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Key>
 				</Gems>
 				<Winspot name="Winspot" height="0" width="0" texture="false" texture="false">
@@ -102,18 +102,18 @@
 	<intro />
 	<start_menu />
 	<level1>
-		<level1 keys_to_collect="1" player_in_check_point="false" portal_state="0" checkpoint_state="0" />
+		<level1 keys_to_collect="2" player_in_check_point="true" portal_state="0" checkpoint_state="2" />
 	</level1>
 	<level2 />
 	<game_over />
 	<player>
-		<player x="38.8170166" y="27.4923916" state="2" />
+		<player x="42.7975502" y="21.4950275" state="2" />
 	</player>
 	<Musher>
-		<musher x="5.5" y="26.5" state="0" />
+		<musher x="-4" y="-4" state="0" />
 	</Musher>
 	<Bat>
-		<bat x="54" y="23.1423283" state="0" />
+		<bat x="38.3201065" y="22.4950047" state="3" />
 	</Bat>
 	<renderer>
 		<camera x="0" y="0" />

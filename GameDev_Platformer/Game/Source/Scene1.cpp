@@ -138,10 +138,10 @@ bool Scene1::PreUpdate()
 bool Scene1::Update(float dt)
 {
     // L02: DONE 3: Request Load / Save when pressing L/S
-	if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
+	if(app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
 		app->LoadGameRequest();
 
-	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if(app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F5))
 		app->SaveGameRequest();
 
 	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",

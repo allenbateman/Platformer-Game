@@ -88,13 +88,13 @@ bool Musher::Start()
 
 bool Musher::PreUpdate()
 {
-	if (LoadRequest)
+	if (LoadRequest && physBody->body != NULL)
 	{
-		//iPoint p;
-		//p.x = position.x;
-		//p.y = position.y;
-		//SetPosition(p);
-		//LoadRequest = false;
+		iPoint p;
+		p.x = position.x;
+		p.y = position.y;
+		SetPosition(p);
+		LoadRequest = false;
 	}
 
 	position.x = physBody->body->GetPosition().x;
@@ -188,8 +188,10 @@ bool Musher::PostUpdate()
 
 bool Musher::CleanUp()
 {
-	delete physBody;
-	physBody = nullptr;
+	//delete physBody;
+
+	//physBody->pendingToDelete = true;
+	physBody = NULL;
 	currentAnim = nullptr;
 	return true;
 }
@@ -203,7 +205,8 @@ void Musher::Spawn(iPoint pos)
 bool Musher::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
-
+	
+	Start();
 	position.x = data.child("musher").attribute("x").as_int();
 	position.y = data.child("musher").attribute("y").as_int();
 	state = static_cast<MusherState>(data.child("muhser").attribute("state").as_int());

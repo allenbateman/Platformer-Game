@@ -106,13 +106,13 @@ bool Bat::Start()
 bool Bat::PreUpdate()
 {
 
-	if (LoadRequest)
+	if (LoadRequest && physBody->body != NULL)
 	{
-		//iPoint p;
-		//p.x = position.x;
-		//p.y = position.y;
-		//SetPosition(p);
-		//LoadRequest = false;
+		iPoint p;
+		p.x = position.x;
+		p.y = position.y;
+		SetPosition(p);
+		LoadRequest = false;
 	}
 
 	position.x = physBody->body->GetPosition().x;
@@ -236,8 +236,9 @@ bool Bat::PostUpdate()
 
 bool Bat::CleanUp()
 {
-	delete physBody;
-	physBody = nullptr;
+	//delete physBody;
+	physBody = NULL;
+	//physBody->pendingToDelete = true;
 	currentAnim = nullptr;
 	return true;
 }
@@ -253,6 +254,7 @@ bool Bat::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
 
+	Start();
 	position.x = data.child("bat").attribute("x").as_int();
 	position.y = data.child("bat").attribute("y").as_int();
 	state = static_cast<BatState>(data.child("bat").attribute("state").as_int());
