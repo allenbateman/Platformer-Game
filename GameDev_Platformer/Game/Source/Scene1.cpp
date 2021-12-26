@@ -40,20 +40,12 @@ bool Scene1::Start()
 {
 	app->physics->Start();
 	app->map->Load("level1.tmx");
+	props = app->tex->Load("Assets/Spritesx16/props.png");
+	app->audio->PlayMusic("Assets/audio/music/level1.wav");
 
 	KeysToTake = 2;
 
 	app->player->Spawn({ 2, 26 });
-
-	app->musher->Spawn({ 24, 28});
-	app->musher->patrolPoint1 = { 28,27 };
-	app->musher->patrolPoint2 = { 22,27 };
-
-	app->bat->Spawn({54,22});
-
-	props = app->tex->Load("Assets/Spritesx16/props.png");
-
-	app->audio->PlayMusic("Assets/audio/music/level1.wav");
 
 	playerInCheckPoint = false;
 
@@ -264,8 +256,6 @@ bool Scene1::CleanUp()
 {
 	LOG("Disable scene 1");
 	app->player->Disable();
-	app->musher->Disable();
-	app->bat->Disable();
 	app->map->CleanUp();
 	app->physics->Disable();
 	app->audio->PlayMusic("");
@@ -447,14 +437,14 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 	if (bodyA->type == Collider_Type::ENEMY && bodyB->type == Collider_Type::PLAYER_ATTACK)
 	{
-		if (bodyA == app->bat->physBody)
-		{
-			app->bat->state = app->bat->DEATH;
-		}
-		if (bodyA == app->musher->physBody)
-		{
-			app->musher->state = app->musher->DEATH;
-		}
+		//if (bodyA == app->bat->physBody)
+		//{
+		//	app->bat->state = app->bat->DEATH;
+		//}
+		//if (bodyA == app->musher->physBody)
+		//{
+		//	app->musher->state = app->musher->DEATH;
+		//}
 		while (current != NULL)
 		{
 			bool removeEntity = false;

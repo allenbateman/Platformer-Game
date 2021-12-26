@@ -27,8 +27,6 @@ class Map;
 class ModulePhysics;
 class ModulePlayer;
 class ModuleEntities;
-class Musher;
-class Bat;
 
 
 class App
@@ -111,8 +109,6 @@ public:
 	ModulePhysics* physics;
 	ModulePlayer* player;
 	ModuleEntities* entities;
-	Musher* musher;
-	Bat* bat;
 	
 	float dt;
 

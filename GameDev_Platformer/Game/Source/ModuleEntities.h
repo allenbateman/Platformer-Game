@@ -33,7 +33,11 @@ public:
 	bool PreUpdate() override;
 	bool Update(float dt) override;
 	bool PostUpdate() override;
-	//bool CleanUp() override;
+//	bool CleanUp() override;
+
+	// Load / Save
+	bool LoadState(pugi::xml_node& data);
+	bool SaveState(pugi::xml_node& data) const;
 
 
 	// Iterates the queue and checks for camera position

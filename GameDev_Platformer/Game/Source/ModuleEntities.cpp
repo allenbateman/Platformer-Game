@@ -64,6 +64,16 @@ bool ModuleEntities::PostUpdate()
     return true;
 }
 
+bool ModuleEntities::LoadState(pugi::xml_node& data)
+{
+    return false;
+}
+
+bool ModuleEntities::SaveState(pugi::xml_node& data) const
+{
+    return false;
+}
+
 //bool ModuleEntities::CleanUp()
 //{
 //    LOG("Freeing all entities");

@@ -52,7 +52,7 @@ public:
 	SDL_RendererFlip direction;
 	fPoint lastPosition;
 	fPoint position;
-	fPoint speed = {5,5};
+	fPoint speed = {10,50};
 	PhysBody* physBody;
 	PhysBody* leftSensor;
 	PhysBody* rightSensor;
