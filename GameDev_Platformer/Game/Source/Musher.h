@@ -1,5 +1,5 @@
 #pragma once
-#include "Module.h"
+#include "Entity.h"
 #include "Globals.h"
 #include "Point.h"
 #include "Animation.h"
@@ -9,10 +9,10 @@
 
 
 
-class Musher : public Module
+class Musher : public Entity
 {
 public:
-	Musher(bool isActive);
+	Musher(int x, int y);
 	virtual ~Musher();
 
 	bool Awake();
@@ -25,8 +25,8 @@ public:
 	fPoint GetPosition() { return position; };
 	void Spawn(iPoint pos);
 	// Load / Save
-	bool LoadState(pugi::xml_node& data);
-	bool SaveState(pugi::xml_node& data) const;
+	bool LoadState(pugi::xml_node& data) override;
+	bool SaveState(pugi::xml_node& data) const override;
 	bool CalculateNextPatrolPoint();
 	void UpdatePath();
 	void Move(float dt);
@@ -47,7 +47,6 @@ public:
 	int spriteRotation = 0;
 	fPoint position;
 	fPoint playerPos;
-	PhysBody* physBody;
 
 	PathFinding* pathfinding;
 
@@ -55,7 +54,6 @@ public:
 	iPoint patrolPoint1;
 	iPoint patrolPoint2;
 	bool OnPatrolPoint = false;
-	bool LoadRequest = false;
 
 	float speedMultiplier = 0.2f;// 1-0   1->slowest-> 0.1 fastest;
 
@@ -66,7 +64,7 @@ public:
 		DEATH = 3
 	};
 	MusherState state;
-
+	bool LoadRequest = false;
 
 	int curretnTileIndex =0;
 };

@@ -9,9 +9,11 @@
 #include "Render.h"
 #include "Log.h"
 #include <math.h>
-Musher::Musher(bool isActive) : Module(isActive)
+
+Musher::Musher(int x, int y) : Entity(x, y)
 {
-	name.Create("Musher");
+	position.x = x;
+	position.y = y;
 }
 
 Musher::~Musher()
@@ -180,7 +182,7 @@ bool Musher::PostUpdate()
 
 	SDL_Rect* rect;
 	rect = &currentAnim->GetCurrentFrame();
-	if(texture!=nullptr && active)
+	if(texture!=nullptr)
 	app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x-rect->w), METERS_TO_PIXELS(physBody->body->GetPosition().y-rect->h),
 		&currentAnim->GetCurrentFrame(), 1, spriteRotation, rect->w, rect->h, 1.8f, spriteDir);
 	return true;
@@ -198,7 +200,6 @@ bool Musher::CleanUp()
 
 void Musher::Spawn(iPoint pos)
 {
-	Enable();
 	SetPosition(pos);
 }
 

@@ -27,10 +27,16 @@
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
-    <ClCompile Include="Source\Musher.cpp" />
-    <ClCompile Include="Source\Bat.cpp" />
     <ClCompile Include="Source\ModuleEntities.cpp" />
-    <ClCompile Include="Source\Entity.cpp" />
+    <ClCompile Include="Source\Entity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Bat.cpp">
+      <Filter>Entities\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Musher.cpp">
+      <Filter>Entities\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -82,10 +88,16 @@
     <ClInclude Include="Source\Queue.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\Pathfinding.h" />
-    <ClInclude Include="Source\Musher.h" />
-    <ClInclude Include="Source\Bat.h" />
     <ClInclude Include="Source\ModuleEntities.h" />
-    <ClInclude Include="Source\Entity.h" />
+    <ClInclude Include="Source\Entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Bat.h">
+      <Filter>Entities\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Musher.h">
+      <Filter>Entities\Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -96,6 +108,15 @@
     </Filter>
     <Filter Include="External\PugiXml">
       <UniqueIdentifier>{2855ff7f-53a1-413d-a75b-18b4ade921dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{538c89f4-09ae-48d0-9d13-0e89784302f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Enemy">
+      <UniqueIdentifier>{2ea328f9-2aca-40e2-badd-9295c7fb965e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Collectable">
+      <UniqueIdentifier>{70aaa4f5-e922-4544-8337-d67f0d0479be}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

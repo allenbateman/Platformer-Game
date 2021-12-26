@@ -14,6 +14,7 @@ ModuleEntities::~ModuleEntities()
 
 bool ModuleEntities::Awake()
 {
+    //test
     return true;
 }
 
@@ -24,29 +25,26 @@ bool ModuleEntities::Start()
 
 bool ModuleEntities::PreUpdate()
 {
-    // Remove all entities scheduled for deletion
     for (uint i = 0; i < MAX_ENTITIES; ++i)
     {
-        if (entities[i] != nullptr && entities[i]->pendingToDelete)
+        if (entities[i] != nullptr)
         {
-            delete entities[i];
-            entities[i] = nullptr;
+            entities[i]->DEBUG = DEBUG;
         }
     }
+
     return true;
 }
 
 bool ModuleEntities::Update(float dt)
 {
- //   HandleEnemySpawn();
 
     for (uint i = 0; i < MAX_ENTITIES; ++i)
     {
         if (entities[i] != nullptr)
-            entities[i]->Update();
+            entities[i]->Update(dt);
     }
 
-    HandleEnemyDespawn();
     return true;
 }
 
@@ -57,7 +55,7 @@ bool ModuleEntities::PostUpdate()
         if (entities[i] != nullptr)
         {
 
-            entities[i]->Draw();
+            entities[i]->PostUpdate();
 
         }
     }
@@ -66,12 +64,30 @@ bool ModuleEntities::PostUpdate()
 
 bool ModuleEntities::LoadState(pugi::xml_node& data)
 {
-    return false;
+    for (uint i = 0; i < MAX_ENTITIES; ++i)
+    {
+        if (entities[i] != nullptr)
+        {
+
+            entities[i]->LoadState(data);
+
+        }
+    }
+    return true;
 }
 
 bool ModuleEntities::SaveState(pugi::xml_node& data) const
 {
-    return false;
+    for (uint i = 0; i < MAX_ENTITIES; ++i)
+    {
+        if (entities[i] != nullptr)
+        {
+
+            entities[i]->SaveState(data);
+
+        }
+    }
+    return true;
 }
 
 //bool ModuleEntities::CleanUp()
@@ -89,37 +105,8 @@ bool ModuleEntities::SaveState(pugi::xml_node& data) const
 //
 //    return true;
 //}
-//
-//void ModuleEntities::HandleEnemySpawn()
-//{
-//    // Iterate all the entities queue
-//    for (uint i = 0; i < MAX_ENTITIES; ++i)
-//    {
-//        if (spawnQueue[i].type != EntityType::NO_TYPE)
-//        {
-//            // Spawn a new Entitie if the screen has reached a spawn position
-//            if (spawnQueue[i].x * SCREEN_SIZE < app->render->camera.x + (app->render->camera.w * SCREEN_SIZE) + SPAWN_MARGIN)
-//            {
-//                LOG("Spawning Entity at %d", spawnQueue[i].x * SCREEN_SIZE);
-//
-//                SpawnEntity(spawnQueue[i]);
-//                spawnQueue[i].type = EntityType::NO_TYPE; // Removing the newly spawned Entitie from the queue
-//            }
-//        }
-//    }
-//}
 
-void ModuleEntities::HandleEnemyDespawn()
-{
-    // Iterate existing entities
-    for (uint i = 0; i < MAX_ENTITIES; ++i)
-    {
-        if (entities[i] != nullptr)
-        {
 
-        }
-    }
-}
 
 bool ModuleEntities::AddEntity(EntityType type, int x, int y)
 {
@@ -139,11 +126,33 @@ bool ModuleEntities::AddEntity(EntityType type, int x, int y)
     return ret;
 }
 
-void ModuleEntities::SpawnEntity(const EntitySpawnpoint& info)
-{
-}
+//void ModuleEntities::SpawnEntity(const EntitySpawnpoint& info)
+//{
+//    // Iterate all the entities queue
+//    for (uint i = 0; i < MAX_ENTITIES; ++i)
+//    {
+//        if (spawnQueue[i].type != EntityType::NO_TYPE)
+//        {
+//            // Spawn a new Entitie if the screen has reached a spawn position
+//            if (spawnQueue[i].x * SCREEN_SIZE < app->render->camera.x + (app->render->camera.w * SCREEN_SIZE) + SPAWN_MARGIN)
+//            {
+//                LOG("Spawning Entity at %d", spawnQueue[i].x * SCREEN_SIZE);
+//
+//                SpawnEntity(spawnQueue[i]);
+//                spawnQueue[i].type = EntityType::NO_TYPE; // Removing the newly spawned Entitie from the queue
+//            }
+//        }
+//    }
+//}
 
 void ModuleEntities::RemoveEntity(Entity* entity)
 {
-   
+    // Iterate existing entities
+    for (uint i = 0; i < MAX_ENTITIES; ++i)
+    {
+        if (entities[i] != nullptr)
+        {
+
+        }
+    }
 }

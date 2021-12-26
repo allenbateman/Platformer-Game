@@ -22,15 +22,15 @@ public:
 	// Returns the Entity's collider
 	const PhysBody* GetCollider() const;
 
-	// Called from inhering enemies' Udpate
+	virtual bool PreUpdate();
 	// Updates animation and collider position
-	virtual void Update();
+	virtual bool Update(float dt);
 
 	// Called from ModuleEntitys' Update
-	virtual void Draw();
+	virtual bool PostUpdate();
 
 	// Collision response
-	virtual void OnCollision(PhysBody* collider);
+	virtual void OnCollision(PhysBody* other);
 
 	// Sets flag for deletion and for the collider aswell
 	virtual void SetToDelete();
@@ -38,13 +38,18 @@ public:
 	//virtual void ChangeDirection();
 	//virtual void CheckDirection();
 
+	// Load / Save
+	virtual bool LoadState(pugi::xml_node& data);
+	virtual bool SaveState(pugi::xml_node& data) const;
+
 public:
 	// The current position in the world
 	iPoint position;
 	b2Vec2 bodyPosition;
 	iPoint drawOffset = { 0, 0 };
 
-	//EntityType type;
+	//type of collider
+	Collider_Type type;
 
 	// The Entity's texture
 	SDL_Texture* texture = nullptr;
@@ -55,6 +60,10 @@ public:
 	// A flag for the Entity removal. Important! We do not delete objects instantly
 	bool pendingToDelete = false;
 
+	//if debug mode
+	bool DEBUG;
+
+	//If Enemy
 	int scorePoints = 0;
 
 	enum Direction
@@ -83,10 +92,11 @@ protected:
 	Animation score;
 
 	// The Entity's collider
-	PhysBody* collider = nullptr;
+	PhysBody* physBody = nullptr;
 
 	// Original spawn position. Stored for movement calculations
 	iPoint spawnPos;
+
 };
 
 #endif // __ENTITY_H__

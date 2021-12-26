@@ -33,24 +33,17 @@ public:
 	bool PreUpdate() override;
 	bool Update(float dt) override;
 	bool PostUpdate() override;
-//	bool CleanUp() override;
+	//bool CleanUp() override;
 
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
 
 
-	// Iterates the queue and checks for camera position
-	//void HandleEnemySpawn();
-
-	// Destroys any enemies that have moved outside the camera limits
-	void HandleEnemyDespawn();
-
 	bool AddEntity(EntityType type, int x, int y);
 
 
-	void SpawnEntity(const EntitySpawnpoint& info);
-
+	//void SpawnEntity(const EntitySpawnpoint& info);
 	void RemoveEntity(Entity* entity);
 
 	EntitySpawnpoint spawnQueue[MAX_ENTITIES];

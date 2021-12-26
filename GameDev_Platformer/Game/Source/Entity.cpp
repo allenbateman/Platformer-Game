@@ -13,41 +13,58 @@ Entity::Entity(int x, int y) : position(x, y)
 
 Entity::~Entity()
 {
-	if (collider != nullptr)
-		collider->pendingToDelete = true;
+	if (physBody != nullptr)
+		physBody->pendingToDelete = true;
 }
 
 const PhysBody* Entity::GetCollider() const
 {
-	return collider;
+	return physBody;
 }
 
-void Entity::Update()
+bool Entity::PreUpdate()
+{
+	
+	return true;
+}
+
+bool Entity::Update(float dt)
 {
 	if (currentAnim != nullptr)
 		currentAnim->Update();
 
-	if (collider != nullptr)
-		collider->body->SetTransform(bodyPosition,collider->body->GetAngle());
+	if (physBody != nullptr)
+		physBody->body->SetTransform(bodyPosition, physBody->body->GetAngle());
+	return true;
 }
 
-void Entity::Draw()
+bool Entity::PostUpdate()
 {
 	if (currentAnim != nullptr) {
 		if (currentAnim->mustFlip == false) app->render->DrawTexture(texture, position.x + drawOffset.x, position.y + drawOffset.y, &(currentAnim->GetCurrentFrame()));
 		else app->render->DrawTexture(texture, position.x + drawOffset.x, position.y + drawOffset.y, &(currentAnim->GetCurrentFrame()), 1.0f, true, SDL_FLIP_NONE);
 	}
+	return true;
 }
 
-void Entity::OnCollision(PhysBody* collider)
+void Entity::OnCollision(PhysBody* other)
 {
-	SetToDelete();
+
 }
 
 void Entity::SetToDelete()
 {
 	pendingToDelete = true;
-	if (collider != nullptr)
-		collider->pendingToDelete = true;
-	app->player->score += scorePoints;
+	if (physBody != nullptr)
+		physBody->pendingToDelete = true;
+}
+
+bool Entity::LoadState(pugi::xml_node& data)
+{
+	return true;
+}
+
+bool Entity::SaveState(pugi::xml_node& data) const
+{
+	return true;
 }
