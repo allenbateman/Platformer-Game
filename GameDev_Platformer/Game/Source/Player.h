@@ -34,6 +34,17 @@ public:
 	fPoint GetPosition() { return position; };
 	void Spawn(iPoint pos);
 
+	void Movement();
+	void GodMovement();
+	void UpdateSensorsPosition();
+
+	//attacks
+	void MeleeAttack();
+	void RangedAttack();
+	//skills?
+
+	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
+
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
@@ -44,7 +55,8 @@ public:
 	Animation* currentAnim = nullptr;
 	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim, meleePlayerAnim;
 	
-	float jumpForce = 5;
+	float jumpForce = 8;
+	float onAirXSpeed = 5;
 	bool doubleJump = false;
 	bool onGround = false;
 	bool onAir = false;
@@ -52,7 +64,7 @@ public:
 	SDL_RendererFlip direction;
 	fPoint lastPosition;
 	fPoint position;
-	fPoint speed = {10,50};
+	fPoint speed = {10,10};
 	PhysBody* physBody;
 	PhysBody* leftSensor;
 	PhysBody* rightSensor;

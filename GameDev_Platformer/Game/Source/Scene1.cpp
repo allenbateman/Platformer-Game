@@ -307,7 +307,6 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
 	if (bodyA->type == Collider_Type::PLAYER )
 	{
-		//LOG("I got touched! A");
 		switch (bodyB->type)
 		{
 		case Collider_Type::GEM:
@@ -424,7 +423,7 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 		case Collider_Type::GROUND:
 			app->player->onGround = true;
 			app->player->doubleJump = false;
-			LOG("ON GROUND");
+		//	LOG("ON GROUND");
 			break;
 		default:
 			break;

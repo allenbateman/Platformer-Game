@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "ModulePhysics.h"
 #include "LevelManagement.h"
+#include "Player.h"
 #include "Scene1.h"
 #include "Scene2.h"
 #include<iostream>
@@ -736,6 +737,7 @@ bool Map::SetMapColliders()
 						PhysBody* pb = app->physics->CreateRectangle(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody);
 						pb->color = { 255,50,50,255 };
 						pb->listener = app->levelManagement->currentScene;
+						pb->listener = app->player;
 						pb->type = Collider_Type::DEATH;
 						app->physics->deathColliders.add(pb);
 					}

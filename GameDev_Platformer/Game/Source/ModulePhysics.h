@@ -22,6 +22,7 @@
 
 
 enum Collider_Type {
+
 	GEM = 0,
 	KEY = 1,
 	CHECK_POINT = 2,
@@ -32,8 +33,12 @@ enum Collider_Type {
 	PLAYER_ATTACK = 7,
 	GROUND = 8,
 	ENEMY = 9,
-	POTION = 10
+	POTION = 10,
+	PLAYER_X_SENSOR = 11,
+	PLAYER_Y_SENSOR = 12,
+	NO_TYPE = 13
 };
+
 struct Color {
 	float r, g, b, a;
 };

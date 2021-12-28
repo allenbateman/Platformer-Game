@@ -6,16 +6,15 @@
 #define MAX_ENTITIES 100
 #define SPAWN_MARGIN 20
 
-
-
-enum class EntityType {
-	NO_TYPE,
-	MUSHER,
-	BAT
+enum EntityType {
+	No_Type,
+	BAT,
+	MUSHER
 };
+
 struct EntitySpawnpoint
 {
-	EntityType type = EntityType::NO_TYPE;
+	EntityType type = EntityType::No_Type;
 	int x, y;
 };
 
@@ -33,18 +32,11 @@ public:
 	bool PreUpdate() override;
 	bool Update(float dt) override;
 	bool PostUpdate() override;
-	//bool CleanUp() override;
+	bool CleanUp() override;
 
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
-
-
-	bool AddEntity(EntityType type, int x, int y);
-
-
-	//void SpawnEntity(const EntitySpawnpoint& info);
-	void RemoveEntity(Entity* entity);
 
 	EntitySpawnpoint spawnQueue[MAX_ENTITIES];
 
