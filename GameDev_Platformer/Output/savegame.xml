@@ -34,13 +34,13 @@
 						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="43" type="0" x="864" y="432" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="44" type="0" x="752" y="288" height="16" width="16">
 						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="45" type="0" x="800" y="240" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Gem>
 					<Gem id="46" type="0" x="944" y="288" height="16" width="16">
 						<Draw name="Draw" value="1" />
@@ -61,7 +61,7 @@
 						<Draw name="Draw" value="1" />
 					</Key>
 					<Key id="53" type="1" x="528" y="448" height="16" width="16">
-						<Draw name="Draw" value="1" />
+						<Draw name="Draw" value="0" />
 					</Key>
 				</Gems>
 				<Winspot name="Winspot" height="0" width="0" texture="false" texture="false">
@@ -98,16 +98,20 @@
 	</physics>
 	<:anonymous />
 	<:anonymous />
-	<:anonymous />
 	<intro />
 	<start_menu />
 	<level1>
-		<level1 keys_to_collect="2" player_in_check_point="true" portal_state="0" checkpoint_state="1" />
+		<level1 keys_to_collect="1" player_in_check_point="true" portal_state="0" checkpoint_state="1" />
 	</level1>
 	<level2 />
 	<game_over />
+	<:anonymous>
+		<bat x="0" y="0" state="0" />
+		<bat x="-4.22016832e+37" y="-4.22016832e+37" state="0" />
+		<bat x="-4.22016832e+37" y="-4.22016832e+37" state="0" />
+	</:anonymous>
 	<player>
-		<player x="55.3086662" y="15.3086042" lives="2" state="1" />
+		<player x="53.6323051" y="15.4950018" lives="2" state="2" />
 	</player>
 	<renderer>
 		<camera x="0" y="0" />

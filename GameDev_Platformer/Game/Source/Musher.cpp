@@ -10,10 +10,10 @@
 #include "Log.h"
 #include <math.h>
 
-Musher::Musher(int x, int y) : Entity(x, y)
+Musher::Musher(iPoint pos) : Enemy(pos)
 {
-	position.x = x;
-	position.y = y;
+	Start();
+	SetPosition(pos);
 }
 
 Musher::~Musher()

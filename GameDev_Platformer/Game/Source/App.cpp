@@ -55,7 +55,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	
 	AddModule(levelManagement);
-	AddModule(entities);
+
 
 	AddModule(fade);
 
@@ -66,7 +66,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(gameOver);
 
 	
-
+	AddModule(entities);
 	AddModule(player);
 
 	// Render last to swap buffer

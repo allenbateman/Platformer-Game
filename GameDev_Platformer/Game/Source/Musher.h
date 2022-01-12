@@ -1,18 +1,10 @@
 #pragma once
-#include "Entity.h"
-#include "Globals.h"
-#include "Point.h"
-#include "Animation.h"
-#include "Textures.h"
-#include "Render.h"
-#include "Pathfinding.h"
+#include "Enemy.h"
 
-
-
-class Musher : public Entity
+class Musher : public Enemy
 {
 public:
-	Musher(int x, int y);
+	Musher(iPoint position);
 	virtual ~Musher();
 
 	bool Awake();
@@ -31,24 +23,12 @@ public:
 	void UpdatePath();
 	void Move(float dt);
 
-	SDL_Texture* texture;
-
 public:
-	Animation* currentAnim = nullptr;
-	Animation idleAnim, walkingAnim, jumpingAnim, deathAnim;
 
 	float jumpForce = 0.2f;
 	bool onGround = false;
 
 	float detectionDistance = 10; // in pixels
-
-
-	SDL_RendererFlip spriteDir;
-	int spriteRotation = 0;
-	fPoint position;
-	fPoint playerPos;
-
-	PathFinding* pathfinding;
 
 	//in Tiles
 	iPoint patrolPoint1;

@@ -23,20 +23,20 @@
 
 enum Collider_Type {
 
-	GEM = 0,
-	KEY = 1,
-	CHECK_POINT = 2,
-	SPAWNER = 3,
-	DEATH = 4,
-	WIN = 5,
-	PLAYER = 6,
-	PLAYER_ATTACK = 7,
-	GROUND = 8,
-	ENEMY = 9,
-	POTION = 10,
-	PLAYER_X_SENSOR = 11,
-	PLAYER_Y_SENSOR = 12,
-	NO_TYPE = 13
+	GEM,
+	KEY, 
+	CHECK_POINT, 
+	SPAWNER,
+	DEATH,
+	WIN,
+	PLAYER,
+	PLAYER_ATTACK,
+	GROUND,
+	ENEMY,
+	POTION,
+	PLAYER_X_SENSOR,
+	PLAYER_Y_SENSOR,
+	NO_TYPE
 };
 
 struct Color {

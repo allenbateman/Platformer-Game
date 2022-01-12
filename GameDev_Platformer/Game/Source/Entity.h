@@ -3,18 +3,21 @@
 
 #include "App.h"
 #include "ModulePhysics.h"
+#include "Globals.h"
 #include "Point.h"
 #include "Animation.h"
+#include "Textures.h"
+#include "Render.h"
 
 struct SDL_Texture;
 struct PhysicBody;
 
-class Entity
+class Entity abstract
 {
 public:
 	// Constructor
 	// Saves the spawn position for later movement calculations
-	Entity(int x, int y);
+	Entity(iPoint position);
 
 	// Destructor
 	virtual ~Entity();
@@ -35,16 +38,13 @@ public:
 	// Sets flag for deletion and for the collider aswell
 	virtual void SetToDelete();
 
-	//virtual void ChangeDirection();
-	//virtual void CheckDirection();
-
 	// Load / Save
 	virtual bool LoadState(pugi::xml_node& data);
 	virtual bool SaveState(pugi::xml_node& data) const;
 
 public:
 	// The current position in the world
-	iPoint position;
+	fPoint position;
 	b2Vec2 bodyPosition;
 	iPoint drawOffset = { 0, 0 };
 

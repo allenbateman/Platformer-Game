@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "p2List.h"
 #include "App.h"
+#include "ModulePhysics.h"
+#include "Point.h"
 
 #define MAX_ENTITIES 100
 #define SPAWN_MARGIN 20
@@ -9,13 +11,11 @@
 enum EntityType {
 	No_Type,
 	BAT,
-	MUSHER
-};
-
-struct EntitySpawnpoint
-{
-	EntityType type = EntityType::No_Type;
-	int x, y;
+	MUSHER,
+	GEM,
+	KEY,
+	PLAYER,
+	CHECK_POINT
 };
 
 class Entity;
@@ -33,12 +33,11 @@ public:
 	bool Update(float dt) override;
 	bool PostUpdate() override;
 	bool CleanUp() override;
+	void AddEntity(EntityType type ,iPoint spawnPos);
 
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
-
-	EntitySpawnpoint spawnQueue[MAX_ENTITIES];
 
 	// All spawned enemies in the scene
 	Entity* entities[MAX_ENTITIES] = { nullptr };

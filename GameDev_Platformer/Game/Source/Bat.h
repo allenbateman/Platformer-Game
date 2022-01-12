@@ -1,19 +1,12 @@
 #pragma once
-#include "Module.h"
-#include "Globals.h"
-#include "Point.h"
-#include "Animation.h"
-#include "Textures.h"
-#include "Render.h"
-#include "Pathfinding.h"
+#include "Enemy.h"
 
 
 
-
-class Bat : public Module
+class Bat : public Enemy
 {
 public:
-	Bat(bool isActive);
+	Bat(iPoint pos);
 	virtual ~Bat();
 
 	bool Awake();
@@ -28,30 +21,15 @@ public:
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
+
 	bool CalculateNextPatrolPoint();
 	void UpdatePath();
 	void Move(float dt);
 
-	SDL_Texture* texture;
 
 public:
-	Animation* currentAnim = nullptr;
-	Animation idleAnim, deathAnim;
-
-	float jumpForce = 0.2f;
 	bool onGround = false;
-
-	float detectionDistance = 10; // in pixels
 	int counter = 0;
-
-	SDL_RendererFlip spriteDir;
-	int spriteRotation = 0;
-	fPoint position;
-	fPoint lastPosition;
-	fPoint playerPos;
-	PhysBody* physBody;
-
-	PathFinding* pathfinding;
 
 	//in Tiles
 	iPoint patrolPoint1;

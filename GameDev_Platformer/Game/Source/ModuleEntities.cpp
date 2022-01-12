@@ -68,6 +68,33 @@ bool ModuleEntities::CleanUp()
     return true;
 }
 
+void ModuleEntities::AddEntity(EntityType type, iPoint spawnPos)
+{
+    for (uint i = 0; i < MAX_ENTITIES; ++i)
+    {
+        if (entities[i] == nullptr)
+        {
+            switch (type)
+            {
+            case BAT:
+                entities[i] = new Bat(spawnPos);
+                break;
+            case MUSHER:
+                entities[i] = new Musher(spawnPos);
+                break;
+            case PLAYER:
+                break;
+            case COLLECTABLE:
+                break;
+            default :
+                break;
+            }
+
+            break;
+        }
+    }
+}
+
 bool ModuleEntities::LoadState(pugi::xml_node& data)
 {
     for (uint i = 0; i < MAX_ENTITIES; ++i)

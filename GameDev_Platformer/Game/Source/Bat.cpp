@@ -9,9 +9,10 @@
 #include "Render.h"
 #include "Log.h"
 
-Bat::Bat(bool isActive) : Module(isActive)
+Bat::Bat(iPoint pos) : Enemy(pos)
 {
-	name.Create("Bat");
+	Start();
+	SetPosition(pos);
 }
 
 Bat::~Bat()
@@ -25,7 +26,6 @@ bool Bat::Awake()
 
 bool Bat::Start()
 {
-	active = true;
 	LOG("BAT START");
 	if (physBody == NULL)
 	{
@@ -206,7 +206,7 @@ bool Bat::PostUpdate()
 
 	SDL_Rect* rect;
 	rect = &currentAnim->GetCurrentFrame();
-	if (texture != nullptr && active)
+	if (texture != nullptr)
 		app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - rect->w), METERS_TO_PIXELS(physBody->body->GetPosition().y - rect->h),
 			&currentAnim->GetCurrentFrame(), 1, spriteRotation, rect->w, rect->h, 1.8f, spriteDir);
 
@@ -245,7 +245,6 @@ bool Bat::CleanUp()
 
 void Bat::Spawn(iPoint pos)
 {
-	Enable();
 	SetPosition(pos);
 	state = PATROL;
 }

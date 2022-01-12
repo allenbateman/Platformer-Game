@@ -10,6 +10,7 @@
 #include "Map.h"
 #include "ModulePhysics.h"
 #include "LevelManagement.h"
+#include "ModuleEntities.h"
 #include "player.h"
 #include "Musher.h"
 #include "Bat.h"
@@ -46,6 +47,8 @@ bool Scene1::Start()
 	KeysToTake = 2;
 
 	app->player->Spawn({ 2, 26 });
+
+	app->entities->AddEntity(EntityType::BAT, { 20,26 });
 
 	playerInCheckPoint = false;
 
@@ -417,13 +420,6 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 				LOG("CHECKPOINT! PROGRESS SAVED!");
 			}
 			playerInCheckPoint = true;
-		
-
-			break;
-		case Collider_Type::GROUND:
-			app->player->onGround = true;
-			app->player->doubleJump = false;
-		//	LOG("ON GROUND");
 			break;
 		default:
 			break;

@@ -99,10 +99,10 @@ bool ModulePlayer::Start()
 
 
 		//sensors
-		leftSensor = app->physics->CreateRectangleSensor(position.x, position.y,7,10, b2_kinematicBody, { 255,165,0,255 });
-		rightSensor = app->physics->CreateRectangleSensor(position.x, position.y,7,10, b2_kinematicBody, { 255,165,0,255 });
-		topSensor = app->physics->CreateRectangleSensor(position.x, position.y,7,5, b2_kinematicBody, { 255,165,0,255 });
-		botSensor = app->physics->CreateRectangleSensor(position.x, position.y,7,5, b2_kinematicBody, { 255,165,0,255 });
+		leftSensor = app->physics->CreateRectangleSensor(position.x, position.y,4,10, b2_dynamicBody, { 255,165,0,255 });
+		rightSensor = app->physics->CreateRectangleSensor(position.x, position.y,4,10, b2_dynamicBody, { 255,165,0,255 });
+		topSensor = app->physics->CreateRectangleSensor(position.x, position.y,12,4, b2_dynamicBody, { 255,165,0,255 });
+		botSensor = app->physics->CreateRectangleSensor(position.x, position.y,12,4, b2_dynamicBody, { 255,165,0,255 });
 
 		leftSensor->listener = app->player;
 		rightSensor->listener = app->player;
@@ -220,6 +220,9 @@ bool ModulePlayer::Update(float dt)
 	}
 	currentAnim->Update();
 	
+	//check if can double jump
+	if (physBody->body->GetLinearVelocity().y > 0 && onAir)
+		doubleJump = true;
 
 
 	return ret;
@@ -362,7 +365,7 @@ void ModulePlayer::Movement()
 			state = MOVE_RIGHT;
 
 		}
-		else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT )
+		else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 		{
 			physBody->body->SetLinearVelocity({ -speed.x, physBody->body->GetLinearVelocity().y });
 			state = MOVE_LEFT;
@@ -374,11 +377,11 @@ void ModulePlayer::Movement()
 		}
 
 		//Jump
-		if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && onGround)
+		if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN))
 		{
+			physBody->body->SetGravityScale(2);
 			physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(), true);
-			doubleJump = true;
-			onGround = false;
+			onGround = false;	doubleJump = true;
 			state = JUMP;
 
 			if (physBody->body->GetLinearVelocity().y > speed.y)
@@ -387,7 +390,7 @@ void ModulePlayer::Movement()
 			}
 		}
 	}
-	else {
+	else {//on air
 
 		//Double jump
 		if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN) && doubleJump)
@@ -398,6 +401,7 @@ void ModulePlayer::Movement()
 
 			if (physBody->body->GetLinearVelocity().y > speed.y)
 			{
+				
 				physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y });
 			}
 		}
@@ -448,17 +452,17 @@ void ModulePlayer::UpdateSensorsPosition()
 {
 	float offset;
 	b2Vec2 newPos;
-	newPos.x = position.x - PIXEL_TO_METERS(7);
+	newPos.x = position.x - PIXEL_TO_METERS(8);
 	newPos.y = position.y;
 	leftSensor->body->SetTransform(newPos, 0);
-	newPos.x = position.x + PIXEL_TO_METERS(7);
+	newPos.x = position.x + PIXEL_TO_METERS(8);
 	newPos.y = position.y;
 	rightSensor->body->SetTransform(newPos, 0);
 	newPos.x = position.x ;
-	newPos.y = position.y - PIXEL_TO_METERS(7);
+	newPos.y = position.y - PIXEL_TO_METERS(8);
 	topSensor->body->SetTransform(newPos, 0);
 	newPos.x = position.x;
-	newPos.y = position.y + PIXEL_TO_METERS(7);
+	newPos.y = position.y + PIXEL_TO_METERS(8);
 	botSensor->body->SetTransform(newPos, 0);
 }
 
@@ -490,22 +494,48 @@ void ModulePlayer::RangedAttack()
 
 void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
-	if (bodyA->type == PLAYER_X_SENSOR)
+
+	if (bodyA->type == PLAYER_X_SENSOR && bodyB->type == GROUND)
 	{
-		LOG("Side collider");
-		if (bodyB->type == GROUND)
+		if (bodyA->body == leftSensor->body)
 		{
-			LOG("Side collison");
+			LOG("left collison");
+			wallLeft = true;
+			//physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
+			
+		}
+		if (bodyA->body == rightSensor->body)
+		{
+			LOG("right collison");
+			wallRight = true;
+			//physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
+
 		}
 	}
-	if (bodyA->type == PLAYER_Y_SENSOR)
-	{
-		LOG("Vertical collider");
-		if (bodyB->type == GROUND)
-		{
-			LOG("Vertical collison");
-		}
+	else {
+		wallLeft = false;
+		wallRight = false;
 	}
+
+	if (bodyA->type == PLAYER_Y_SENSOR && bodyB->type == GROUND)
+	{
+		if (bodyA->body == topSensor->body)
+		{
+			LOG("top collison");
+		}
+		if (bodyA->body == botSensor->body)
+		{
+			LOG("bot collison");
+			onGround = true;
+			doubleJump = false;
+			physBody->body->SetGravityScale(1);
+		}
+
+	}else {
+			onGround = false;
+			physBody->body->SetGravityScale(3);
+	}
+	
 
 }
 

@@ -18,24 +18,46 @@
     <ClCompile Include="Source\ModulePhysics.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\FadeToBlack.cpp" />
-    <ClCompile Include="Source\GameOver.cpp" />
-    <ClCompile Include="Source\Intro.cpp" />
     <ClCompile Include="Source\LevelManagement.cpp" />
-    <ClCompile Include="Source\Scene1.cpp" />
-    <ClCompile Include="Source\Scene2.cpp" />
-    <ClCompile Include="Source\StartMenu.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\ModuleEntities.cpp" />
-    <ClCompile Include="Source\Entity.cpp">
-      <Filter>Entities</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Bat.cpp">
       <Filter>Entities\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="Source\Musher.cpp">
       <Filter>Entities\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Entity.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Enemy.cpp">
+      <Filter>Entities\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Collectable.cpp">
+      <Filter>Entities\Collectable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Gem.cpp">
+      <Filter>Entities\Collectable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Key.cpp">
+      <Filter>Entities\Collectable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene1.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\StartMenu.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameOver.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Intro.cpp">
+      <Filter>Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,26 +99,46 @@
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\FadeToBlack.h" />
-    <ClInclude Include="Source\GameOver.h" />
     <ClInclude Include="Source\Intro.h" />
     <ClInclude Include="Source\LevelManagement.h" />
-    <ClInclude Include="Source\Scene1.h" />
-    <ClInclude Include="Source\Scene2.h" />
-    <ClInclude Include="Source\StartMenu.h" />
     <ClInclude Include="Source\PerfTimer.h" />
     <ClInclude Include="Source\PQueue.h" />
     <ClInclude Include="Source\Queue.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\ModuleEntities.h" />
-    <ClInclude Include="Source\Entity.h">
-      <Filter>Entities</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Bat.h">
       <Filter>Entities\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="Source\Musher.h">
       <Filter>Entities\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entity.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Enemy.h">
+      <Filter>Entities\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Collectable.h">
+      <Filter>Entities\Collectable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Gem.h">
+      <Filter>Entities\Collectable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Key.h">
+      <Filter>Entities\Collectable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\StartMenu.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene1.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameOver.h">
+      <Filter>Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +159,9 @@
     </Filter>
     <Filter Include="Entities\Collectable">
       <UniqueIdentifier>{70aaa4f5-e922-4544-8337-d67f0d0479be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{4eca5673-1e50-465a-8fc9-48117793e985}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -6,9 +6,9 @@
 #include "Render.h"
 #include "Player.h"
 
-Entity::Entity(int x, int y) : position(x, y)
+Entity::Entity(iPoint pos)
 {
-	spawnPos = position;
+	spawnPos = pos;
 }
 
 Entity::~Entity()

@@ -55,16 +55,18 @@ public:
 	Animation* currentAnim = nullptr;
 	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim, meleePlayerAnim;
 	
-	float jumpForce = 8;
+	float jumpForce = 15;
 	float onAirXSpeed = 5;
 	bool doubleJump = false;
 	bool onGround = false;
 	bool onAir = false;
+	bool wallLeft = false;
+	bool wallRight = false;
 	PlayerState state;
 	SDL_RendererFlip direction;
 	fPoint lastPosition;
 	fPoint position;
-	fPoint speed = {10,10};
+	fPoint speed = {8,8};
 	PhysBody* physBody;
 	PhysBody* leftSensor;
 	PhysBody* rightSensor;
@@ -72,6 +74,7 @@ public:
 	PhysBody* topSensor;
 	
 	int colliderRadius = 8;
+	float gravityScale;
 
 	int score = 0;
 
