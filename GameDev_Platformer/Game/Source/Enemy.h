@@ -7,6 +7,7 @@ class Enemy :  public Entity
 public:
 
 	Enemy(iPoint pos);
+	Enemy(Collider_Type type, iPoint pos);
 	virtual void Move(float dt);
 	virtual void UpdatePath();
 
@@ -14,7 +15,6 @@ public:
 	int hitPoints;
 	int score;
 	float detectionDistance = 10; // in pixels
-
 protected:
 	int spriteRotation = 0;
 	SDL_RendererFlip spriteDir;
@@ -24,7 +24,7 @@ protected:
 	b2Vec2 movementSpeed;
 
 	PathFinding* pathfinding;
-	PhysBody* physBody;
+
 
 
 	Animation idleAnim, walkingAnim, jumpingAnim, deathAnim;

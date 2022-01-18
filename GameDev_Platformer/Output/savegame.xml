@@ -19,28 +19,28 @@
 			<object_layer>
 				<Gems name="Gems" height="0" width="0" texture="true" texture="false">
 					<Gem id="26" type="0" x="176" y="448" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="39" type="0" x="256" y="416" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="40" type="0" x="336" y="448" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="41" type="0" x="464" y="384" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="42" type="0" x="496" y="352" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="43" type="0" x="864" y="432" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="44" type="0" x="752" y="288" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="45" type="0" x="800" y="240" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Gem>
 					<Gem id="46" type="0" x="944" y="288" height="16" width="16">
 						<Draw name="Draw" value="1" />
@@ -61,7 +61,7 @@
 						<Draw name="Draw" value="1" />
 					</Key>
 					<Key id="53" type="1" x="528" y="448" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Key>
 				</Gems>
 				<Winspot name="Winspot" height="0" width="0" texture="false" texture="false">
@@ -74,7 +74,7 @@
 						<Draw name="Draw" value="1" />
 					</Potion>
 					<Potion id="62" type="10" x="448" y="448" height="16" width="16">
-						<Draw name="Draw" value="0" />
+						<Draw name="Draw" value="1" />
 					</Potion>
 				</Potions>
 			</object_layer>
@@ -101,17 +101,26 @@
 	<intro />
 	<start_menu />
 	<level1>
-		<level1 keys_to_collect="1" player_in_check_point="true" portal_state="0" checkpoint_state="1" />
+		<level1 keys_to_collect="2" player_in_check_point="false" portal_state="0" checkpoint_state="0" />
 	</level1>
 	<level2 />
 	<game_over />
-	<:anonymous>
-		<bat x="0" y="0" state="0" />
-		<bat x="-4.22016832e+37" y="-4.22016832e+37" state="0" />
-		<bat x="-4.22016832e+37" y="-4.22016832e+37" state="0" />
-	</:anonymous>
+	<entities>
+		<Gem type="3" x="29.5" y="23.5" />
+		<Gem type="3" x="31.5" y="21.5" />
+		<Gem type="3" x="54.5" y="26.5" />
+		<Gem type="3" x="47.5" y="17.5" />
+		<Gem type="3" x="50.5" y="14.5" />
+		<Gem type="3" x="59.5" y="17.5" />
+		<Gem type="3" x="54.5" y="13.5" />
+		<Gem type="3" x="65.5" y="19.5" />
+		<Gem type="3" x="73.5" y="18.5" />
+		<Gem type="3" x="76.5" y="15.5" />
+		<Key type="4" x="77.5" y="25.5" />
+		<Key type="4" x="33.5" y="27.5" />
+	</entities>
 	<player>
-		<player x="53.6323051" y="15.4950018" lives="2" state="2" />
+		<player x="22.1802597" y="27.4930363" lives="1" state="0" />
 	</player>
 	<renderer>
 		<camera x="0" y="0" />

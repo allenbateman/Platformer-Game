@@ -8,7 +8,15 @@
 
 Entity::Entity(iPoint pos)
 {
-	spawnPos = pos;
+	position.x = pos.x;
+	position.y = pos.y;
+}
+
+Entity::Entity(Collider_Type _type, iPoint pos)
+{
+	position.x = pos.x;
+	position.y = pos.y;
+	type = _type;
 }
 
 Entity::~Entity()
@@ -22,6 +30,11 @@ const PhysBody* Entity::GetCollider() const
 	return physBody;
 }
 
+bool Entity::Start()
+{
+	return true;
+}
+
 bool Entity::PreUpdate()
 {
 	
@@ -30,20 +43,11 @@ bool Entity::PreUpdate()
 
 bool Entity::Update(float dt)
 {
-	if (currentAnim != nullptr)
-		currentAnim->Update();
-
-	if (physBody != nullptr)
-		physBody->body->SetTransform(bodyPosition, physBody->body->GetAngle());
 	return true;
 }
 
 bool Entity::PostUpdate()
 {
-	if (currentAnim != nullptr) {
-		if (currentAnim->mustFlip == false) app->render->DrawTexture(texture, position.x + drawOffset.x, position.y + drawOffset.y, &(currentAnim->GetCurrentFrame()));
-		else app->render->DrawTexture(texture, position.x + drawOffset.x, position.y + drawOffset.y, &(currentAnim->GetCurrentFrame()), 1.0f, true, SDL_FLIP_NONE);
-	}
 	return true;
 }
 
@@ -54,9 +58,13 @@ void Entity::OnCollision(PhysBody* other)
 
 void Entity::SetToDelete()
 {
-	pendingToDelete = true;
 	if (physBody != nullptr)
 		physBody->pendingToDelete = true;
+}
+
+bool Entity::Cleanup()
+{
+	return true;
 }
 
 bool Entity::LoadState(pugi::xml_node& data)
@@ -67,4 +75,15 @@ bool Entity::LoadState(pugi::xml_node& data)
 bool Entity::SaveState(pugi::xml_node& data) const
 {
 	return true;
+}
+
+b2Vec2 Entity::GetPositionTileToMeters(iPoint pos)
+{
+
+		b2Vec2 newPos;
+
+		iPoint pixelPos = app->map->MapToWorld(pos.x, pos.y);
+		newPos.x = pixelPos.x;
+		newPos.y = pixelPos.y;
+		return newPos;
 }

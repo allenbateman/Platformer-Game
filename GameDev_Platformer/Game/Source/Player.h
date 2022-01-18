@@ -11,8 +11,7 @@
 enum PlayerState
 {
 	IDLE,
-	MOVE_LEFT,
-	MOVE_RIGHT,
+	MOVE,
 	JUMP,
 	DOUBLE_JUMP,
 	ATTACK,
@@ -57,6 +56,8 @@ public:
 	
 	float jumpForce = 15;
 	float onAirXSpeed = 5;
+	float jumpCooldown = 50;
+	float currentJumpCd = 0;
 	bool doubleJump = false;
 	bool onGround = false;
 	bool onAir = false;
@@ -72,6 +73,8 @@ public:
 	PhysBody* rightSensor;
 	PhysBody* botSensor;
 	PhysBody* topSensor;
+
+	PhysBody* meleeAttack;
 	
 	int colliderRadius = 8;
 	float gravityScale;

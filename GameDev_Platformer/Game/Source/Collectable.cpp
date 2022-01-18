@@ -1,6 +1,8 @@
 #include "Collectable.h"
 Collectable::Collectable(iPoint pos) : Entity(pos)
 {
-	position.x = pos.x;
-	position.y = pos.y;
+}
+
+Collectable::Collectable(Collider_Type type, iPoint pos) : Entity(type, pos)
+{
 }

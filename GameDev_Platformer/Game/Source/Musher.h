@@ -5,6 +5,7 @@ class Musher : public Enemy
 {
 public:
 	Musher(iPoint position);
+	Musher(Collider_Type type, iPoint position);
 	virtual ~Musher();
 
 	bool Awake();

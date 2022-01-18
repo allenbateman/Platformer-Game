@@ -5,6 +5,8 @@
 #include "Map.h"
 #include "ModulePhysics.h"
 #include "LevelManagement.h"
+#include "ModuleEntities.h"
+#include "Entity.h"
 #include "Player.h"
 #include "Scene1.h"
 #include "Scene2.h"
@@ -100,6 +102,9 @@ void Map::Draw()
 		}
 		mapLayerItem = mapLayerItem->next;
 	}
+	/*
+
+	//Drawing objects from tiled, not used anymore
 
 	ListItem<ObjectLayer*>* objectLayer;
 	objectLayer = mapData.objectLayers.start;
@@ -146,7 +151,7 @@ void Map::Draw()
 		}
 		objectLayer = objectLayer->next;
 	}
-
+	*/
 		
 }
 
@@ -411,6 +416,7 @@ bool Map::Load(const char* filename)
 	//once the maps and layers are loaded, we set the physics properties
 	if (ret == true)
 	{
+		//here we will set ground and death colliders (water, spkies?)
 		SetMapColliders();
 	}
 
@@ -598,6 +604,7 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 	//Load object group attributes
 	layer->name = node.attribute("name").as_string();
 
+	//Check what type of object is 
 	if (strcmp(layer->name.GetString(), "Gems") == 0)
 	{
 		layer->texture = app->tex->Load("../Output/Assets/Spritesx16/gems.png");
@@ -631,6 +638,7 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 		obj->height = object.attribute("height").as_int();
 
 		LOG("OBJECT ID: %i", obj->id);
+		//Check what type of object is 
 
 		if (strcmp(object.attribute("type").as_string(), "Gem") == 0){
 
@@ -655,6 +663,14 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 		else if (strcmp(object.attribute("type").as_string(), "Checkpoint") == 0) {
 
 			obj->type = Collider_Type::CHECK_POINT;
+
+		}else if (strcmp(object.attribute("type").as_string(), "Bat") == 0) {
+
+		//	obj->etype = EntityType::EBAT;
+		}
+		else if (strcmp(object.attribute("type").as_string(), "Musher") == 0) {
+
+		//	obj->etype = EntityType::EMUSHER;
 		}
 		layer->objects.add(obj);
 		//send current object node and obj to store the properties
@@ -713,7 +729,7 @@ bool Map::SetMapColliders()
 						PhysBody* pb = app->physics->CreateRectangle(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody);
 						pb->color = { 0,0,0,255 };
 						pb->type = Collider_Type::GROUND;
-						app->physics->groundColliders.add(pb);
+						app->physics->allPhysicBodies.add(pb);
 					}
 				}
 			}
@@ -739,7 +755,7 @@ bool Map::SetMapColliders()
 						pb->listener = app->levelManagement->currentScene;
 						pb->listener = app->player;
 						pb->type = Collider_Type::DEATH;
-						app->physics->deathColliders.add(pb);
+						app->physics->allPhysicBodies.add(pb);
 					}
 
 				}
@@ -747,87 +763,67 @@ bool Map::SetMapColliders()
 		}
 		mapLayerItem = mapLayerItem->next;
 	}
-
-	ListItem<ObjectLayer*>* objectLayer;
+		ListItem<ObjectLayer*>* objectLayer;
 	objectLayer = mapData.objectLayers.start;
 	LOG("--------!!!SETTING OBJECTS!!!---------");
 
 	while (objectLayer != NULL)
 	{
-		
+	
 		LOG("SETTING %s LAYER COLLIDER...",objectLayer->data->name.GetString());
 		ListItem<Object*>* object;
 		object = objectLayer->data->objects.start;
 		while (object != NULL)
 		{
-			SDL_Rect r;
-			r.x = object->data->x;
-			r.y = object->data->y;
-			r.w = object->data->width;
-			r.h = object->data->height;
 
-			if (object->data->type == Collider_Type::GEM && object->data->properties.GetProperty("Draw") == 1)
-			{
-				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
-				pb->color = { 100,50,255,255 };
-				pb->id = object->data->id;
-				pb->type = Collider_Type::GEM;
-				app->physics->collectables.add(pb);
-
-		
-				LOG("SETTING GEM COLLIDER...");
+			iPoint spawnPos;
+			spawnPos.x = object->data->x + object->data->width * 0.5;
+			spawnPos.y = object->data->y - object->data->width * 0.5; //tile height, the position tile is in the left-bot corner
 			
-			}
-			else if (object->data->type == Collider_Type::KEY && object->data->properties.GetProperty("Draw") == 1)
-			{
-				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
-				pb->color = { 100,50,255,255 };
-				pb->id = object->data->id;
-				pb->type = Collider_Type::KEY;
-				app->physics->collectables.add(pb);
 
+	/*		switch (object->data->etype)
+			{
+				case EBAT:
+					app->entities->AddEntity(EntityType::EBAT, spawnPos);
+					LOG("SPAWN BAT...");
+					break;
+				case EMUSHER:
+					app->entities->AddEntity(EntityType::EMUSHER, spawnPos);
+					LOG("SPAWN MUSHER...");
+					break;
+			}*/
+
+			if (object->data->type == Collider_Type::GEM)
+			{
+
+				app->entities->AddEntity(Collider_Type::GEM, spawnPos);
+				LOG("SETTING GEM COLLIDER...");
+		
+			}
+			else if (object->data->type == Collider_Type::KEY )
+			{
+				app->entities->AddEntity(Collider_Type::KEY, spawnPos);
 				LOG("SETTING KEY COLLIDER...");
 
-			}else if (object->data->type == Collider_Type::POTION && object->data->properties.GetProperty("Draw") == 1)
+			}else if (object->data->type == Collider_Type::POTION)
 			{
-				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y - (r.h * 0.5f), r.w, r.h, b2_staticBody);
-				pb->color = { 255,150,25,255 };
-				pb->id = object->data->id;
-				pb->type = Collider_Type::POTION;
-				app->physics->collectables.add(pb);
-
 				LOG("SETTING POTION COLLIDER...");
 
 			}
 			else if (object->data->type == Collider_Type::WIN)
 			{
-				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y + (r.h * 0.5f), r.w, r.h, b2_staticBody);
-				pb->color = { 0,255,0,255 };
-				pb->id = object->data->id;
-				pb->type = Collider_Type::WIN;
-				app->physics->checkPoints.add(pb);
-
+			
 				LOG("SETTING WIN COLLIDER...");
 
 			}
 			else if (object->data->type == Collider_Type::SPAWNER)
 			{
-				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y + (r.h * 0.5f), r.w, r.h, b2_staticBody);
-				pb->color = { 255,0,250,255 };
-				pb->id = object->data->id;
-				pb->type = Collider_Type::SPAWNER;
-				app->physics->checkPoints.add(pb);
-
+			
 				LOG("SETTING SPAWNER COLLIDER...");
 			}
 			else if (object->data->type == Collider_Type::CHECK_POINT)
 			{
-				PhysBody* pb = app->physics->CreateRectangleSensor(r.x + (r.w * 0.5f), r.y + (r.h * 0.5f), r.w, r.h, b2_staticBody);
-				pb->color = { 255,0,250,255 };
-				pb->id = object->data->id;
-				pb->type = Collider_Type::CHECK_POINT;
-				app->physics->checkPoints.add(pb);
-
+			
 				LOG("SETTING CHECKPOINT COLLIDER...");
 			}
 
@@ -843,7 +839,7 @@ bool Map::SetMapColliders()
 
 void Map::ClearColliders()
 {
-	app->physics->ClearAllCollidersLists();
+	app->physics->allPhysicBodies.clear();
 }
 
 bool Map::LoadState(pugi::xml_node& data)

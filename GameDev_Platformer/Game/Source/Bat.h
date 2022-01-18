@@ -7,6 +7,7 @@ class Bat : public Enemy
 {
 public:
 	Bat(iPoint pos);
+	Bat(Collider_Type type, iPoint pos);
 	virtual ~Bat();
 
 	bool Awake();

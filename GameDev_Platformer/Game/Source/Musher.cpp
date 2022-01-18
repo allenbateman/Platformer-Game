@@ -12,8 +12,11 @@
 
 Musher::Musher(iPoint pos) : Enemy(pos)
 {
-	Start();
-	SetPosition(pos);
+	spawnPos = pos;
+}
+Musher::Musher(Collider_Type type, iPoint pos) : Enemy(pos)
+{
+	spawnPos = pos;
 }
 
 Musher::~Musher()
@@ -61,7 +64,7 @@ bool Musher::Start()
 		physBody->type = Collider_Type::ENEMY;
 
 		physBody->body->SetFixedRotation(true);
-		app->physics->entities.add(physBody);
+		app->physics->allPhysicBodies.add(physBody);
 
 		//make the path 
 		pathfinding = new PathFinding(true);
@@ -82,7 +85,7 @@ bool Musher::Start()
 		physBody->type = Collider_Type::ENEMY;
 
 		physBody->body->SetFixedRotation(true);
-		app->physics->entities.add(physBody);
+		app->physics->allPhysicBodies.add(physBody);
 	}
 	
 	return true;
@@ -191,9 +194,9 @@ bool Musher::PostUpdate()
 bool Musher::CleanUp()
 {
 	//delete physBody;
-
-	//physBody->pendingToDelete = true;
-	physBody = NULL;
+	delete physBody;
+	physBody = nullptr;
+	delete currentAnim;
 	currentAnim = nullptr;
 	return true;
 }

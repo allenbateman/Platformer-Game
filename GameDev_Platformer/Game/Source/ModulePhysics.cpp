@@ -84,63 +84,6 @@ bool ModulePhysics::PreUpdate()
 
 		}
 	}
-
-	for (p2List_item<PhysBody*>* pb = collectables.getFirst(); pb; pb = pb->next)
-	{
-		if (!allPhysicBodies.find(pb->data))
-		{
-			allPhysicBodies.add(pb->data);
-			LOG("Adding new collectable collider");
-		}
-	}
-	for(p2List_item<PhysBody*>* pb = groundColliders.getFirst(); pb; pb = pb->next)
-	{
-		if (!allPhysicBodies.find(pb->data))
-		{
-			allPhysicBodies.add(pb->data); 
-			LOG("Adding new ground collider"); 
-		}
-	}
-	for(p2List_item<PhysBody*>* pb = deathColliders.getFirst(); pb; pb = pb->next)
-	{
-		if (!allPhysicBodies.find(pb->data))
-		{
-			allPhysicBodies.add(pb->data); 
-			LOG("Adding new death collider");
-		}
-	}
-	for (p2List_item<PhysBody*>* pb = entities.getFirst(); pb; pb = pb->next)
-	{
-		if (!allPhysicBodies.find(pb->data))
-		{
-			allPhysicBodies.add(pb->data);
-			LOG("Adding new entity collider");
-		}
-	}
-	for (p2List_item<PhysBody*>* pb = checkPoints.getFirst(); pb; pb = pb->next)
-	{
-		if (!allPhysicBodies.find(pb->data))
-		{
-			allPhysicBodies.add(pb->data);
-			LOG("Adding new checkpoint collider");
-		}
-	}
-	for (p2List_item<PhysBody*>* pb = playerSensors.getFirst(); pb; pb = pb->next)
-	{
-		if (!allPhysicBodies.find(pb->data))
-		{
-			allPhysicBodies.add(pb->data);
-			LOG("Adding new player sensor collider");
-		}
-	}
-	for (p2List_item<PhysBody*>* pb = playerAttackSensors.getFirst(); pb; pb = pb->next)
-	{
-		if (!allPhysicBodies.find(pb->data))
-		{
-			allPhysicBodies.add(pb->data);
-			LOG("Adding new player attack sensor collider");
-		}
-	}
 	return true;
 }
 
@@ -314,10 +257,11 @@ void ModulePhysics::Disable()
 bool ModulePhysics::CleanUp()
 {
 	LOG("Clean up Phiscis Module ");
-
+	allPhysicBodies.clear();
 	// Delete the whole physics world!
-		delete world;
-		world = nullptr;
+	delete world;
+	world = nullptr;
+	active = false;
 
 	return true;
 }
@@ -411,14 +355,15 @@ void ModulePhysics::DrawColliders()
 
 void ModulePhysics::ClearAllCollidersLists()
 {
-	groundColliders.clear();
-	playerSensors.clear();
-	collectables.clear();
-	deathColliders.clear();
-	checkPoints.clear();
-	entities.clear();
+
+	p2List_item<PhysBody*>* current = allPhysicBodies.getFirst();
+	while (current != nullptr)
+	{
+		current->data->pendingToDelete = true;
+		current = current->next;
+	}
 	allPhysicBodies.clear();
-	LOG("All colliders list have been cleared...");
+	LOG("All colliders have been cleared...");
 }
 
 void PhysBody::GetPosition(int& x, int& y) const

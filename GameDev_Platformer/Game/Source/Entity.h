@@ -8,16 +8,30 @@
 #include "Animation.h"
 #include "Textures.h"
 #include "Render.h"
+#include "Map.h"
 
 struct SDL_Texture;
 struct PhysicBody;
 
+enum EntityType {
+	No_Type,
+	EBAT,
+	EMUSHER,
+	EGEM,
+	EKEY,
+	EPLAYER,
+	ECHECK_POINT,
+	EWIN_SPOT,
+	ECOLLECTABLE
+
+};
 class Entity abstract
 {
 public:
 	// Constructor
 	// Saves the spawn position for later movement calculations
-	Entity(iPoint position);
+	Entity(iPoint pos);
+	Entity(Collider_Type _type, iPoint pos);
 
 	// Destructor
 	virtual ~Entity();
@@ -25,6 +39,7 @@ public:
 	// Returns the Entity's collider
 	const PhysBody* GetCollider() const;
 
+	virtual bool Start();
 	virtual bool PreUpdate();
 	// Updates animation and collider position
 	virtual bool Update(float dt);
@@ -38,27 +53,27 @@ public:
 	// Sets flag for deletion and for the collider aswell
 	virtual void SetToDelete();
 
+	virtual bool Cleanup();
+
 	// Load / Save
 	virtual bool LoadState(pugi::xml_node& data);
 	virtual bool SaveState(pugi::xml_node& data) const;
 
+	b2Vec2 GetPositionTileToMeters(iPoint pos);
+	void SetPositionTiles();
+	void SetPositionPixels();
+
 public:
 	// The current position in the world
+	iPoint spawnPos;
 	fPoint position;
-	b2Vec2 bodyPosition;
 	iPoint drawOffset = { 0, 0 };
-
-	//type of collider
 	Collider_Type type;
-
 	// The Entity's texture
 	SDL_Texture* texture = nullptr;
 
 	// Sound fx when destroyed
 	int destroyedFx = 0;
-
-	// A flag for the Entity removal. Important! We do not delete objects instantly
-	bool pendingToDelete = false;
 
 	//if debug mode
 	bool DEBUG;
@@ -85,18 +100,11 @@ public:
 
 	State state;
 	Direction direction;
-
+	PhysBody* physBody = nullptr;
 protected:
 	// A ptr to the current animation
 	Animation* currentAnim = nullptr;
 	Animation score;
-
-	// The Entity's collider
-	PhysBody* physBody = nullptr;
-
-	// Original spawn position. Stored for movement calculations
-	iPoint spawnPos;
-
 };
 
 #endif // __ENTITY_H__

@@ -5,6 +5,7 @@
 #include "List.h"
 #include "Point.h"
 #include "ModulePhysics.h"
+#include "Entity.h"
 
 #include "PugiXml\src\pugixml.hpp"
 
@@ -99,6 +100,7 @@ struct Object {
 	Properties properties;
 	SString name;
 	Collider_Type type;
+	//EntityType etype = No_Type;
 	int x, y, width, height, id;
 	
 	Object() {}

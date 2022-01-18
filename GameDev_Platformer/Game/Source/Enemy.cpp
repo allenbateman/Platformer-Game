@@ -2,8 +2,10 @@
 
 Enemy::Enemy(iPoint pos) : Entity(pos)
 {
-	position.x = pos.x;
-	position.y = pos.y;
+}
+
+Enemy::Enemy(Collider_Type type, iPoint pos) : Entity(type,pos)
+{
 }
 
 void Enemy::Move(float dt)

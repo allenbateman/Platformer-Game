@@ -42,13 +42,13 @@ bool Scene1::Start()
 	app->physics->Start();
 	app->map->Load("level1.tmx");
 	props = app->tex->Load("Assets/Spritesx16/props.png");
-	app->audio->PlayMusic("Assets/audio/music/level1.wav");
+//	app->audio->PlayMusic("Assets/audio/music/level1.wav");
 
 	KeysToTake = 2;
 
+	//Spawn all entities
 	app->player->Spawn({ 2, 26 });
-
-	app->entities->AddEntity(EntityType::BAT, { 20,26 });
+	app->entities->Start();
 
 	playerInCheckPoint = false;
 
@@ -260,7 +260,8 @@ bool Scene1::CleanUp()
 	LOG("Disable scene 1");
 	app->player->Disable();
 	app->map->CleanUp();
-	app->physics->Disable();
+	app->entities->CleanUp();
+	app->physics->CleanUp();
 	app->audio->PlayMusic("");
 	return true;
 }
@@ -277,6 +278,7 @@ void Scene1::Disable()
 	app->player->Disable();
 	app->map->CleanUp();
 	app->physics->Disable();
+	app->entities->Disable();
 }
 
 bool Scene1::LoadState(pugi::xml_node& data)
@@ -307,84 +309,20 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 
 	p2List_item<PhysBody*>* ToRemove;
-	p2List_item<PhysBody*>* current = app->physics->collectables.getFirst();
+	p2List_item<PhysBody*>* current = app->physics->allPhysicBodies.getFirst();
 	if (bodyA->type == Collider_Type::PLAYER )
 	{
+
 		switch (bodyB->type)
 		{
 		case Collider_Type::GEM:
-			while (current != NULL)
-			{
-				bool removeItem = false;
-				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyB) {
-					removeItem = true;
-					LOG("REMOVE GEM");
-				}
-				current = current->next;
-				if (removeItem)
-				{
-					itemToRemove->data->pendingToDelete = true;
-
-					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
-					if (!obj->properties.SetProperty("Draw", 0))
-					{
-						LOG("Could not change object property");
-					}
-
-					app->physics->collectables.del(itemToRemove);
-				}
-			}
+			app->entities->RemoveEntity(bodyB);
 			break;
 		case Collider_Type::KEY:
-			while (current != NULL)
-			{
-				bool removeItem = false;
-				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyB) {
-					removeItem = true;
-					KeysToTake--;
-					LOG("REMOVE KEY");
-				}
-				current = current->next;
-				if (removeItem)
-				{
-					itemToRemove->data->pendingToDelete = true;
-
-					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
-					if (!obj->properties.SetProperty("Draw", 0))
-					{
-						LOG("Could not change object property");
-					}
-
-					app->physics->collectables.del(itemToRemove);
-				}
-			}
+			app->entities->RemoveEntity(bodyB);
 			break;		
 		case Collider_Type::POTION:
-			while (current != NULL)
-			{
-				bool removeItem = false;
-				p2List_item<PhysBody*>* itemToRemove = current;
-				if (current->data == bodyB) {
-					removeItem = true;
-					app->player->lives++;
-					LOG("REMOVE POTION");
-				}
-				current = current->next;
-				if (removeItem)
-				{
-					itemToRemove->data->pendingToDelete = true;
-
-					Object* obj = app->map->GetObjectById(itemToRemove->data->id);
-					if (!obj->properties.SetProperty("Draw", 0))
-					{
-						LOG("Could not change object property");
-					}
-
-					app->physics->collectables.del(itemToRemove);
-				}
-			}
+			app->entities->RemoveEntity(bodyB);			
 			break;
 		case Collider_Type::DEATH:
 
@@ -428,32 +366,11 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	}
 	
 	//Entities Collision
-	current = app->physics->entities.getFirst();
+	current = app->physics->allPhysicBodies.getFirst();
 
 	if (bodyA->type == Collider_Type::ENEMY && bodyB->type == Collider_Type::PLAYER_ATTACK)
 	{
-		//if (bodyA == app->bat->physBody)
-		//{
-		//	app->bat->state = app->bat->DEATH;
-		//}
-		//if (bodyA == app->musher->physBody)
-		//{
-		//	app->musher->state = app->musher->DEATH;
-		//}
-		while (current != NULL)
-		{
-			bool removeEntity = false;
-			p2List_item<PhysBody*>* entityToRemove = current;
-			if (current->data == bodyA) {
-				removeEntity = true;
-				LOG("REMOVE ENEMY");
-			}
-			current = current->next;
-			if (removeEntity)
-			{
-				entityToRemove->data->pendingToDelete = true;
-				app->physics->entities.del(entityToRemove);
-			}
-		}
+		app->entities->RemoveEntity(bodyA);
+		bodyA->pendingToDelete = true;
 	}
 }

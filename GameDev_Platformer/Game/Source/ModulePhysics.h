@@ -25,6 +25,8 @@ enum Collider_Type {
 
 	GEM,
 	KEY, 
+	BAT,
+	MUSHER,
 	CHECK_POINT, 
 	SPAWNER,
 	DEATH,
@@ -108,14 +110,6 @@ public:
 
 	bool debug;
 	b2MouseJoint* mouse_joint;
-	p2List<PhysBody*> groundColliders;
-	p2List<PhysBody*> playerSensors;
-	p2List<PhysBody*> playerAttackSensors;
-	p2List<PhysBody*> collectables;
-	p2List<PhysBody*> deathColliders;
-	p2List<PhysBody*> checkPoints;
-	p2List<PhysBody*> entities;
-
 	p2List<PhysBody*> allPhysicBodies;
 
 	p2List<PhysBody*> BodiesToRemove;

@@ -2,10 +2,16 @@
 #include "Collectable.h"
 class Gem : public Collectable
 {
+public:
     Gem(iPoint pos);
+    Gem(Collider_Type type,iPoint pos);
 
-    void Start();
-    void Update();
-    void postUpdate();
+    bool LoadState(pugi::xml_node& data);
+    bool SaveState(pugi::xml_node& data) const;
+private:
+    bool Start();
+    bool Update();
+    bool PostUpdate();
+    bool Cleanup();
 };
 

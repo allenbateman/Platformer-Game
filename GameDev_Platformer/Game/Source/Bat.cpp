@@ -11,12 +11,16 @@
 
 Bat::Bat(iPoint pos) : Enemy(pos)
 {
-	Start();
-	SetPosition(pos);
+	spawnPos = pos;
+}
+Bat::Bat(Collider_Type type, iPoint pos) : Enemy(pos)
+{
+	spawnPos = pos;
 }
 
 Bat::~Bat()
 {
+
 }
 
 bool Bat::Awake()
@@ -27,8 +31,7 @@ bool Bat::Awake()
 bool Bat::Start()
 {
 	LOG("BAT START");
-	if (physBody == NULL)
-	{
+
 		texture = app->tex->Load("Assets/Spritesx16/bat.png");
 		//Idle anim
 		idleAnim.PushBack({ 7, 0, 18, 8 });
@@ -65,14 +68,13 @@ bool Bat::Start()
 		deathAnim.speed = 0.15f;
 
 		currentAnim = &idleAnim;
-		position = { 54,22 };
 		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
 		physBody->listener = app->levelManagement->currentScene;
 		physBody->color = { 255,255,0,255 };
 		physBody->type = Collider_Type::ENEMY;
 
 		physBody->body->SetFixedRotation(true);
-		app->physics->entities.add(physBody);
+		app->physics->allPhysicBodies.add(physBody);
 
 		position.x = physBody->body->GetPosition().x;
 		position.y = physBody->body->GetPosition().y;
@@ -87,19 +89,7 @@ bool Bat::Start()
 		uchar* data = NULL;
 		if (app->map->CreateWalkabilityMap(w, h, &data,2)) pathfinding->SetMap(w, h, data);
 		RELEASE_ARRAY(data);
-	}
-	else if (physBody->body == NULL)
-	{
-		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
-		physBody->listener = app->levelManagement->currentScene;
-		physBody->color = { 255,255,0,255 };
-		physBody->type = Collider_Type::ENEMY;
-		state = PATROL;
-
-		physBody->body->SetFixedRotation(true);
-		app->physics->entities.add(physBody);
-
-	}
+	
 	return true;
 }
 
@@ -236,9 +226,9 @@ bool Bat::PostUpdate()
 
 bool Bat::CleanUp()
 {
-	//delete physBody;
-	physBody = NULL;
-	//physBody->pendingToDelete = true;
+	delete physBody;
+	physBody = nullptr;
+	delete currentAnim;
 	currentAnim = nullptr;
 	return true;
 }
