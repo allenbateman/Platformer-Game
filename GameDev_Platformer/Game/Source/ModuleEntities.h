@@ -6,7 +6,7 @@
 #include "Point.h"
 #include "Entity.h"
 
-#define MAX_ENTITIES 100
+#define MAX_ENTITIES 150
 #define SPAWN_MARGIN 20
 
 

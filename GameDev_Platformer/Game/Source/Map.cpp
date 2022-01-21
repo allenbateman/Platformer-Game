@@ -656,21 +656,17 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 
 			obj->type = Collider_Type::WIN;
 
-		}else if (strcmp(object.attribute("type").as_string(), "Spawner") == 0) {
-
-			obj->type = Collider_Type::SPAWNER;
-		}
-		else if (strcmp(object.attribute("type").as_string(), "Checkpoint") == 0) {
+		}else if (strcmp(object.attribute("type").as_string(), "Checkpoint") == 0) {
 
 			obj->type = Collider_Type::CHECK_POINT;
 
 		}else if (strcmp(object.attribute("type").as_string(), "Bat") == 0) {
 
-		//	obj->etype = EntityType::EBAT;
+			obj->type = Collider_Type::BAT;
 		}
 		else if (strcmp(object.attribute("type").as_string(), "Musher") == 0) {
 
-		//	obj->etype = EntityType::EMUSHER;
+			obj->type = Collider_Type::MUSHER;
 		}
 		layer->objects.add(obj);
 		//send current object node and obj to store the properties
@@ -781,51 +777,73 @@ bool Map::SetMapColliders()
 			spawnPos.y = object->data->y - object->data->width * 0.5; //tile height, the position tile is in the left-bot corner
 			
 
-	/*		switch (object->data->etype)
+			switch (object->data->type)
 			{
-				case EBAT:
-					app->entities->AddEntity(EntityType::EBAT, spawnPos);
+				case BAT:
+					app->entities->AddEntity(BAT, spawnPos);
 					LOG("SPAWN BAT...");
 					break;
-				case EMUSHER:
-					app->entities->AddEntity(EntityType::EMUSHER, spawnPos);
+				case MUSHER:
+					app->entities->AddEntity(MUSHER, spawnPos);
 					LOG("SPAWN MUSHER...");
 					break;
-			}*/
+				case GEM:
+					app->entities->AddEntity(Collider_Type::GEM, spawnPos);
+					LOG("SETTING GEM COLLIDER...");
+					break;
+				case KEY:
+					app->entities->AddEntity(Collider_Type::KEY, spawnPos);
+					LOG("SETTING KEY COLLIDER...");
+					break;
+				case POTION:
+					app->entities->AddEntity(Collider_Type::POTION, spawnPos);
+					LOG("SETTING POTION COLLIDER...");
+					break;
+				case WIN:
+					app->entities->AddEntity(Collider_Type::WIN, spawnPos);
+					LOG("SETTING WIN COLLIDER...");
+					break;
+				case CHECK_POINT:
+					app->entities->AddEntity(Collider_Type::CHECK_POINT, spawnPos);
+					LOG("SETTING CHECKPOINT COLLIDER...");
+					break;
+				default:
+					break;
+			}
 
-			if (object->data->type == Collider_Type::GEM)
-			{
+			//if (object->data->type == Collider_Type::GEM)
+			//{
 
-				app->entities->AddEntity(Collider_Type::GEM, spawnPos);
-				LOG("SETTING GEM COLLIDER...");
+			//	app->entities->AddEntity(Collider_Type::GEM, spawnPos);
+			//	LOG("SETTING GEM COLLIDER...");
 		
-			}
-			else if (object->data->type == Collider_Type::KEY )
-			{
-				app->entities->AddEntity(Collider_Type::KEY, spawnPos);
-				LOG("SETTING KEY COLLIDER...");
+			//}
+			//else if (object->data->type == Collider_Type::KEY )
+			//{
+			//	app->entities->AddEntity(Collider_Type::KEY, spawnPos);
+			//	LOG("SETTING KEY COLLIDER...");
 
-			}else if (object->data->type == Collider_Type::POTION)
-			{
-				LOG("SETTING POTION COLLIDER...");
+			//}else if (object->data->type == Collider_Type::POTION)
+			//{
+			//	LOG("SETTING POTION COLLIDER...");
 
-			}
-			else if (object->data->type == Collider_Type::WIN)
-			{
-			
-				LOG("SETTING WIN COLLIDER...");
+			//}
+			//else if (object->data->type == Collider_Type::WIN)
+			//{
+			//
+			//	LOG("SETTING WIN COLLIDER...");
 
-			}
-			else if (object->data->type == Collider_Type::SPAWNER)
-			{
-			
-				LOG("SETTING SPAWNER COLLIDER...");
-			}
-			else if (object->data->type == Collider_Type::CHECK_POINT)
-			{
-			
-				LOG("SETTING CHECKPOINT COLLIDER...");
-			}
+			//}
+			//else if (object->data->type == Collider_Type::SPAWNER)
+			//{
+			//
+			//	LOG("SETTING SPAWNER COLLIDER...");
+			//}
+			//else if (object->data->type == Collider_Type::CHECK_POINT)
+			//{
+			//
+			//	LOG("SETTING CHECKPOINT COLLIDER...");
+			//}
 
 			object = object->next;
 

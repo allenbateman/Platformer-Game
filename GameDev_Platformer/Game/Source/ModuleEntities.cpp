@@ -6,6 +6,9 @@
 #include "Musher.h"
 #include "Gem.h"
 #include "Key.h"
+#include "HPotion.h"
+#include "CheckPoint.h"
+#include "Portal.h"
 
 
 
@@ -102,22 +105,26 @@ void ModuleEntities::AddEntity(Collider_Type type, iPoint spawnPos)
             {
             case BAT:
                 entities[i] = new Bat(type, spawnPos);
-               // entities[i]->etype = type;
                 break;
             case MUSHER:
                 entities[i] = new Musher(type, spawnPos);
-             //   entities[i]->etype = type;
                 break;
             case PLAYER:
                 break;
             case KEY:
                 entities[i] = new Key(type,spawnPos);
-               // entities[i]->etype = type;
                 break;
             case GEM:
                 entities[i] = new Gem(type,spawnPos);
-              //  entities[i]->etype = type;
                 break;
+            case POTION:
+                entities[i] = new HPotion(type, spawnPos);
+                break;
+            case CHECK_POINT:
+                entities[i] = new CheckPoint(type, spawnPos);
+                break;
+            case WIN:
+                entities[i] = new Portal(type, spawnPos);
             default :
                 break;
             }

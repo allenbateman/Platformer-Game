@@ -63,6 +63,15 @@
     <ClCompile Include="Source\Player.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\HPotion.cpp">
+      <Filter>Entities\Collectable</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\CheckPoint.cpp">
+      <Filter>Entities\CheckPoints</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Portal.cpp">
+      <Filter>Entities\CheckPoints</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -147,6 +156,15 @@
     </ClInclude>
     <ClInclude Include="Source\Player.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\HPotion.h">
+      <Filter>Entities\Collectable</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CheckPoint.h">
+      <Filter>Entities\CheckPoints</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Portal.h">
+      <Filter>Entities\CheckPoints</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

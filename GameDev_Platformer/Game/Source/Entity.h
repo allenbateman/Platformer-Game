@@ -13,18 +13,18 @@
 struct SDL_Texture;
 struct PhysicBody;
 
-enum EntityType {
-	No_Type,
-	EBAT,
-	EMUSHER,
-	EGEM,
-	EKEY,
-	EPLAYER,
-	ECHECK_POINT,
-	EWIN_SPOT,
-	ECOLLECTABLE
-
-};
+//enum EntityType {
+//	No_Type,
+//	EBAT,
+//	EMUSHER,
+//	EGEM,
+//	EKEY,
+//	EPLAYER,
+//	ECHECK_POINT,
+//	EWIN_SPOT,
+//	ECOLLECTABLE
+//
+//};
 class Entity abstract
 {
 public:

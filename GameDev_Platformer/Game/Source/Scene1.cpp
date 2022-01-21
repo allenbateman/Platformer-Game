@@ -41,7 +41,6 @@ bool Scene1::Start()
 {
 	app->physics->Start();
 	app->map->Load("level1.tmx");
-	props = app->tex->Load("Assets/Spritesx16/props.png");
 //	app->audio->PlayMusic("Assets/audio/music/level1.wav");
 
 	KeysToTake = 2;
@@ -50,73 +49,22 @@ bool Scene1::Start()
 	app->player->Spawn({ 2, 26 });
 	app->entities->Start();
 
-	playerInCheckPoint = false;
-
-	//Portal animations
-	//Idle anim
-	idlePortalAnim.PushBack({ 32, 0, 32, 64 });
-	idlePortalAnim.PushBack({ 64, 0, 32, 64 });
-	idlePortalAnim.PushBack({ 96, 0, 32, 64 });
-	idlePortalAnim.PushBack({ 64, 0, 32, 64 });
-	idlePortalAnim.loop = true;
-	idlePortalAnim.mustFlip = false;
-	idlePortalAnim.speed = 0.05f;
-	//Transition anim
-	transitionPortalAnim.PushBack({ 128, 0, 32, 64 });
-	transitionPortalAnim.PushBack({ 160, 0, 32, 64 });
-	transitionPortalAnim.PushBack({ 192, 0, 32, 64 });
-	transitionPortalAnim.PushBack({ 224, 0, 32, 64 });
-	transitionPortalAnim.loop = false;
-	transitionPortalAnim.mustFlip = false;
-	transitionPortalAnim.speed = 0.05f;
-	//Open anim
-	openPortalAnim.PushBack({ 288, 0, 32, 64 });
-	openPortalAnim.PushBack({ 320, 0, 32, 64 });
-	openPortalAnim.PushBack({ 352, 0, 32, 64 });
-	openPortalAnim.PushBack({ 320, 0, 32, 64 });
-	openPortalAnim.loop = true;
-	openPortalAnim.mustFlip = false;
-	openPortalAnim.speed = 0.05f;
-	portalState = P_IDLE;
-
-	//Shrine (checkpoint) animations
-	//Idle anim
-	idleShrineAnim.PushBack({ 0, 84, 32, 60 });
-	idleShrineAnim.loop = false;
-	idleShrineAnim.mustFlip = false;
-	idleShrineAnim.speed = 0.05f;
-	//Transition anim
-	transitionShrineAnim.PushBack({ 32, 84, 32, 60 });
-	transitionShrineAnim.PushBack({ 64, 84, 32, 60 });
-	transitionShrineAnim.loop = false;
-	transitionShrineAnim.mustFlip = false;
-	transitionShrineAnim.speed = 0.01f;
-	//Open anim
-	openShrineAnim.PushBack({ 96, 84, 32, 60 });
-	openShrineAnim.loop = false;
-	openShrineAnim.mustFlip = false;
-	openShrineAnim.speed = 0.05f;
-	shrineState = S_IDLE;
-
-	//Player lives animations
-	//1 Life animation
-	lives1Anim.PushBack({ 145, 82, 48, 28 });
-	lives1Anim.loop = false;
-	lives1Anim.mustFlip = false;
-	lives1Anim.speed = 0.05f;
-	//2 Lives animation
-	lives2Anim.PushBack({ 145, 82, 96, 28 });
-	lives2Anim.loop = false;
-	lives2Anim.mustFlip = false;
-	lives2Anim.speed = 0.05f;
-	//3 Lives animation
-	lives3Anim.PushBack({ 145, 82, 128, 28 });
-	lives3Anim.loop = false;
-	lives3Anim.mustFlip = false;
-	lives3Anim.speed = 0.05f;
-
-	frameCounter1 = 0;
-	frameCounter2 = 0;
+	////Player lives animations
+	////1 Life animation
+	//lives1Anim.PushBack({ 145, 82, 48, 28 });
+	//lives1Anim.loop = false;
+	//lives1Anim.mustFlip = false;
+	//lives1Anim.speed = 0.05f;
+	////2 Lives animation
+	//lives2Anim.PushBack({ 145, 82, 96, 28 });
+	//lives2Anim.loop = false;
+	//lives2Anim.mustFlip = false;
+	//lives2Anim.speed = 0.05f;
+	////3 Lives animation
+	//lives3Anim.PushBack({ 145, 82, 128, 28 });
+	//lives3Anim.loop = false;
+	//lives3Anim.mustFlip = false;
+	//lives3Anim.speed = 0.05f;
 
 	return true;
 }
@@ -144,51 +92,7 @@ bool Scene1::Update(float dt)
 				   app->map->mapData.tileWidth, app->map->mapData.tileHeight,
 				   app->map->mapData.tilesets.count());
 
-	switch (portalState)
-	{
-	case P_IDLE:
-		idlePortalAnim.Update();
-		break;
-	case P_TRANSITION:
-		transitionPortalAnim.Update();
-		break;
-	case P_OPEN:
-		openPortalAnim.Update();
-		break;
-	}
 
-	if (frameCounter1 >= 4)
-	{
-		portalState = P_OPEN;
-	}
-	if (KeysToTake <= 0 && portalState != P_OPEN) 
-	{ 
-		portalState = P_TRANSITION;
-		frameCounter1++;
-	}
-
-	switch (shrineState)
-	{
-	case S_IDLE:
-		idleShrineAnim.Update();
-		break;
-	case S_TRANSITION:
-		transitionShrineAnim.Update();
-		break;
-	case S_OPEN:
-		openShrineAnim.Update();
-		break;
-	}
-
-	if (frameCounter2 >= 2)
-	{
-		shrineState = S_OPEN;
-	}
-	else if (playerInCheckPoint && shrineState != S_OPEN)
-	{
-		shrineState = S_TRANSITION;
-		frameCounter2++;
-	}
 
 	return true;
 }
@@ -204,52 +108,21 @@ bool Scene1::PostUpdate()
 
 	if(app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
+	//switch (app->player->lives)
+	//{
+	//case 1:
+	//	currentLivesAnim = &lives1Anim;
+	//	break;
+	//case 2:
+	//	currentLivesAnim = &lives2Anim;
+	//	break;
+	//case 3:
+	//	currentLivesAnim = &lives3Anim;
+	//	break;
+	//}
 
-	switch (portalState)
-	{
-	case P_IDLE:
-		currentPortalAnim = &idlePortalAnim;
-		break;
-	case P_TRANSITION:
-		currentPortalAnim = &transitionPortalAnim;
-		break;
-	case P_OPEN:
-		currentPortalAnim = &openPortalAnim;
-		break;
-	}
-
-	switch (shrineState)
-	{
-	case S_IDLE:
-		currentShrineAnim = &idleShrineAnim;
-		break;
-	case S_TRANSITION:
-		currentShrineAnim = &transitionShrineAnim;
-		break;
-	case S_OPEN:
-		currentShrineAnim = &openShrineAnim;
-		break;
-	}
-
-	switch (app->player->lives)
-	{
-	case 1:
-		currentLivesAnim = &lives1Anim;
-		break;
-	case 2:
-		currentLivesAnim = &lives2Anim;
-		break;
-	case 3:
-		currentLivesAnim = &lives3Anim;
-		break;
-	}
-
-	if (props != NULL)
-	{
-		app->render->DrawTexture(props, 1235, 162, &(currentPortalAnim->GetCurrentFrame()));
-		app->render->DrawTexture(props, 852, 197, &(currentShrineAnim->GetCurrentFrame()));
-		if (app->player->lives >= 1) app->render->DrawTexture(props, 20, 20, &(currentLivesAnim->GetCurrentFrame()));
-	}
+	//	if (app->player->lives >= 1) app->render->DrawTexture(props, 20, 20, &(currentLivesAnim->GetCurrentFrame()));
+	
 
 	return ret;
 }
@@ -286,10 +159,6 @@ bool Scene1::LoadState(pugi::xml_node& data)
 	bool ret = true;
 	pugi::xml_node level = data.child("level1");
 	KeysToTake = level.attribute("keys_to_collect").as_int();
-	playerInCheckPoint = level.attribute("player_in_check_point").as_bool();
-	portalState = static_cast<PortalState>(data.child("level1").attribute("portal_state").as_int());
-	shrineState = static_cast<ShrineState>(data.child("level1").attribute("checkpoint_state").as_int());
-
 	return ret;
 }
 
@@ -299,9 +168,6 @@ bool Scene1::SaveState(pugi::xml_node& data) const
 	pugi::xml_node level = data.append_child("level1");
 
 	level.append_attribute("keys_to_collect") = KeysToTake;
-	level.append_attribute("player_in_check_point") = playerInCheckPoint;
-	level.append_attribute("portal_state") = portalState;
-	level.append_attribute("checkpoint_state") = shrineState;
 
 	return ret;
 }
@@ -352,12 +218,11 @@ void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 			}
 		case Collider_Type::CHECK_POINT:
 			
-			if (!playerInCheckPoint)
-			{
-				app->SaveGameRequest();
-				LOG("CHECKPOINT! PROGRESS SAVED!");
-			}
-			playerInCheckPoint = true;
+			//if (!playerInCheckPoint)
+			//{
+			//	app->SaveGameRequest();
+			//	LOG("CHECKPOINT! PROGRESS SAVED!");
+			//}
 			break;
 		default:
 			break;

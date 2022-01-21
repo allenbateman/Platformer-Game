@@ -19,7 +19,6 @@ bool Gem::Start()
 	r.y = position.x;
 	r.w = 16;
 	r.h = 16;
-	//physBody = app->physics->CreateRectangleSensor(tp.x + r.w * 0.5, tp.y - r.w * 0.5, r.w, r.h, b2_staticBody);
 	physBody = app->physics->CreateRectangleSensor(position.x, position.y, r.w, r.h, b2_staticBody);
 	physBody->color = { 100,50,255,255 };
 	physBody->type = Collider_Type::GEM;

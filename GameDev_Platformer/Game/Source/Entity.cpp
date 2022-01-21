@@ -23,6 +23,9 @@ Entity::~Entity()
 {
 	if (physBody != nullptr)
 		physBody->pendingToDelete = true;
+	texture = nullptr;
+	currentAnim = nullptr;
+
 }
 
 const PhysBody* Entity::GetCollider() const
@@ -64,6 +67,8 @@ void Entity::SetToDelete()
 
 bool Entity::Cleanup()
 {
+	texture = nullptr;
+	currentAnim = nullptr;
 	return true;
 }
 
@@ -79,11 +84,9 @@ bool Entity::SaveState(pugi::xml_node& data) const
 
 b2Vec2 Entity::GetPositionTileToMeters(iPoint pos)
 {
-
-		b2Vec2 newPos;
-
-		iPoint pixelPos = app->map->MapToWorld(pos.x, pos.y);
-		newPos.x = pixelPos.x;
-		newPos.y = pixelPos.y;
-		return newPos;
+	b2Vec2 newPos;
+	iPoint pixelPos = app->map->MapToWorld(pos.x, pos.y);
+	newPos.x = pixelPos.x;
+	newPos.y = pixelPos.y;
+	return newPos;
 }

@@ -393,8 +393,21 @@ void ModulePlayer::Movement()
 	if (onGround){
 
 		//Ground movement
+				//Jump
+		if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) && currentJumpCd <= 0 && (physBody->body->GetLinearVelocity().y < 0.1 && physBody->body->GetLinearVelocity().y > -0.1))
+		{
+			physBody->body->SetGravityScale(2);
+			physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(), true);
+			onGround = false;	doubleJump = true;
+			currentJumpCd = jumpCooldown;
+			state = JUMP;
 
-			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+			if (physBody->body->GetLinearVelocity().y > speed.y)
+			{
+				physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y });
+			}
+		}else
+		if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 			{
 				physBody->body->SetLinearVelocity({ speed.x, physBody->body->GetLinearVelocity().y });
 				state = MOVE;
@@ -412,20 +425,20 @@ void ModulePlayer::Movement()
 			}
 		
 
-		//Jump
-		if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) && currentJumpCd <= 0 && (physBody->body->GetLinearVelocity().y < 0.1 && physBody->body->GetLinearVelocity().y > -0.1))
-		{
-			physBody->body->SetGravityScale(2);
-			physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(), true);
-			onGround = false;	doubleJump = true;
-			currentJumpCd = jumpCooldown;
-			state = JUMP;
+		////Jump
+		//if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) && currentJumpCd <= 0 && (physBody->body->GetLinearVelocity().y < 0.1 && physBody->body->GetLinearVelocity().y > -0.1))
+		//{
+		//	physBody->body->SetGravityScale(2);
+		//	physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(), true);
+		//	onGround = false;	doubleJump = true;
+		//	currentJumpCd = jumpCooldown;
+		//	state = JUMP;
 
-			if (physBody->body->GetLinearVelocity().y > speed.y)
-			{
-				physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y });
-			}
-		}
+		//	if (physBody->body->GetLinearVelocity().y > speed.y)
+		//	{
+		//		physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y });
+		//	}
+		//}
 	}
 	else {//on air
 

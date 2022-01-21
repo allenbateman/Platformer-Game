@@ -90,12 +90,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Bat.cpp" />
+    <ClCompile Include="Source\CheckPoint.cpp" />
     <ClCompile Include="Source\Collectable.cpp" />
     <ClCompile Include="Source\Enemy.cpp" />
     <ClCompile Include="Source\Entity.cpp" />
     <ClCompile Include="Source\FadeToBlack.cpp" />
     <ClCompile Include="Source\GameOver.cpp" />
     <ClCompile Include="Source\Gem.cpp" />
+    <ClCompile Include="Source\HPotion.cpp" />
     <ClCompile Include="Source\Intro.cpp" />
     <ClCompile Include="Source\Key.cpp" />
     <ClCompile Include="Source\LevelManagement.cpp" />
@@ -110,6 +112,7 @@
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Player.cpp" />
+    <ClCompile Include="Source\Portal.cpp" />
     <ClCompile Include="Source\Render.cpp" />
     <ClCompile Include="Source\Scene1.cpp" />
     <ClCompile Include="Source\Scene2.cpp" />
@@ -119,6 +122,7 @@
     <ClCompile Include="Source\Window.cpp" />
     <ClInclude Include="Source\Animation.h" />
     <ClInclude Include="Source\Bat.h" />
+    <ClInclude Include="Source\CheckPoint.h" />
     <ClInclude Include="Source\Collectable.h" />
     <ClInclude Include="Source\Enemy.h" />
     <ClInclude Include="Source\Entity.h" />
@@ -126,6 +130,7 @@
     <ClInclude Include="Source\GameOver.h" />
     <ClInclude Include="Source\Gem.h" />
     <ClInclude Include="Source\Globals.h" />
+    <ClInclude Include="Source\HPotion.h" />
     <ClInclude Include="Source\Intro.h" />
     <ClInclude Include="Source\Key.h" />
     <ClInclude Include="Source\LevelManagement.h" />
@@ -141,6 +146,7 @@
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\Module.h" />
+    <ClInclude Include="Source\Portal.h" />
     <ClInclude Include="Source\PQueue.h" />
     <ClInclude Include="Source\Queue.h" />
     <ClInclude Include="Source\Render.h" />
