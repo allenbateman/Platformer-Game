@@ -25,6 +25,7 @@ public:
 	bool Update(float dt) override;
 	bool CleanUp() override;
 	Module* currentScene = nullptr;
+	Module* currentLevel = nullptr;
 	void NextLevel();
 	void ReturnToMainMenu();
 	void ReturnToLevelSelection();
@@ -43,6 +44,9 @@ public:
 	int frameCounter = 0;
 	int delayTime = 100;
 	int levelsPassed = 0;
+
+	//to track current keys
+	int KeysToTake = 0;
 
 };
 #endif // __LEVELMANAGEMENT_H__

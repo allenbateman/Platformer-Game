@@ -170,6 +170,9 @@ bool Player::PreUpdate()
 			Movement();
 	}
 
+
+
+
 	return true;
 }
 
@@ -180,6 +183,28 @@ bool Player::Update(float dt)
 
 	UpdateSensorsPosition();
 	currentJumpCd -= dt;
+
+
+	switch (state)
+	{
+	case IDLE:
+		currentAnim = &idlePlayerAnim;
+		break;
+	case MOVE:
+		currentAnim = &walkingPlayerAnim;
+		break;
+	case JUMP:
+		currentAnim = &jumpingPlayerAnim;
+		break;
+	case ATTACK:
+		currentAnim = &meleePlayerAnim;
+		break;
+	case DEAD:
+		currentAnim = &deathPlayerAnim;
+		break;
+	}
+
+
 
 	switch (state)
 	{
@@ -205,6 +230,10 @@ bool Player::Update(float dt)
 		break;
 	case DEAD:
 		physBody->body->SetType(b2_staticBody);
+		if (currentAnim->HasFinished())
+		{
+			app->levelManagement->gameState = LevelManagement::GameState::GAME_OVER;
+		}
 		break;
 	}
 	currentAnim->Update();
@@ -242,29 +271,6 @@ bool Player::PostUpdate()
 	//store Lats position after all the update
 	lastPosition = position;
 
-
-	switch (state)
-	{
-	case IDLE:
-		currentAnim = &idlePlayerAnim;
-		break;
-	case MOVE:
-		currentAnim = &walkingPlayerAnim;
-		break;
-	case JUMP:
-		currentAnim = &jumpingPlayerAnim;
-		break;
-	case ATTACK:
-		currentAnim = &meleePlayerAnim;
-		break;
-	case DEAD:
-		currentAnim = &deathPlayerAnim;
-		if (currentAnim->HasFinished())
-		{
-			app->levelManagement->gameState = LevelManagement::GameState::GAME_OVER;
-		}
-		break;
-	}
 
 	if (texture != NULL)
 	{
@@ -366,39 +372,22 @@ void Player::Movement()
 				physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y });
 			}
 		}
-		else
-			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-			{
-				physBody->body->SetLinearVelocity({ speed.x, physBody->body->GetLinearVelocity().y });
-				state = PlayerState::MOVE;
-				direction = SDL_FLIP_NONE;
-			}
-			else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-			{
-				physBody->body->SetLinearVelocity({ -speed.x, physBody->body->GetLinearVelocity().y });
-				state = PlayerState::MOVE;
-				direction = SDL_FLIP_HORIZONTAL;
-			}
-			else {
-				physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
-				state = PlayerState::IDLE;
-			}
-
-
-		////Jump
-		//if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) && currentJumpCd <= 0 && (physBody->body->GetLinearVelocity().y < 0.1 && physBody->body->GetLinearVelocity().y > -0.1))
-		//{
-		//	physBody->body->SetGravityScale(2);
-		//	physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(), true);
-		//	onGround = false;	doubleJump = true;
-		//	currentJumpCd = jumpCooldown;
-		//	state = JUMP;
-
-		//	if (physBody->body->GetLinearVelocity().y > speed.y)
-		//	{
-		//		physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y });
-		//	}
-		//}
+		else if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && state != JUMP)
+		{
+			physBody->body->SetLinearVelocity({ speed.x, physBody->body->GetLinearVelocity().y });
+			state = PlayerState::MOVE;
+			direction = SDL_FLIP_NONE;
+		}
+		else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && state != JUMP)
+		{
+			physBody->body->SetLinearVelocity({ -speed.x, physBody->body->GetLinearVelocity().y });
+			state = PlayerState::MOVE;
+			direction = SDL_FLIP_HORIZONTAL;
+		}
+		else {
+			physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
+			state = PlayerState::IDLE;
+		}
 	}
 	else {//on air
 

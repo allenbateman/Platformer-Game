@@ -6,12 +6,17 @@ public:
 	Portal(iPoint pos);
 	Portal(Collider_Type type, iPoint pos);
 
+	void Open();
+	void Transition();
+	void Close();
+
+
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
 private:
 	bool Start();
 	bool PreUpdate();
-	bool Update();
+	bool Update(float dt);
 	bool PostUpdate();
 	bool Cleanup();
 

@@ -31,7 +31,7 @@ bool Gem::Start()
 	return true;
 }
 
-bool Gem::Update()
+bool Gem::Update(float dt)
 {
 	return true;
 }

@@ -127,10 +127,15 @@ void ModuleEntities::AddEntity(Collider_Type type, iPoint spawnPos)
                 entities[i] = new HPotion(type, spawnPos);
                 break;
             case CHECK_POINT:
-                entities[i] = new CheckPoint(type, spawnPos);
+            {
+                CheckPoint* p = new CheckPoint(type, spawnPos);
+                entities[i] = p;
+                checkPoint.add(p);
+            }
                 break;
             case WIN:
-                entities[i] = new Portal(type, spawnPos);
+                entities[i] = portalInstance = new Portal(type, spawnPos);
+                break;
             default :
                 break;
             }
@@ -158,15 +163,21 @@ void ModuleEntities::RemoveEntity(PhysBody* entity)
 
 void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+
     if (bodyA->type == Collider_Type::PLAYER)
     {
-
+   
        switch (bodyB->type)
         {
         case Collider_Type::GEM:
             RemoveEntity(bodyB);
             break;
         case Collider_Type::KEY:
+            app->levelManagement->KeysToTake--;
+            if (app->levelManagement->KeysToTake == 0)
+            {
+                portalInstance->Transition();
+            }
             RemoveEntity(bodyB);
             break;
         case Collider_Type::POTION:
@@ -190,12 +201,25 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
             }
             break;
         case Collider_Type::WIN:
-            //if (app->levelManagement->currentScene->KeysToTake == 0)
-            //{
-            //    app->levelManagement->NextLevel();
-            //    LOG("I WON, GIVE ME TREAT!");
-            //}
+            if (app->levelManagement->KeysToTake == 0 && portalInstance->portalState == Portal::PortalState::P_OPEN)
+            {
+                app->levelManagement->NextLevel();
+                LOG("I WON, GIVE ME TREAT!");
+            }
+            break;
         case Collider_Type::CHECK_POINT:
+            {  
+                p2List_item<CheckPoint*>* p = checkPoint.getFirst();
+                while (p != NULL)
+                {
+                    if (p->data->physBody == bodyB)
+                    {
+                        p->data->Transition();
+                        break;
+                    }
+                    p = p->next;
+                }
+            }
             app->SaveGameRequest();
             LOG("CHECKPOINT! PROGRESS SAVED!");
             

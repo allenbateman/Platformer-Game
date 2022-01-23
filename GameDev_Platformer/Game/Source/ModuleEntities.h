@@ -6,6 +6,8 @@
 #include "Point.h"
 #include "Entity.h"
 #include "Player.h"
+#include "Portal.h"
+#include "CheckPoint.h"
 
 #define MAX_ENTITIES 150
 #define SPAWN_MARGIN 20
@@ -43,5 +45,8 @@ public:
 
 	//Player instance reference
 	Player* playerInstance;
+
+	Portal* portalInstance;
+	p2List<CheckPoint*> checkPoint;
 };
 

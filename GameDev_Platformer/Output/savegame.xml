@@ -103,18 +103,12 @@
 	<game_over />
 	<entities>
 		<Gem type="0" x="54.5" y="26.5" />
-		<Gem type="0" x="47.5" y="17.5" />
-		<Gem type="0" x="50.5" y="14.5" />
 		<Gem type="0" x="59.5" y="17.5" />
 		<Gem type="0" x="65.5" y="19.5" />
 		<Gem type="0" x="73.5" y="18.5" />
 		<Gem type="0" x="76.5" y="15.5" />
 		<Key type="0" x="77.5" y="25.5" />
-		<Key type="0" x="33.5" y="27.5" />
-		<musher x="28.4001789" y="26.4928093" state="1" />
-		<bat x="54.5" y="22.3188" state="0" />
-		<musher x="40.5076027" y="25.67589" state="1" />
-		<player x="34.9199066" y="22.4949169" lives="1" state="0" />
+		<player x="53.6615486" y="15.49508" lives="1" state="1" />
 	</entities>
 	<renderer>
 		<camera x="0" y="0" />

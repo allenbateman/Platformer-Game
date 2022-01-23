@@ -10,7 +10,7 @@ public:
     bool SaveState(pugi::xml_node& data) const;
 private:
     bool Start();
-    bool Update();
+    bool Update(float dt);
     bool PostUpdate();
     bool Cleanup();
 };

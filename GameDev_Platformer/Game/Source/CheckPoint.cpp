@@ -9,6 +9,24 @@ CheckPoint::CheckPoint(Collider_Type type, iPoint pos) : Entity(pos)
 {
 }
 
+void CheckPoint::Open()
+{
+	shrineState = S_OPEN;
+	currentAnim = &openShrineAnim;
+}
+
+void CheckPoint::Transition()
+{
+	shrineState = S_TRANSITION;
+	currentAnim = &transitionShrineAnim;
+}
+
+void CheckPoint::Close()
+{
+	shrineState = S_IDLE;
+	currentAnim = &idleShrineAnim;
+}
+
 bool CheckPoint::LoadState(pugi::xml_node& data)
 {
 	return false;
@@ -60,7 +78,7 @@ bool CheckPoint::PreUpdate()
 	return true;
 }
 
-bool CheckPoint::Update()
+bool CheckPoint::Update(float dt)
 {
 	switch (shrineState)
 	{
@@ -71,8 +89,7 @@ bool CheckPoint::Update()
 		transitionShrineAnim.Update();
 		if (transitionShrineAnim.HasFinished())
 		{
-			shrineState = S_OPEN;
-			currentAnim = &openShrineAnim;
+			Open();
 		}
 		break;
 	case S_OPEN:

@@ -9,6 +9,24 @@ Portal::Portal(Collider_Type type, iPoint pos) : Entity(pos)
 {
 }
 
+void Portal::Open()
+{
+	portalState = P_OPEN;
+	currentAnim = &openPortalAnim;
+}
+
+void Portal::Transition()
+{
+	portalState = P_TRANSITION;
+	currentAnim = &transitionPortalAnim;
+}
+
+void Portal::Close()
+{
+	portalState = P_IDLE;
+	currentAnim = &idlePortalAnim;
+}
+
 bool Portal::LoadState(pugi::xml_node& data)
 {
 	return false;
@@ -65,7 +83,7 @@ bool Portal::PreUpdate()
 	return true;
 }
 
-bool Portal::Update()
+bool Portal::Update(float dt)
 {
 
 	switch (portalState)
@@ -77,8 +95,7 @@ bool Portal::Update()
 		transitionPortalAnim.Update();
 		if (transitionPortalAnim.HasFinished())
 		{
-			portalState = P_OPEN;
-			currentAnim = &openPortalAnim;
+			Open();
 		}
 		break;
 	case P_OPEN:

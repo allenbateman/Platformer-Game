@@ -819,40 +819,6 @@ bool Map::SetMapColliders()
 					break;
 			}
 
-			//if (object->data->type == Collider_Type::GEM)
-			//{
-
-			//	app->entities->AddEntity(Collider_Type::GEM, spawnPos);
-			//	LOG("SETTING GEM COLLIDER...");
-		
-			//}
-			//else if (object->data->type == Collider_Type::KEY )
-			//{
-			//	app->entities->AddEntity(Collider_Type::KEY, spawnPos);
-			//	LOG("SETTING KEY COLLIDER...");
-
-			//}else if (object->data->type == Collider_Type::POTION)
-			//{
-			//	LOG("SETTING POTION COLLIDER...");
-
-			//}
-			//else if (object->data->type == Collider_Type::WIN)
-			//{
-			//
-			//	LOG("SETTING WIN COLLIDER...");
-
-			//}
-			//else if (object->data->type == Collider_Type::SPAWNER)
-			//{
-			//
-			//	LOG("SETTING SPAWNER COLLIDER...");
-			//}
-			//else if (object->data->type == Collider_Type::CHECK_POINT)
-			//{
-			//
-			//	LOG("SETTING CHECKPOINT COLLIDER...");
-			//}
-
 			object = object->next;
 
 		}

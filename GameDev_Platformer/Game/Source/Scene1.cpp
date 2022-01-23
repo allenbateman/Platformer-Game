@@ -43,7 +43,7 @@ bool Scene1::Start()
 	app->map->Load("level1.tmx");
 //	app->audio->PlayMusic("Assets/audio/music/level1.wav");
 
-	KeysToTake = 2;
+	app->levelManagement->KeysToTake = 2;
 
 	//Spawn all entities
 	app->entities->Start();
