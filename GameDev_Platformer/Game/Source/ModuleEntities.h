@@ -5,6 +5,7 @@
 #include "ModulePhysics.h"
 #include "Point.h"
 #include "Entity.h"
+#include "Player.h"
 
 #define MAX_ENTITIES 150
 #define SPAWN_MARGIN 20
@@ -28,7 +29,7 @@ public:
 	bool CleanUp() override;
 	void AddEntity(Collider_Type type ,iPoint spawnPos);
 	void RemoveEntity(PhysBody* entity);
-
+	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
 
 	// Load / Save
 	bool LoadState(pugi::xml_node& data);
@@ -39,5 +40,8 @@ public:
 
 	// The enemies sprite sheet
 	SDL_Texture* texture = nullptr;
+
+	//Player instance reference
+	Player* playerInstance;
 };
 

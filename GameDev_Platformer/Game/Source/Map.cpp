@@ -640,7 +640,11 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 		LOG("OBJECT ID: %i", obj->id);
 		//Check what type of object is 
 
-		if (strcmp(object.attribute("type").as_string(), "Gem") == 0){
+		if (strcmp(object.attribute("type").as_string(), "Player") == 0) {
+
+			obj->type = Collider_Type::PLAYER;
+
+		}else if (strcmp(object.attribute("type").as_string(), "Gem") == 0){
 
 			obj->type = Collider_Type::GEM;
 
@@ -749,7 +753,6 @@ bool Map::SetMapColliders()
 						PhysBody* pb = app->physics->CreateRectangle(pos.x + (tileset->tileWidth * 0.5f), pos.y + (tileset->tileHeight * 0.5f), tileset->tileWidth, tileset->tileHeight, b2_staticBody);
 						pb->color = { 255,50,50,255 };
 						pb->listener = app->levelManagement->currentScene;
-						pb->listener = app->player;
 						pb->type = Collider_Type::DEATH;
 						app->physics->allPhysicBodies.add(pb);
 					}
@@ -761,7 +764,7 @@ bool Map::SetMapColliders()
 	}
 		ListItem<ObjectLayer*>* objectLayer;
 	objectLayer = mapData.objectLayers.start;
-	LOG("--------!!!SETTING OBJECTS!!!---------");
+	LOG("--------!!!SETTING ENTITIES!!!---------");
 
 	while (objectLayer != NULL)
 	{
@@ -779,6 +782,11 @@ bool Map::SetMapColliders()
 
 			switch (object->data->type)
 			{
+	
+				case PLAYER:
+					app->entities->AddEntity(PLAYER, spawnPos);
+					LOG("SPAWN PLAYER...");
+					break;
 				case BAT:
 					app->entities->AddEntity(BAT, spawnPos);
 					LOG("SPAWN BAT...");

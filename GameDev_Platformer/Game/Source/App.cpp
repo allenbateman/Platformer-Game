@@ -42,7 +42,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene1 = new Scene1(false);
 	scene2 = new Scene2(false);
 	gameOver = new GameOver(false);
-	player = new ModulePlayer(false);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -67,7 +66,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	
 	AddModule(entities);
-	AddModule(player);
 
 	// Render last to swap buffer
 	AddModule(render);

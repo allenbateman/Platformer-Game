@@ -24,6 +24,7 @@ protected:
 	b2Vec2 movementSpeed;
 
 	PathFinding* pathfinding;
+	int scorePoints = 0;
 
 
 

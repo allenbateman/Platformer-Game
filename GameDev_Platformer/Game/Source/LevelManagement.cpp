@@ -1,6 +1,7 @@
 #include "LevelManagement.h"
 #include "Log.h"
 #include "Player.h"
+#include "ModuleEntities.h"
 #include "Map.h"
 #include <string>
 #include <iostream>
@@ -179,7 +180,7 @@ void LevelManagement::ReturnToMainMenu()
 
 void LevelManagement::RestartLevel()
 {
-	if (app->player->state == PlayerState::DEAD)
+	if (app->entities->playerInstance->state == PlayerState::DEAD)
 	{
 		gameState = GAME_OVER;
 

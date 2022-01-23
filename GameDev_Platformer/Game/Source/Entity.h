@@ -13,18 +13,6 @@
 struct SDL_Texture;
 struct PhysicBody;
 
-//enum EntityType {
-//	No_Type,
-//	EBAT,
-//	EMUSHER,
-//	EGEM,
-//	EKEY,
-//	EPLAYER,
-//	ECHECK_POINT,
-//	EWIN_SPOT,
-//	ECOLLECTABLE
-//
-//};
 class Entity abstract
 {
 public:
@@ -59,27 +47,12 @@ public:
 	virtual bool LoadState(pugi::xml_node& data);
 	virtual bool SaveState(pugi::xml_node& data) const;
 
+	iPoint GetPosition();
 	b2Vec2 GetPositionTileToMeters(iPoint pos);
 	void SetPositionTiles();
 	void SetPositionPixels();
 
 public:
-	// The current position in the world
-	iPoint spawnPos;
-	fPoint position;
-	iPoint drawOffset = { 0, 0 };
-	Collider_Type type;
-	// The Entity's texture
-	SDL_Texture* texture = nullptr;
-
-	// Sound fx when destroyed
-	int destroyedFx = 0;
-
-	//if debug mode
-	bool DEBUG;
-
-	//If Enemy
-	int scorePoints = 0;
 
 	enum Direction
 	{
@@ -97,6 +70,22 @@ public:
 		DEATH,
 		SCORE
 	};
+	// The current position in the world
+	iPoint spawnPos;
+	fPoint position;
+	iPoint drawOffset = { 0, 0 };
+	Collider_Type type;
+	// The Entity's texture
+	SDL_Texture* texture = nullptr;
+
+	// Sound fx when destroyed
+	int destroyedFx = 0;
+
+	//if debug mode
+	bool DEBUG;
+
+	//If Enemy
+
 
 	State state;
 	Direction direction;

@@ -46,7 +46,6 @@ bool Scene1::Start()
 	KeysToTake = 2;
 
 	//Spawn all entities
-	app->player->Spawn({ 2, 26 });
 	app->entities->Start();
 
 	////Player lives animations
@@ -72,7 +71,7 @@ bool Scene1::Start()
 // Called each loop iteration
 bool Scene1::PreUpdate()
 {
-	if (app->player->isGodmodeOn) app->player->lives = 3;
+	if (app->entities->playerInstance->isGodmodeOn) app->entities->playerInstance->lives = 3;
 
 	return true;
 }
@@ -131,7 +130,6 @@ bool Scene1::PostUpdate()
 bool Scene1::CleanUp()
 {
 	LOG("Disable scene 1");
-	app->player->Disable();
 	app->map->CleanUp();
 	app->entities->CleanUp();
 	app->physics->CleanUp();
@@ -148,7 +146,6 @@ void Scene1::Enable()
 void Scene1::Disable()
 {
 	LOG("Disable scene 1");
-	app->player->Disable();
 	app->map->CleanUp();
 	app->physics->Disable();
 	app->entities->Disable();
@@ -170,72 +167,4 @@ bool Scene1::SaveState(pugi::xml_node& data) const
 	level.append_attribute("keys_to_collect") = KeysToTake;
 
 	return ret;
-}
-void Scene1::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
-{
-
-	p2List_item<PhysBody*>* ToRemove;
-	p2List_item<PhysBody*>* current = app->physics->allPhysicBodies.getFirst();
-	if (bodyA->type == Collider_Type::PLAYER )
-	{
-
-		switch (bodyB->type)
-		{
-		case Collider_Type::GEM:
-			app->entities->RemoveEntity(bodyB);
-			break;
-		case Collider_Type::KEY:
-			app->entities->RemoveEntity(bodyB);
-			break;		
-		case Collider_Type::POTION:
-			app->entities->RemoveEntity(bodyB);			
-			break;
-		case Collider_Type::DEATH:
-
-			if(!app->player->isGodmodeOn)
-				app->player->state = PlayerState::DEAD;
-
-			LOG("KILL ME!");
-
-			break;
-		case Collider_Type::ENEMY:
-			if (!app->player->isGodmodeOn)
-			{
-				app->player->lives--;
-				LOG("OUCH GOT HIT!");
-				if (app->player->lives <= 0)
-				{
-					app->player->state = PlayerState::DEAD;
-					LOG("KILL ME!");
-				}
-			}
-			break;
-		case Collider_Type::WIN:
-			if (KeysToTake == 0)
-			{
-				app->levelManagement->NextLevel();
-				LOG("I WON, GIVE ME TREAT!");
-			}
-		case Collider_Type::CHECK_POINT:
-			
-			//if (!playerInCheckPoint)
-			//{
-			//	app->SaveGameRequest();
-			//	LOG("CHECKPOINT! PROGRESS SAVED!");
-			//}
-			break;
-		default:
-			break;
-		}
-
-	}
-	
-	//Entities Collision
-	current = app->physics->allPhysicBodies.getFirst();
-
-	if (bodyA->type == Collider_Type::ENEMY && bodyB->type == Collider_Type::PLAYER_ATTACK)
-	{
-		app->entities->RemoveEntity(bodyA);
-		bodyA->pendingToDelete = true;
-	}
 }

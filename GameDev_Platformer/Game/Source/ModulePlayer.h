@@ -1,10 +1,12 @@
 #pragma once
-#include "Entity.h"
+#include "Module.h"
 #include "Globals.h"
 #include "Point.h"
 #include "Animation.h"
 #include "Textures.h"
 #include "Render.h"
+
+
 
 enum PlayerState
 {
@@ -15,14 +17,13 @@ enum PlayerState
 	ATTACK,
 	DEAD
 };
-
-class Player :  public Entity
+class ModulePlayer : public Module
 {
 public:
-	Player(iPoint pos);
-	Player(Collider_Type type, iPoint pos);
-	virtual ~Player();
+	ModulePlayer(bool isActive);
+	virtual ~ModulePlayer();
 
+	bool Awake();
 	bool Start();
 	bool PreUpdate();
 	bool Update(float dt);
@@ -47,10 +48,12 @@ public:
 	bool LoadState(pugi::xml_node& data);
 	bool SaveState(pugi::xml_node& data) const;
 
+	SDL_Texture* playerTexture;
+
 public:
 	Animation* currentAnim = nullptr;
 	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim, meleePlayerAnim;
-
+	
 	float jumpForce = 15;
 	float onAirXSpeed = 5;
 	float jumpCooldown = 50;
@@ -64,14 +67,15 @@ public:
 	SDL_RendererFlip direction;
 	fPoint lastPosition;
 	fPoint position;
-	fPoint speed = { 8,8 };
+	fPoint speed = {8,8};
+	PhysBody* physBody;
 	PhysBody* leftSensor;
 	PhysBody* rightSensor;
 	PhysBody* botSensor;
 	PhysBody* topSensor;
 
 	PhysBody* meleeAttack;
-
+	
 	int colliderRadius = 8;
 	float gravityScale;
 
@@ -83,4 +87,3 @@ public:
 
 	int frameCounter;
 };
-

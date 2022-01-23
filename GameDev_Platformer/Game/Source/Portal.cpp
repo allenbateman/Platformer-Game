@@ -1,4 +1,5 @@
 #include "Portal.h"
+#include "ModuleEntities.h"
 
 Portal::Portal(iPoint pos) : Entity(pos)
 {
@@ -50,6 +51,7 @@ bool Portal::Start()
 	currentAnim = &idlePortalAnim;
 
 	physBody = app->physics->CreateRectangleSensor(position.x, position.y+48, 32, 64, b2_staticBody);
+	physBody->listener = app->entities;
 	physBody->color = { 25,150,25,255 };
 	physBody->type = Collider_Type::WIN;
 	app->physics->allPhysicBodies.add(physBody);

@@ -82,6 +82,13 @@ bool Entity::SaveState(pugi::xml_node& data) const
 	return true;
 }
 
+iPoint Entity::GetPosition()
+{
+	iPoint pos;
+	physBody->GetPosition(pos.x,pos.y);
+	return pos;
+}
+
 b2Vec2 Entity::GetPositionTileToMeters(iPoint pos)
 {
 	b2Vec2 newPos;

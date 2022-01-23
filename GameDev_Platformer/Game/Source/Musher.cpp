@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Player.h"
 #include "ModulePhysics.h"
+#include "ModuleEntities.h"
 #include "LevelManagement.h"
 #include "Render.h"
 #include "Log.h"
@@ -59,7 +60,7 @@ bool Musher::Start()
 		currentAnim = &idleAnim;
 
 		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
-		physBody->listener = app->levelManagement->currentScene;
+		physBody->listener = app->entities;
 		physBody->color = { 255,125,0,255 };
 		physBody->type = Collider_Type::ENEMY;
 
@@ -80,7 +81,7 @@ bool Musher::Start()
 	else if (physBody->body == NULL)
 	{
 		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
-		physBody->listener = app->levelManagement->currentScene;
+		physBody->listener = app->entities;
 		physBody->color = { 255,125,0,255 };
 		physBody->type = Collider_Type::ENEMY;
 
@@ -105,7 +106,7 @@ bool Musher::PreUpdate()
 	position.x = physBody->body->GetPosition().x;
 	position.y = physBody->body->GetPosition().y;
 
-	float distanceToPlayer = position.DistanceTo(app->player->position);
+	float distanceToPlayer = position.DistanceTo(app->entities->playerInstance->position);
 
 	switch (state)
 	{
@@ -260,8 +261,8 @@ bool Musher::CalculateNextPatrolPoint()
 void Musher::UpdatePath()
 {
 	iPoint destination;
-	destination.x = (int)app->player->GetPosition().x;
-	destination.y = (int)app->player->GetPosition().y;
+	destination.x = (int)app->entities->playerInstance->GetPosition().x;
+	destination.y = (int)app->entities->playerInstance->GetPosition().y;
 	//convert meters to pixels
 	destination.x = METERS_TO_PIXELS(destination.x);
 	destination.y = METERS_TO_PIXELS(destination.y);

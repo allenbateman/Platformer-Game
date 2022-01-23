@@ -25,7 +25,6 @@ class Scene2;
 class GameOver;
 class Map;
 class ModulePhysics;
-class ModulePlayer;
 class ModuleEntities;
 
 
@@ -107,7 +106,6 @@ public:
 	GameOver* gameOver;
 	Map* map;
 	ModulePhysics* physics;
-	ModulePlayer* player;
 	ModuleEntities* entities;
 	
 	float dt;

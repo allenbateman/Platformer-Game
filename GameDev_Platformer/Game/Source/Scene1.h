@@ -43,8 +43,6 @@ public:
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&) const;
 
-	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
-
 	int KeysToTake = 2;
 private:
 	SDL_Texture* img;

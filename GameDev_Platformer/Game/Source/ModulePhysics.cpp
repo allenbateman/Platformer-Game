@@ -4,13 +4,12 @@
 #include "ModulePhysics.h"
 #include "Scene1.h"
 #include "Scene2.h"
-#include "Player.h"
 #include "Point.h"
 #include "math.h"
 #include "Log.h"
 #include "Globals.h"
-#include "Musher.h"
-#include "Bat.h"
+#include "Entity.h"
+
 //#ifdef _DEBUG
 //#pragma comment( lib, "Box2D/libx86/Debug/Box2D.lib" )
 //#else
@@ -440,6 +439,13 @@ void ModulePhysics::BeginContact(b2Contact* contact)
 
 	if(physB && physB->listener != NULL)
 		physB->listener->OnCollision(physB, physA);
+
+
+	//if (physA && physA->entityListener != NULL)
+	//	physA->listener->OnCollision(physB);
+
+	//if (physB && physB->entityListener != NULL)
+	//	physB->listener->OnCollision(physA);
 }
 
 bool ModulePhysics::LoadState(pugi::xml_node& data)

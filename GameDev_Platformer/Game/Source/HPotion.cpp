@@ -1,5 +1,5 @@
 #include "HPotion.h"
-
+#include "ModuleEntities.h"
 HPotion::HPotion(iPoint pos) : Collectable(pos)
 {
 }
@@ -27,7 +27,9 @@ bool HPotion::Start()
 	r.h = 16;
 	physBody = app->physics->CreateRectangleSensor(position.x, position.y, 16, 16, b2_staticBody, {25, 200, 25});
 	physBody->type = Collider_Type::POTION;
+	physBody->listener = app->entities;
 	app->physics->allPhysicBodies.add(physBody);
+
 
 	position.x = physBody->body->GetPosition().x;
 	position.y = physBody->body->GetPosition().y;

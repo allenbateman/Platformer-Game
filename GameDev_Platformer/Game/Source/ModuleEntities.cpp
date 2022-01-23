@@ -1,7 +1,12 @@
 #include "ModuleEntities.h"
 #include "Point.h"
+#include "Log.h"
+
+#include "LevelManagement.h"
+
 #include "Entity.h"
 
+#include "Player.h"
 #include "Bat.h"
 #include "Musher.h"
 #include "Gem.h"
@@ -49,8 +54,8 @@ bool ModuleEntities::PreUpdate()
         if (entities[i] != nullptr)
         {
 
-                entities[i]->DEBUG = DEBUG;
-                entities[i]->PreUpdate();
+             entities[i]->DEBUG = DEBUG;
+             entities[i]->PreUpdate();
        
         }
     }
@@ -110,6 +115,7 @@ void ModuleEntities::AddEntity(Collider_Type type, iPoint spawnPos)
                 entities[i] = new Musher(type, spawnPos);
                 break;
             case PLAYER:
+                 entities[i] = playerInstance = new Player(type, spawnPos);
                 break;
             case KEY:
                 entities[i] = new Key(type,spawnPos);
@@ -148,6 +154,92 @@ void ModuleEntities::RemoveEntity(PhysBody* entity)
 
         }
     }
+}
+
+void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
+{
+    if (bodyA->type == Collider_Type::PLAYER)
+    {
+
+       switch (bodyB->type)
+        {
+        case Collider_Type::GEM:
+            RemoveEntity(bodyB);
+            break;
+        case Collider_Type::KEY:
+            RemoveEntity(bodyB);
+            break;
+        case Collider_Type::POTION:
+            RemoveEntity(bodyB);
+            break;
+        case Collider_Type::DEATH:
+
+            if (!playerInstance->isGodmodeOn)
+                playerInstance->state = PlayerState::DEAD;
+            break;
+        case Collider_Type::ENEMY:
+            if (!playerInstance->isGodmodeOn)
+            {
+                playerInstance->lives--;
+                LOG("OUCH GOT HIT!");
+                if (playerInstance->lives <= 0)
+                {
+                   playerInstance->state = PlayerState::DEAD;
+                    LOG("KILL ME!");
+                }
+            }
+            break;
+        case Collider_Type::WIN:
+            //if (app->levelManagement->currentScene->KeysToTake == 0)
+            //{
+            //    app->levelManagement->NextLevel();
+            //    LOG("I WON, GIVE ME TREAT!");
+            //}
+        case Collider_Type::CHECK_POINT:
+            app->SaveGameRequest();
+            LOG("CHECKPOINT! PROGRESS SAVED!");
+            
+            break;
+        default:
+            break;
+        }
+
+
+
+    }else 
+    if (bodyA->type == Collider_Type::ENEMY && bodyB->type == Collider_Type::PLAYER_ATTACK)
+    {
+        RemoveEntity(bodyA);
+        bodyA->pendingToDelete = true;
+    }
+
+    playerInstance->wallLeft = false;
+    playerInstance->wallRight = false;
+    //For player movement
+    if (bodyA->type == PLAYER_X_SENSOR && bodyB->type == GROUND)
+    {
+        if (bodyA->body == playerInstance->leftSensor->body)
+        {
+            playerInstance->wallLeft = true;
+        }
+        if (bodyA->body == playerInstance->rightSensor->body)
+        {
+            playerInstance->wallRight = true;
+        }
+    }
+    else if (bodyA->type == PLAYER_Y_SENSOR && bodyB->type == GROUND)
+    {
+        if (bodyA->body == playerInstance->topSensor->body)
+        {
+        }
+        else if (bodyA->body == playerInstance->botSensor->body)
+        {
+            playerInstance->onGround = true;
+            playerInstance->doubleJump = false;
+            playerInstance->physBody->body->SetGravityScale(1);
+        }
+    }
+
 }
 
 

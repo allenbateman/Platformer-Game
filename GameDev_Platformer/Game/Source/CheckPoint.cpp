@@ -1,4 +1,5 @@
 #include "CheckPoint.h"
+#include "ModuleEntities.h"
 
 CheckPoint::CheckPoint(iPoint pos) : Entity(pos)
 {
@@ -43,6 +44,7 @@ bool CheckPoint::Start()
 	frameCounter = 0;
 
 	physBody = app->physics->CreateRectangleSensor(position.x, position.y+32, 16, 48, b2_staticBody);
+	physBody->listener = app->entities;
 	physBody->color = { 25,150,25,255 };
 	physBody->type = Collider_Type::CHECK_POINT;
 	app->physics->allPhysicBodies.add(physBody);

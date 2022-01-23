@@ -1,37 +1,37 @@
-#include "Player.h"
 #include "Globals.h"
 #include "App.h"
 #include "Input.h"
-#include "ModuleEntities.h"
 #include "ModulePhysics.h"
 #include "LevelManagement.h"
 #include "Render.h"
+#include "ModulePlayer.h"
 #include "Map.h"
 #include "Log.h"
 #include <SDL/include/SDL_scancode.h>
 
-
-Player::Player(iPoint pos) : Entity(pos)
+ModulePlayer::ModulePlayer(bool isActive) : Module(isActive)
 {
+	name.Create("player");
 }
 
-Player::Player(Collider_Type type, iPoint pos) : Entity(type, pos)
-{
-}
+ModulePlayer::~ModulePlayer()
+{}
 
-Player::~Player()
+bool ModulePlayer::Awake()
 {
+
+	return true;
 }
 
 // Load assets
-bool Player::Start()
+bool ModulePlayer::Start()
 {
 	//Initializing player struct data
 	if (physBody == NULL)
 	{
-		state = PlayerState::IDLE;
+		state = IDLE;
 
-		texture = app->tex->Load("Assets/Spritesx16/characters.png");
+		playerTexture = app->tex->Load("Assets/Spritesx16/characters.png");
 		//Idle anim
 		idlePlayerAnim.PushBack({ 262, 43, 16, 21 });
 		idlePlayerAnim.PushBack({ 294, 43, 16, 21 });
@@ -87,11 +87,11 @@ bool Player::Start()
 		meleePlayerAnim.speed = 0.3f;
 
 		currentAnim = &idlePlayerAnim;
-		state = PlayerState::IDLE;
+		state = IDLE;
 
 		position = { 20, 300 };
 		physBody = app->physics->CreateCircle(position.x, position.y, colliderRadius, b2_dynamicBody, { 0,250,125,255 });
-		physBody->listener = app->entities;
+		physBody->listener = app->levelManagement->currentScene;
 		physBody->type = Collider_Type::PLAYER;
 		physBody->body->SetFixedRotation(true);
 		app->physics->allPhysicBodies.add(physBody);
@@ -99,15 +99,15 @@ bool Player::Start()
 		currentJumpCd = jumpCooldown;
 
 		//sensors
-		leftSensor = app->physics->CreateRectangleSensor(position.x, position.y, 4, 10, b2_dynamicBody, { 255,165,0,255 });
-		rightSensor = app->physics->CreateRectangleSensor(position.x, position.y, 4, 10, b2_dynamicBody, { 255,165,0,255 });
-		topSensor = app->physics->CreateRectangleSensor(position.x, position.y, 12, 4, b2_dynamicBody, { 255,165,0,255 });
-		botSensor = app->physics->CreateRectangleSensor(position.x, position.y, 12, 4, b2_dynamicBody, { 255,165,0,255 });
+		leftSensor = app->physics->CreateRectangleSensor(position.x, position.y,4,10, b2_dynamicBody, { 255,165,0,255 });
+		rightSensor = app->physics->CreateRectangleSensor(position.x, position.y,4,10, b2_dynamicBody, { 255,165,0,255 });
+		topSensor = app->physics->CreateRectangleSensor(position.x, position.y,12,4, b2_dynamicBody, { 255,165,0,255 });
+		botSensor = app->physics->CreateRectangleSensor(position.x, position.y,12,4, b2_dynamicBody, { 255,165,0,255 });
 
-		leftSensor->listener = app->entities;
-		rightSensor->listener = app->entities;
-		topSensor->listener = app->entities;
-		botSensor->listener = app->entities;
+		//leftSensor->listener = app->player;
+		//rightSensor->listener = app->player;
+		//topSensor->listener = app->player;
+		//botSensor->listener = app->player;
 
 		leftSensor->type = Collider_Type::PLAYER_X_SENSOR;
 		rightSensor->type = Collider_Type::PLAYER_X_SENSOR;
@@ -125,10 +125,44 @@ bool Player::Start()
 
 		lives = 1;
 	}
+	else if (physBody->body == NULL) {
+
+		physBody = app->physics->CreateCircle(position.x, position.y, colliderRadius, b2_dynamicBody, { 0,250,125,255 });
+		physBody->listener = app->levelManagement->currentScene;
+		physBody->type = Collider_Type::PLAYER;
+		physBody->body->SetFixedRotation(true);
+		app->physics->allPhysicBodies.add(physBody);
+
+		position.x = physBody->body->GetPosition().x;
+		position.y = physBody->body->GetPosition().y;
+
+		//sensors
+		leftSensor = app->physics->CreateRectangleSensor(position.x, position.y, 4, 10, b2_dynamicBody, { 255,165,0,255 });
+		rightSensor = app->physics->CreateRectangleSensor(position.x, position.y, 4, 10, b2_dynamicBody, { 255,165,0,255 });
+		topSensor = app->physics->CreateRectangleSensor(position.x, position.y, 12, 4, b2_dynamicBody, { 255,165,0,255 });
+		botSensor = app->physics->CreateRectangleSensor(position.x, position.y, 12, 4, b2_dynamicBody, { 255,165,0,255 });
+
+		//leftSensor->listener = app->player;
+		//rightSensor->listener = app->player;
+		//topSensor->listener = app->player;
+		//botSensor->listener = app->player;
+
+		leftSensor->type = Collider_Type::PLAYER_X_SENSOR;
+		rightSensor->type = Collider_Type::PLAYER_X_SENSOR;
+		topSensor->type = Collider_Type::PLAYER_Y_SENSOR;
+		botSensor->type = Collider_Type::PLAYER_Y_SENSOR;
+
+		app->physics->allPhysicBodies.add(leftSensor);
+		app->physics->allPhysicBodies.add(rightSensor);
+		app->physics->allPhysicBodies.add(topSensor);
+		app->physics->allPhysicBodies.add(botSensor);
+
+		lastPosition = position;
+	}
 	return true;
 }
 
-bool Player::PreUpdate()
+bool ModulePlayer::PreUpdate()
 {
 	if (LoadRequest)
 	{
@@ -162,19 +196,18 @@ bool Player::PreUpdate()
 		if (state != ATTACK)
 			GodMovement();
 
-	}
-	else
+	}else
 	{
 		MeleeAttack();
-		if (state != ATTACK)
+		if(state != ATTACK)
 			Movement();
 	}
-
+	
 	return true;
 }
 
 // Update: draw background
-bool Player::Update(float dt)
+bool ModulePlayer::Update(float dt)
 {
 	bool ret = true;
 
@@ -208,13 +241,13 @@ bool Player::Update(float dt)
 		break;
 	}
 	currentAnim->Update();
-
+	
 
 	return ret;
 
 }
 
-bool Player::PostUpdate()
+bool ModulePlayer::PostUpdate()
 {
 	//check if player in map boundaries; Screen size is in pixels
 	fPoint pixelPosition;
@@ -266,30 +299,30 @@ bool Player::PostUpdate()
 		break;
 	}
 
-	if (texture != NULL)
+	if (playerTexture != NULL)
 	{
 		SDL_Rect* rect;
 		rect = &currentAnim->GetCurrentFrame();
 
 		if (state == ATTACK && direction == 1)
 		{
-			app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 52), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
+			app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 52), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
 				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 		}
 		else if (state == DEAD)
 		{
 			if (direction == 1)
 			{
-				app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 19), METERS_TO_PIXELS(physBody->body->GetPosition().y - 65),
+				app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 19), METERS_TO_PIXELS(physBody->body->GetPosition().y - 65),
 					&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 			}
-			else app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 19), METERS_TO_PIXELS(physBody->body->GetPosition().y - 65),
+			else app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 19), METERS_TO_PIXELS(physBody->body->GetPosition().y - 65),
 				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 		}
-		else app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 16), METERS_TO_PIXELS(physBody->body->GetPosition().y - 26),
+		else app->render->DrawTexture(playerTexture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 16), METERS_TO_PIXELS(physBody->body->GetPosition().y - 26),
 			&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 	}
-
+		
 
 	if (state == ATTACK && frameCounter < 20)
 	{
@@ -297,7 +330,7 @@ bool Player::PostUpdate()
 	}
 	else if (frameCounter >= 20)
 	{
-		state = PlayerState::IDLE;
+		state = IDLE;
 		frameCounter = 0;
 		meleeAttack->pendingToDelete = true;
 	}
@@ -306,7 +339,7 @@ bool Player::PostUpdate()
 }
 
 // Unload assets
-bool Player::CleanUp()
+bool ModulePlayer::CleanUp()
 {
 	if (physBody != nullptr)
 	{
@@ -315,20 +348,27 @@ bool Player::CleanUp()
 		topSensor->pendingToDelete = true;
 		botSensor->pendingToDelete = true;
 
+		delete leftSensor;
+		delete	rightSensor;
+		delete topSensor;
+		delete botSensor;
+
+
 		leftSensor = nullptr;
 		rightSensor = nullptr;
 		topSensor = nullptr;
 		botSensor = nullptr;
 
-		state = PlayerState::IDLE;
+		state = IDLE;
 		physBody->pendingToDelete = true;
+		delete physBody;
 		physBody = nullptr;
 		currentAnim = nullptr;
 	}
 	return true;
 }
 
-void Player::SetPosition(iPoint pos)
+void ModulePlayer::SetPosition(iPoint pos)
 {
 	b2Vec2 newPos;
 
@@ -336,20 +376,21 @@ void Player::SetPosition(iPoint pos)
 
 	newPos.x = PIXEL_TO_METERS(pixelPos.x);
 	newPos.y = PIXEL_TO_METERS(pixelPos.y);
-	if (physBody->body != nullptr)
+	if(physBody->body != nullptr)
 		physBody->body->SetTransform(newPos, physBody->body->GetAngle());
 }
 
-void Player::Spawn(iPoint pos)
+void ModulePlayer::Spawn(iPoint pos)
 {
+	Enable();
 	SetPosition(pos);
-	state = PlayerState::IDLE;
+	state = IDLE;
 	lives = 1;
 }
 
-void Player::Movement()
+void ModulePlayer::Movement()
 {
-	if (onGround) {
+	if (onGround){
 
 		//Ground movement
 				//Jump
@@ -365,25 +406,24 @@ void Player::Movement()
 			{
 				physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y });
 			}
-		}
-		else
-			if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
+		}else
+		if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 			{
 				physBody->body->SetLinearVelocity({ speed.x, physBody->body->GetLinearVelocity().y });
-				state = PlayerState::MOVE;
+				state = MOVE;
 				direction = SDL_FLIP_NONE;
 			}
 			else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
 			{
 				physBody->body->SetLinearVelocity({ -speed.x, physBody->body->GetLinearVelocity().y });
-				state = PlayerState::MOVE;
+				state = MOVE;
 				direction = SDL_FLIP_HORIZONTAL;
 			}
 			else {
 				physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
-				state = PlayerState::IDLE;
+				state = IDLE;
 			}
-
+		
 
 		////Jump
 		//if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) && currentJumpCd <= 0 && (physBody->body->GetLinearVelocity().y < 0.1 && physBody->body->GetLinearVelocity().y > -0.1))
@@ -412,7 +452,7 @@ void Player::Movement()
 
 			if (physBody->body->GetLinearVelocity().y >= speed.y)
 			{
-
+				
 				physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, speed.y });
 			}
 		}
@@ -432,23 +472,23 @@ void Player::Movement()
 	}
 }
 
-void Player::GodMovement()
+void ModulePlayer::GodMovement()
 {
 	if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
 	{
 		physBody->body->SetLinearVelocity({ speed.x * 1.5f, physBody->body->GetLinearVelocity().y });
-		state = PlayerState::MOVE;
+		state = MOVE;
 		direction = SDL_FLIP_NONE;
 	}
-	else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
+	else if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT )
 	{
 		physBody->body->SetLinearVelocity({ -speed.x * 1.5f, physBody->body->GetLinearVelocity().y });
-		state = PlayerState::MOVE;
+		state = MOVE;
 		direction = SDL_FLIP_HORIZONTAL;
 	}
 	else physBody->body->SetLinearVelocity({ 0, physBody->body->GetLinearVelocity().y });
 
-	if ((app->input->GetKey(SDL_SCANCODE_UP) || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT))
+	if ((app->input->GetKey(SDL_SCANCODE_UP) || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) )
 	{
 		physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, -speed.y * 1.5f });
 		state = JUMP;
@@ -461,7 +501,7 @@ void Player::GodMovement()
 	else physBody->body->SetLinearVelocity({ physBody->body->GetLinearVelocity().x, 0 });
 }
 
-void Player::UpdateSensorsPosition()
+void ModulePlayer::UpdateSensorsPosition()
 {
 	float offset;
 	b2Vec2 newPos;
@@ -471,7 +511,7 @@ void Player::UpdateSensorsPosition()
 	newPos.x = position.x + PIXEL_TO_METERS(8);
 	newPos.y = position.y;
 	rightSensor->body->SetTransform(newPos, 0);
-	newPos.x = position.x;
+	newPos.x = position.x ;
 	newPos.y = position.y - PIXEL_TO_METERS(8);
 	topSensor->body->SetTransform(newPos, 0);
 	newPos.x = position.x;
@@ -479,7 +519,7 @@ void Player::UpdateSensorsPosition()
 	botSensor->body->SetTransform(newPos, 0);
 }
 
-void Player::MeleeAttack()
+void ModulePlayer::MeleeAttack()
 {
 	if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN && state != ATTACK)
 	{
@@ -501,15 +541,46 @@ void Player::MeleeAttack()
 	}
 }
 
-void Player::RangedAttack()
+void ModulePlayer::RangedAttack()
 {
 }
 
-void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
+void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
+	wallLeft = false;
+	wallRight = false;
+	if (bodyA->type == PLAYER_X_SENSOR && bodyB->type == GROUND)
+	{
+		if (bodyA->body == leftSensor->body)
+		{
+			LOG("left collison");
+			wallLeft = true;
+		}
+		if (bodyA->body == rightSensor->body)
+		{
+			LOG("right collison");
+			wallRight = true;
+		}
+	}
+	else if (bodyA->type == PLAYER_Y_SENSOR && bodyB->type == GROUND)
+	{
+		if (bodyA->body == topSensor->body)
+		{
+			LOG("top collison");
+		}
+		else if (bodyA->body == botSensor->body)
+		{
+			LOG("bot collison");
+			onGround = true;
+			doubleJump = false;
+			physBody->body->SetGravityScale(1);
+		}
+	}
+	
+
 }
 
-bool Player::LoadState(pugi::xml_node& data)
+bool ModulePlayer::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
 
@@ -523,7 +594,7 @@ bool Player::LoadState(pugi::xml_node& data)
 	return ret;
 }
 
-bool Player::SaveState(pugi::xml_node& data) const
+bool ModulePlayer::SaveState(pugi::xml_node& data) const
 {
 	bool ret = true;
 	pugi::xml_node player = data.append_child("player");

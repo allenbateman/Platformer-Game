@@ -1,4 +1,5 @@
 #include "Key.h"
+#include "ModuleEntities.h"
 Key::Key(iPoint pos) : Collectable(pos)
 {
 	spawnPos = pos;
@@ -19,6 +20,7 @@ bool Key::Start()
 	r.w = 16;
 	r.h = 16;
 	physBody = app->physics->CreateRectangleSensor(position.x, position.y , r.w, r.h, b2_staticBody);
+	physBody->listener = app->entities;
 	physBody->color = { 100,50,255,255 };
 	physBody->type = Collider_Type::KEY;
 	app->physics->allPhysicBodies.add(physBody);

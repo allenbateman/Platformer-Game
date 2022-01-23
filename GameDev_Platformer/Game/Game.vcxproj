@@ -108,6 +108,7 @@
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\ModuleEntities.cpp" />
     <ClCompile Include="Source\ModulePhysics.cpp" />
+    <ClCompile Include="Source\ModulePlayer.cpp" />
     <ClCompile Include="Source\Musher.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
@@ -137,15 +138,16 @@
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\ModuleEntities.h" />
     <ClInclude Include="Source\ModulePhysics.h" />
+    <ClInclude Include="Source\ModulePlayer.h" />
     <ClInclude Include="Source\Musher.h" />
     <ClInclude Include="Source\p2List.h" />
     <ClInclude Include="Source\Pathfinding.h" />
     <ClInclude Include="Source\PerfTimer.h" />
-    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Audio.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\App.h" />
     <ClInclude Include="Source\Module.h" />
+    <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Portal.h" />
     <ClInclude Include="Source\PQueue.h" />
     <ClInclude Include="Source\Queue.h" />

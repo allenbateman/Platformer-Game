@@ -1,5 +1,5 @@
 #include "Gem.h"
-
+#include "ModuleEntities.h"
 
 Gem::Gem(iPoint pos) : Collectable(pos)
 {
@@ -20,6 +20,7 @@ bool Gem::Start()
 	r.w = 16;
 	r.h = 16;
 	physBody = app->physics->CreateRectangleSensor(position.x, position.y, r.w, r.h, b2_staticBody);
+	physBody->listener = app->entities;
 	physBody->color = { 100,50,255,255 };
 	physBody->type = Collider_Type::GEM;
 	app->physics->allPhysicBodies.add(physBody);
