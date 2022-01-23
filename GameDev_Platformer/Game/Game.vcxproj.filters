@@ -75,6 +75,12 @@
     <ClCompile Include="Source\Player.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GuiButton.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GuiManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Window.h" />
@@ -172,6 +178,15 @@
     <ClInclude Include="Source\Player.h">
       <Filter>Entities</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GuiButton.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiControl.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GuiManager.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="External">
@@ -197,6 +212,9 @@
     </Filter>
     <Filter Include="Entities\CheckPoints">
       <UniqueIdentifier>{48fe75bd-cfe2-427b-abe7-75a2e400aa13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{956303e3-fcf3-4b8e-bead-19259a2eb9c7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

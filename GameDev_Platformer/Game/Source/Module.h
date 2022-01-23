@@ -4,8 +4,10 @@
 #include "SString.h"
 #include "PugiXml/src/pugixml.hpp"
 
+
 class App;
 class PhysBody;
+class GuiControl;
 
 class Module
 {
@@ -67,6 +69,11 @@ public:
 
 	virtual void OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 	{
+	}
+
+	virtual bool OnGuiMouseClickEvent(GuiControl* control)
+	{
+		return true;
 	}
 
 	void Module::Enable()

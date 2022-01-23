@@ -14,7 +14,8 @@
 #include "Map.h"
 #include "ModulePhysics.h"
 #include "ModuleEntities.h"
-#include "Player.h"
+#include "GuiManager.h"
+
 
 #include "Defs.h"
 #include "Log.h"
@@ -42,6 +43,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene1 = new Scene1(false);
 	scene2 = new Scene2(false);
 	gameOver = new GameOver(false);
+	guiManager = new GuiManager(true);
+
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -51,6 +54,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(audio);
 	AddModule(map);
 	AddModule(physics);
+	AddModule(guiManager);
 
 	
 	AddModule(levelManagement);

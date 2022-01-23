@@ -26,6 +26,7 @@ class GameOver;
 class Map;
 class ModulePhysics;
 class ModuleEntities;
+class GuiManager;
 
 
 class App
@@ -107,6 +108,7 @@ public:
 	Map* map;
 	ModulePhysics* physics;
 	ModuleEntities* entities;
+	GuiManager* guiManager;
 	
 	float dt;
 
