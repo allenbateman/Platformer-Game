@@ -27,6 +27,7 @@ class Map;
 class ModulePhysics;
 class ModuleEntities;
 class GuiManager;
+class ModuleFonts;
 
 
 class App
@@ -109,6 +110,7 @@ public:
 	ModulePhysics* physics;
 	ModuleEntities* entities;
 	GuiManager* guiManager;
+	ModuleFonts* fonts;
 	
 	float dt;
 

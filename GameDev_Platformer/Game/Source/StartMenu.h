@@ -6,6 +6,7 @@
 #include "Globals.h"
 #include "ModulePhysics.h"
 #include "Animation.h"
+#include "GuiButton.h"
 
 struct SDL_Texture;
 
@@ -36,9 +37,16 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 private:
 	SDL_Texture* img;
 	SDL_Rect rect;
+
+	GuiButton* startButton;
+	GuiButton* settingsButton;
+	GuiButton* loadButton;
+
 };
 #endif // __STARTMENU_H__
 

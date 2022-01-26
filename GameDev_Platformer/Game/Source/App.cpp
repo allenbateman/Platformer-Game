@@ -15,6 +15,7 @@
 #include "ModulePhysics.h"
 #include "ModuleEntities.h"
 #include "GuiManager.h"
+#include "ModuleFonts.h"
 
 
 #include "Defs.h"
@@ -35,6 +36,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new Audio(true);
 	levelManagement = new LevelManagement(true);
 	physics = new ModulePhysics(true);
+	guiManager = new GuiManager(true);
+	fonts = new ModuleFonts(true);
 	map = new Map(true);
 	entities = new ModuleEntities(true);
 	fade = new FadeToBlack(true);
@@ -43,7 +46,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	scene1 = new Scene1(false);
 	scene2 = new Scene2(false);
 	gameOver = new GameOver(false);
-	guiManager = new GuiManager(true);
 
 
 	// Ordered for awake / Start / Update
@@ -55,6 +57,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(map);
 	AddModule(physics);
 	AddModule(guiManager);
+	AddModule(fonts);
 
 	
 	AddModule(levelManagement);

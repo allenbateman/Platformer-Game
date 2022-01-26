@@ -92,6 +92,8 @@
 	<physics>
 		<physics />
 	</physics>
+	<guiManager />
+	<:anonymous />
 	<:anonymous />
 	<:anonymous />
 	<intro />
@@ -102,13 +104,7 @@
 	<level2 />
 	<game_over />
 	<entities>
-		<Gem type="0" x="54.5" y="26.5" />
-		<Gem type="0" x="59.5" y="17.5" />
-		<Gem type="0" x="65.5" y="19.5" />
-		<Gem type="0" x="73.5" y="18.5" />
-		<Gem type="0" x="76.5" y="15.5" />
-		<Key type="0" x="77.5" y="25.5" />
-		<player x="53.6615486" y="15.49508" lives="1" state="1" />
+		<player x="55.3757706" y="15.4951935" lives="1" state="1" />
 	</entities>
 	<renderer>
 		<camera x="0" y="0" />

@@ -29,7 +29,7 @@ public:
 	bool CleanUp();
 
 	// Additional methods
-	GuiControl* CreateGuiControl(GuiControlType type, int id, const char* text, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds = { 0,0,0,0 });
+	GuiControl* CreateGuiControl(GuiControlType type, int id, const char* text, int fontid, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds = { 0,0,0,0 });
 	void DestroyGuiControl(GuiControl* entity);
 	void AddGuiControl(GuiControl* entity);
 
@@ -41,8 +41,9 @@ public:
 	float updateMsCycle = 0.0f;
 	bool doLogic = false;
 
-	SDL_Texture* texture;
+	SDL_Texture* UItexture;
 
+	int mainFont;
 };
 
 #endif // __GUIMANAGER_H__

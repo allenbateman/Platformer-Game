@@ -1,20 +1,17 @@
-#ifndef __GUIBUTTON_H__
-#define __GUIBUTTON_H__
-
+#pragma once
 #include "GuiControl.h"
 #include "Animation.h"
 
 #include "Point.h"
 #include "SString.h"
 
-
-
-class GuiButton : public GuiControl
+class GuiSlider : public GuiControl
 {
+
 public:
 
-	GuiButton(uint32 id, SDL_Rect bounds, const char* text, int fontid);
-	virtual ~GuiButton();
+	GuiSlider(uint32 id, SDL_Rect bounds, SDL_Rect Thumb);
+	virtual ~GuiSlider();
 
 	bool Update(float dt);
 	bool Draw(Render* render);
@@ -25,16 +22,14 @@ public:
 	bool canClick = true;
 	bool drawBasic = false;
 
-
-	int fontPosX,fontPosY;
-
+	SDL_Rect backgroundRect;
+	SDL_Rect thumbRect;
 
 	SDL_Texture* texture;
-
-	SDL_Rect normalRec,disabledRec,focusedRec,pressedRec,selectedRec;
+	SDL_Texture* thumbTex;
+	SDL_Texture* fontTex;
 
 	Animation* hoverAnim, pressedAnim;
 	Animation* currentAnim;
 };
 
-#endif // __GUIBUTTON_H__

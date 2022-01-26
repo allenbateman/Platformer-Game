@@ -99,6 +99,7 @@
     <ClCompile Include="Source\Gem.cpp" />
     <ClCompile Include="Source\GuiButton.cpp" />
     <ClCompile Include="Source\GuiManager.cpp" />
+    <ClCompile Include="Source\GuiSlider.cpp" />
     <ClCompile Include="Source\HPotion.cpp" />
     <ClCompile Include="Source\Intro.cpp" />
     <ClCompile Include="Source\Key.cpp" />
@@ -109,6 +110,7 @@
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Map.cpp" />
     <ClCompile Include="Source\ModuleEntities.cpp" />
+    <ClCompile Include="Source\ModuleFonts.cpp" />
     <ClCompile Include="Source\ModulePhysics.cpp" />
     <ClCompile Include="Source\ModulePlayer.cpp" />
     <ClCompile Include="Source\Musher.cpp" />
@@ -136,12 +138,14 @@
     <ClInclude Include="Source\GuiButton.h" />
     <ClInclude Include="Source\GuiControl.h" />
     <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\GuiSlider.h" />
     <ClInclude Include="Source\HPotion.h" />
     <ClInclude Include="Source\Intro.h" />
     <ClInclude Include="Source\Key.h" />
     <ClInclude Include="Source\LevelManagement.h" />
     <ClInclude Include="Source\Map.h" />
     <ClInclude Include="Source\ModuleEntities.h" />
+    <ClInclude Include="Source\ModuleFonts.h" />
     <ClInclude Include="Source\ModulePhysics.h" />
     <ClInclude Include="Source\ModulePlayer.h" />
     <ClInclude Include="Source\Musher.h" />

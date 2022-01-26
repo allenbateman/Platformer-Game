@@ -1,6 +1,7 @@
 #include "GuiManager.h"
 #include "App.h"
 #include "Textures.h"
+#include "ModuleFonts.h"
 
 #include "GuiButton.h"
 #include "Audio.h"
@@ -14,12 +15,14 @@ GuiManager::~GuiManager() {}
 
 bool GuiManager::Start()
 {
+
+	mainFont = app->fonts->Load("Assets/GUI/Fonts/Font.png", "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789", 1);
+	UItexture = app->tex->Load("Assets/Spritesx16/GUI.png");
 	return true;
 }
 
-GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char* text, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds)
+GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char* text,int fontid, SDL_Rect bounds, Module* observer, SDL_Rect sliderBounds)
 {
-	// L14: TODO1: Create a GUI control and add it to the list of controls
 
 	GuiControl* control = nullptr;
 
@@ -27,7 +30,7 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 	switch (type)
 	{
 	case GuiControlType::BUTTON:
-		control = new GuiButton(id, bounds, text);
+		control = new GuiButton(id, bounds, text, fontid);
 		break;
 	
 	// More Gui Controls can go here

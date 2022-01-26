@@ -4,7 +4,7 @@
 #include "Input.h"
 #include "Render.h"
 #include "Module.h"
-
+#include "ModuleFonts.h"
 #include "Point.h"
 #include "SString.h"
 
@@ -39,11 +39,12 @@ public:
 
 	GuiControl(GuiControlType type, uint32 id) : type(type), id(id), state(GuiControlState::NORMAL) {}
 
-	GuiControl(GuiControlType type, SDL_Rect bounds, const char* text) :
+	GuiControl(GuiControlType type, SDL_Rect bounds, const char* text, int font) :
 		type(type),
 		state(GuiControlState::NORMAL),
 		bounds(bounds),
-		text(text)
+		text(text),
+		font(font)
 	{
 		color.r = 255; color.g = 255; color.b = 255;
 		texture = NULL;
@@ -81,14 +82,13 @@ public:
 	GuiControlType type;
 	GuiControlState state;
 
-	SString text;           // Control text (if required)
+	const char* text;           // Control text (if required)
+	int font;				// font texture index
 	SDL_Rect bounds;        // Position and size
 	SDL_Color color;        // Tint color
 
 	SDL_Texture* texture;   // Texture atlas reference
 	SDL_Rect section;       // Texture atlas base section
-
-	//Font font;              // Text font
 
 	Module* observer;        // Observer module (it should probably be an array/list)
 };
