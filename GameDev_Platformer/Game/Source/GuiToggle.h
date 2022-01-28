@@ -23,6 +23,6 @@ public:
 
 	SDL_Texture* texture;
 
-	SDL_Rect normalRec, disabledRec, focusedRec, pressedRec, selectedRec;
+	SDL_Rect normalRec,selectedRec;
 };
 

@@ -7,10 +7,13 @@ GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, SDL_Rect Thumb) : GuiControl(Gu
 {
 	this->bounds = bounds;
 	this->text = text;
-	this->thumbRect = Thumb;
+	this->thumbBounds = Thumb;
 	texture = app->guiManager->UItexture;
 	canClick = true;
 	drawBasic = false;
+
+	backgroundRect = {89,240,82,8};
+	thumbRect = {172,240,6,10};
 }
 
 GuiSlider::~GuiSlider()
@@ -33,12 +36,12 @@ bool GuiSlider::Update(float dt)
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 			{
 				if (mouseX < bounds.x)
-					thumbRect.x = bounds.x + thumbRect.w;
+					thumbBounds.x = bounds.x + thumbBounds.w;
 
 				if (mouseX > (bounds.x + bounds.w))
-					thumbRect.x = bounds.x - thumbRect.w;
+					thumbBounds.x = bounds.x - thumbBounds.w;
 
-				thumbRect.x = mouseX;
+				thumbBounds.x = mouseX;
 
 				value = GetValue(mouseX);
 				LOG("slider value:%f", GetValue(mouseX));
@@ -66,43 +69,57 @@ bool GuiSlider::Draw(Render* render)
 	case GuiControlState::DISABLED:
 	{
 		render->DrawRectangle(bounds, 125, 200, 0, 0);
-		render->DrawRectangle(thumbRect, 125, 200, 0, 0);
+		render->DrawRectangle(thumbBounds, 125, 200, 0, 0);
 
+		if (texture != NULL)
+		{
+			render->DrawTexture(texture, bounds.x, bounds.y, &backgroundRect);
+			render->DrawTexture(texture, thumbBounds.x, thumbBounds.y, &thumbRect);
+		}
 
-
-		//if (texture != NULL)
-		//	render->DrawTexture(texture, bounds.x, bounds.y, &disabledRec);
 	} break;
 
 	case GuiControlState::NORMAL:
 	{
 		render->DrawRectangle(bounds, 125, 125, 0, 125);
-		render->DrawRectangle(thumbRect, 0, 200, 0, 255);
-		//if (texture != NULL)
-		//	render->DrawTexture(texture, bounds.x, bounds.y, &normalRec);
+		render->DrawRectangle(thumbBounds, 0, 200, 0, 255);
+		if (texture != NULL)
+		{
+			render->DrawTexture(texture, bounds.x, bounds.y, &backgroundRect);
+			render->DrawTexture(texture, thumbBounds.x, thumbBounds.y, &thumbRect);
+		}
 	} break;
 	case GuiControlState::FOCUSED:
 	{
 		render->DrawRectangle(bounds, 255, 255, 255, 160);
-		render->DrawRectangle(thumbRect, 0, 255, 255, 255);
-		//if (texture != NULL)
-		//	render->DrawTexture(texture, bounds.x, bounds.y, &focusedRec);
+		render->DrawRectangle(thumbBounds, 0, 255, 255, 255);
+		if (texture != NULL)
+		{
+			render->DrawTexture(texture, bounds.x, bounds.y, &backgroundRect);
+			render->DrawTexture(texture, thumbBounds.x, thumbBounds.y, &thumbRect);
+		}
 	} break;
 	case GuiControlState::PRESSED:
 	{
 		render->DrawRectangle(bounds, 255, 255, 255, 255);
-		render->DrawRectangle(thumbRect, 0, 255, 255, 255);
-		//if (texture != NULL)
-		//	render->DrawTexture(texture, bounds.x, bounds.y, &pressedRec);
+		render->DrawRectangle(thumbBounds, 0, 255, 255, 255);
+		if (texture != NULL)
+		{
+			render->DrawTexture(texture, bounds.x, bounds.y, &backgroundRect);
+			render->DrawTexture(texture, thumbBounds.x, thumbBounds.y, &thumbRect);
+		}
 
 	} break;
 
 	case GuiControlState::SELECTED:
 	{
 		render->DrawRectangle(bounds, 0, 255, 0, 255);
-		render->DrawRectangle(thumbRect, 0, 255, 255, 255);
-		//if (texture != NULL)
-		//	render->DrawTexture(texture, bounds.x, bounds.y, &selectedRec);
+		render->DrawRectangle(thumbBounds, 0, 255, 255, 255);
+		if (texture != NULL)
+		{
+			render->DrawTexture(texture, bounds.x, bounds.y, &backgroundRect);
+			render->DrawTexture(texture, thumbBounds.x, thumbBounds.y, &thumbRect);
+		}
 	}break;
 
 	default:

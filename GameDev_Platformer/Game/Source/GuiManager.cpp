@@ -37,7 +37,7 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 	case GuiControlType::SLIDER:
 		control = new GuiSlider(id, bounds, sliderBounds);
 		break;
-	case GuiControlType::TOGGLE:
+	case GuiControlType::CHECKBOX:
 		control = new GuiToggle(id, bounds);
 		break;
 	
@@ -115,8 +115,6 @@ bool GuiManager::CleanUp()
 	}
 
 	return true;
-
-	return false;
 }
 
 

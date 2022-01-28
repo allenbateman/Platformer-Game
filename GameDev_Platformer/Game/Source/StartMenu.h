@@ -8,6 +8,8 @@
 #include "Animation.h"
 #include "GuiButton.h"
 #include "GuiSlider.h"
+#include "GuiPanel.h"
+#include "GuiToggle.h"
 
 struct SDL_Texture;
 
@@ -50,6 +52,13 @@ private:
 	GuiButton* exitButton;
 
 	GuiSlider* sliderTest;
+
+	GuiPanel*  settingsPanel;
+	GuiSlider* volumeSlider;
+	GuiSlider* fxSlider;
+	GuiToggle* vsyncCheckbox;
+	GuiToggle* fullScreenCheckbox;
+	GuiButton* closePanelBttn;
 
 };
 #endif // __STARTMENU_H__

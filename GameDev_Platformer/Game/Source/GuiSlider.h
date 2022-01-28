@@ -25,12 +25,11 @@ public:
 	bool canClick = true;
 	bool drawBasic = false;
 
-	SDL_Rect backgroundRect;
+	SDL_Rect thumbBounds;
 	SDL_Rect thumbRect;
-
+	SDL_Rect backgroundRect;
 	SDL_Texture* texture;
-	SDL_Texture* thumbTex;
-	SDL_Texture* fontTex;
+
 
 	Animation* hoverAnim, pressedAnim;
 	Animation* currentAnim;

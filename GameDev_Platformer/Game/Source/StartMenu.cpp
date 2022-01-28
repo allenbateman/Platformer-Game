@@ -66,9 +66,24 @@ bool StartMenu::Start()
 	exitButton->disabledRec = { 172,62,170,60 };
 
 
+	settingsPanel = new GuiPanel(false);
+	settingsPanel->bounds = {510,0,266 ,382};
+	settingsPanel->position = { (app->win->GetWidth() *40 /100) ,(app->win->GetWidth() *5 / 100) };
+	volumeSlider = (GuiSlider*) settingsPanel->CreateGuiControl(GuiControlType::SLIDER, 5, "Volume", 0, { (settingsPanel->position.x +147), (settingsPanel->position.y +99), 83, 8 }, this, { (settingsPanel->position.x + 147), (settingsPanel->position.y +99), 6, 10 });
+	fxSlider = (GuiSlider*)settingsPanel->CreateGuiControl(GuiControlType::SLIDER, 6, "Fx", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 167), 83, 8 }, this, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 167), 6, 10 });
+	
+	vsyncCheckbox = (GuiToggle*)settingsPanel->CreateGuiControl(GuiControlType::CHECKBOX, 7, "vsync", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 231), 22, 22 }, this);
+	
+	fullScreenCheckbox = (GuiToggle*)settingsPanel->CreateGuiControl(GuiControlType::CHECKBOX, 8, "fullScreen", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 295), 22, 22 }, this);
 
-	sliderTest = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 4, "", 0, { (app->win->GetWidth() / 2) - 425 , (app->win->GetHeight() / 2) + 75, 170, 10 }, this, { (app->win->GetWidth() / 2) - 425 , (app->win->GetHeight() / 2) +70, 10, 15 });
+	fullScreenCheckbox = (GuiToggle*)settingsPanel->CreateGuiControl(GuiControlType::CHECKBOX, 9, "fullScreen", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 295), 22, 22 }, this);
 
+	closePanelBttn = (GuiButton*)settingsPanel->CreateGuiControl(GuiControlType::BUTTON, 10, "fullScreen", 0, { (settingsPanel->position.x + 23), (settingsPanel->position.y + 20), 22, 22 }, this);
+	closePanelBttn->normalRec = { 66,240,22,22 };
+	closePanelBttn->selectedRec = { 66,240,22,22 };
+	closePanelBttn->disabledRec = { 66,240,22,22 };
+	closePanelBttn->focusedRec = { 66,240,22,22 };
+	closePanelBttn->pressedRec = { 66,240,22,22 };
 
 	return true;
 }
@@ -76,18 +91,14 @@ bool StartMenu::Start()
 // Called each loop iteration
 bool StartMenu::PreUpdate()
 {
+	settingsPanel->PreUpdate();
 	return true;
 }
 
 // Called each loop iteration
 bool StartMenu::Update(float dt)
 {
-	rect.x = 0;
-	rect.y = 0;
-	rect.w = 1280;
-	rect.h = 480;
-	if (img != nullptr && active)
-		app->render->DrawTexture(img, 0, 0, &rect, 1.0f, 0.0f, 1, 1, 1, SDL_FLIP_NONE);
+	settingsPanel->Update(dt);
 	return true;
 }
 
@@ -95,9 +106,15 @@ bool StartMenu::Update(float dt)
 bool StartMenu::PostUpdate()
 {
 	bool ret = true;
-
+	rect.x = 0;
+	rect.y = 0;
+	rect.w = 1280;
+	rect.h = 480;
+	if (img != nullptr && active)
+		app->render->DrawTexture(img, 0, 0, &rect, 1.0f, 0.0f, 1, 1, 1, SDL_FLIP_NONE);
 	//Draw GUI
 	app->guiManager->Draw();
+	settingsPanel->Draw();
 
 	return ret;
 }
@@ -121,6 +138,14 @@ bool StartMenu::OnGuiMouseClickEvent(GuiControl* control)
 	else if (control->id == exitButton->id)
 	{
 		app->exit = true;
+	}
+	else if (control->id == settingsButton->id)
+	{
+		settingsPanel->Active = true;
+	}
+	else if (control->id == closePanelBttn->id)
+	{
+		settingsPanel->Active = false;
 	}
 
 

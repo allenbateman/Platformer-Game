@@ -11,6 +11,9 @@ GuiToggle::GuiToggle(uint32 id, SDL_Rect bounds) : GuiControl(GuiControlType::TO
 	texture = app->guiManager->UItexture;
 	canClick = true;
 	drawBasic = false;
+	State = false;
+	normalRec = { 0,240,22,22 };
+	selectedRec = { 66,240,22,22 };
 }
 
 GuiToggle::~GuiToggle()
@@ -28,12 +31,9 @@ bool GuiToggle::Update(float dt)
 		if ((mouseX > bounds.x) && (mouseX < (bounds.x + bounds.w)) &&
 			(mouseY > bounds.y) && (mouseY < (bounds.y + bounds.h)))
 		{
-			state = GuiControlState::FOCUSED;
-
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_DOWN)
 			{
-				state = GuiControlState::PRESSED;
-				State != State;
+				State = !State;
 			}
 
 			// If mouse button pressed -> Generate event!
@@ -42,7 +42,11 @@ bool GuiToggle::Update(float dt)
 				NotifyObserver();
 			}
 		}
-		else state = GuiControlState::NORMAL;
+
+		if (State)
+			state = GuiControlState::SELECTED;
+		else
+			state = GuiControlState::NORMAL;
 	}
 	return false;
 }
@@ -53,41 +57,23 @@ bool GuiToggle::Draw(Render* render)
 
 	switch (state)
 	{
-
-	case GuiControlState::DISABLED:
-	{
-		render->DrawRectangle(bounds, 125, 200, 0, 0);
-		if (texture != NULL)
-			render->DrawTexture(texture, bounds.x, bounds.y, &disabledRec);
-	} break;
-
 	case GuiControlState::NORMAL:
 	{
 		render->DrawRectangle(bounds, 125, 125, 0, 125);
 		if (texture != NULL)
 			render->DrawTexture(texture, bounds.x, bounds.y, &normalRec);
 	} break;
-	case GuiControlState::FOCUSED:
-	{
-		render->DrawRectangle(bounds, 255, 255, 255, 160);
-		if (texture != NULL)
-			render->DrawTexture(texture, bounds.x, bounds.y, &focusedRec);
-	} break;
 	case GuiControlState::PRESSED:
 	{
 		render->DrawRectangle(bounds, 255, 255, 255, 255);
 		if (texture != NULL)
-			render->DrawTexture(texture, bounds.x, bounds.y, &pressedRec);
+			render->DrawTexture(texture, bounds.x, bounds.y, &selectedRec);
 
 	} break;
-
 	case GuiControlState::SELECTED:
-	{
-		render->DrawRectangle(bounds, 0, 255, 0, 255);
 		if (texture != NULL)
 			render->DrawTexture(texture, bounds.x, bounds.y, &selectedRec);
-	}break;
-
+		break;
 	default:
 		break;
 	}
