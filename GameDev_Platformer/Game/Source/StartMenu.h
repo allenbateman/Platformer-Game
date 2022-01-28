@@ -7,7 +7,6 @@
 #include "ModulePhysics.h"
 #include "Animation.h"
 #include "GuiButton.h"
-#include "GuiSlider.h"
 
 struct SDL_Texture;
 
@@ -47,9 +46,6 @@ private:
 	GuiButton* startButton;
 	GuiButton* settingsButton;
 	GuiButton* loadButton;
-	GuiButton* exitButton;
-
-	GuiSlider* sliderTest;
 
 };
 #endif // __STARTMENU_H__

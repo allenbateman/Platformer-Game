@@ -96,7 +96,6 @@ bool ModulePlayer::Start()
 		physBody->body->SetFixedRotation(true);
 		app->physics->allPhysicBodies.add(physBody);
 
-
 		currentJumpCd = jumpCooldown;
 
 		//sensors

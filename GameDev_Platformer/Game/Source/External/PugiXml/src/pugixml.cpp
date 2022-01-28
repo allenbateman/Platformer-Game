@@ -4022,7 +4022,7 @@ PUGI__NS_BEGIN
     // we need to get length of entire file to load it in memory; the only (relatively) sane way to do it is via seek/tell trick
     PUGI__FN xml_parse_status get_file_size(FILE* file, size_t& out_result)
     {
-    #if defined(PUGI__MSVC_CRT_VERSION) && PUGI__MSVC_CRT_VERSION >= 1400 && !defined(_PORTAL32_WCE)
+    #if defined(PUGI__MSVC_CRT_VERSION) && PUGI__MSVC_CRT_VERSION >= 1400 && !defined(_WIN32_WCE)
         // there are 64-bit versions of fseek/ftell, let's use them
         typedef __int64 length_type;
 
@@ -7194,7 +7194,7 @@ PUGI__NS_BEGIN
     }
 
     // gets mantissa digits in the form of 0.xxxxx with 0. implied and the exponent
-#if defined(PUGI__MSVC_CRT_VERSION) && PUGI__MSVC_CRT_VERSION >= 1400 && !defined(_PORTAL32_WCE)
+#if defined(PUGI__MSVC_CRT_VERSION) && PUGI__MSVC_CRT_VERSION >= 1400 && !defined(_WIN32_WCE)
     PUGI__FN void convert_number_to_mantissa_exponent(double value, char* buffer, size_t buffer_size, char** out_mantissa, int* out_exponent)
     {
         // get base values

@@ -65,8 +65,6 @@ public:
 	void LoadGameRequest();
 	void SaveGameRequest() const;
 
-	bool IsASavedGame();
-
 private:
 
 	// Load config file
@@ -115,7 +113,6 @@ public:
 	ModuleFonts* fonts;
 	
 	float dt;
-	bool exit = false;
 
 private:
 

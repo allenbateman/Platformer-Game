@@ -272,8 +272,6 @@ bool App::PreUpdate()
 
 		ret = item->data->PreUpdate();
 	}
-	if (exit)
-		ret = false;
 
 	return ret;
 }
@@ -368,6 +366,7 @@ const char* App::GetOrganization() const
 // Load / Save
 void App::LoadGameRequest()
 {
+	// NOTE: We should check if SAVE_STATE_FILENAME actually exist
 	bool ret = true;
 
 	pugi::xml_document gameStateFile;
@@ -382,33 +381,9 @@ void App::LoadGameRequest()
 // ---------------------------------------
 void App::SaveGameRequest() const
 {
-	bool ret = true;
-
-	pugi::xml_document gameStateFile;
-	pugi::xml_parse_result  result = gameStateFile.load_file("savegame.xml");
-
-	if (gameStateFile.child("save_state") == NULL)
-	{
-		//if no game saved we create a new one 
-		gameStateFile.append_child("save_state");
-	}else{
-		//do we want to override the saved game?
-	}
-	
-	
-	saveGameRequested = ret;
-}
-
-bool App::IsASavedGame()
-{
-	bool ret = true;
-	pugi::xml_document gameStateFile;
-	pugi::xml_parse_result  result = gameStateFile.load_file("savegame.xml");
-
-	if (gameStateFile.child("save_state") == NULL)
-		ret = false;
-
-	return ret;
+	//TODO
+	// NOTE: We should check if SAVE_STATE_FILENAME actually exist and... should we overwriten
+	saveGameRequested = true;
 }
 
 // call all the modules to load themselves
@@ -442,7 +417,7 @@ bool App::LoadGame()
 	return ret;
 }
 
-// xml save method for current state
+// L02: TODO 7: Implement the xml save method for current state
 bool App::SaveGame() const
 {
 	bool ret = true;

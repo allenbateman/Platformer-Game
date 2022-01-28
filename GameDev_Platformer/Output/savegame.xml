@@ -4,7 +4,91 @@
 	<input />
 	<textures />
 	<audio />
-	<map />
+	<map>
+		<map_data height="30" width="80" tile_height="16" tile_width="16" red_backgroundcolor="0" green_backgroundcolor="0" blue_backgroundcolor="0" alpha_backgroundcolor="0">
+			<tile_set>
+				<Background1 gid="1" name="Background1" tile_count="1740" tile_height="16" tile_width="16" columns="60" margin="0" spacing="0" texture="true" source="../Spritesx16/Background_layer1_x2.png" tex_height="0" tex_width="0" />
+				<Background2 gid="1741" name="Background2" tile_count="1740" tile_height="16" tile_width="16" columns="60" margin="0" spacing="0" texture="true" source="../Spritesx16/Background_layer2_x2.png" tex_height="0" tex_width="0" />
+				<Background3 gid="3481" name="Background3" tile_count="1740" tile_height="16" tile_width="16" columns="60" margin="0" spacing="0" texture="true" source="../Spritesx16/Background_layer3_x2.png" tex_height="0" tex_width="0" />
+				<Forest1 gid="5221" name="Forest1" tile_count="140" tile_height="16" tile_width="16" columns="20" margin="0" spacing="0" texture="true" source="../Spritesx16/Forest_Tileset_x2.png" tex_height="0" tex_width="0" />
+				<Forest_Assets_x2 gid="5361" name="Forest_Assets_x2" tile_count="189" tile_height="16" tile_width="16" columns="27" margin="0" spacing="0" texture="true" source="../Spritesx16/Forest_Assets_x2.png" tex_height="0" tex_width="0" />
+				<Forest_Background_Assets_x2 gid="5550" name="Forest_Background_Assets_x2" tile_count="104" tile_height="16" tile_width="16" columns="26" margin="16" spacing="0" texture="true" source="../Spritesx16/Forest_Background_Assets_x2.png" tex_height="0" tex_width="0" />
+				<Gems gid="5654" name="Gems" tile_count="2" tile_height="16" tile_width="16" columns="2" margin="0" spacing="0" texture="true" source="../Spritesx16/gems.png" tex_height="0" tex_width="0" />
+				<Props gid="5656" name="Props" tile_count="216" tile_height="16" tile_width="16" columns="24" margin="0" spacing="0" texture="true" source="../Spritesx16/props.png" tex_height="0" tex_width="0" />
+			</tile_set>
+			<object_layer>
+				<Collectables name="Collectables" height="0" width="0" texture="false" texture="false">
+					<Gem id="26" type="0" x="176" y="448" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="39" type="0" x="256" y="416" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="40" type="0" x="336" y="448" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="41" type="0" x="464" y="384" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="42" type="0" x="496" y="352" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="43" type="0" x="864" y="432" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="44" type="0" x="752" y="288" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="45" type="0" x="800" y="240" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="46" type="0" x="944" y="288" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="48" type="0" x="1040" y="320" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="49" type="0" x="1168" y="304" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Gem id="50" type="0" x="1216" y="256" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Gem>
+					<Key id="52" type="1" x="1232" y="416" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Key>
+					<Key id="53" type="1" x="528" y="448" height="16" width="16">
+						<Draw name="Draw" value="1" />
+					</Key>
+					<Potion id="65" type="12" x="448" y="448" height="16" width="16" />
+					<Potion id="66" type="12" x="1104" y="416" height="16" width="16" />
+				</Collectables>
+				<Entities name="Entities" height="0" width="0" texture="false" texture="false">
+					<Musher id="63" type="3" x="384" y="432" height="16" width="16" />
+					<Bat id="64" type="2" x="864" y="336" height="16" width="16" />
+					<Musher id="67" type="3" x="592" y="432" height="16" width="16" />
+					<Player id="68" type="8" x="32" y="416" height="16" width="16" />
+				</Entities>
+				<Structures name="Structures" height="0" width="0" texture="false" texture="false">
+					<Win id="54" type="7" x="1248" y="160" height="64" width="32" />
+					<Checkpoint id="58" type="4" x="864" y="208" height="48" width="16" />
+				</Structures>
+			</object_layer>
+			<map_layer>
+				<Background3 name="Background3" height="30" width="80" />
+				<Background2 name="Background2" height="30" width="80" />
+				<Background1 name="Background1" height="30" width="80" />
+				<Background0 name="Background0" height="30" width="80" />
+				<Ground name="Ground" height="30" width="80" />
+				<Water name="Water" height="30" width="80" />
+				<Death name="Death" height="30" width="80" />
+				<Overlaybackground name="Overlaybackground" height="30" width="80" />
+				<Overlay name="Overlay" height="30" width="80" />
+				<MusherNavigationMap name="MusherNavigationMap" height="30" width="80" />
+				<BatNavigationMap name="BatNavigationMap" height="30" width="80" />
+			</map_layer>
+		</map_data>
+	</map>
 	<physics>
 		<physics />
 	</physics>
@@ -20,14 +104,7 @@
 	<level2 />
 	<game_over />
 	<entities>
-		<Gem type="0" x="65.5" y="20.5" />
-		<Gem type="0" x="75.5" y="18.5" />
-		<Key type="1" x="76.5" y="25.5" />
-		<HealthPotion type="12" x="1104" y="400" />
-		<Player type="8" x="53.6128235" y="14.5257359" lives="2" state="1" />
-		<musher type="3" x="73.5" y="25.4950161" state="0" />
-		<Portal type="7" x="79" y="12" />
-		<CheckPoint type="4" x="54.5" y="14.5" />
+		<player x="55.3757706" y="15.4951935" lives="1" state="1" />
 	</entities>
 	<renderer>
 		<camera x="0" y="0" />

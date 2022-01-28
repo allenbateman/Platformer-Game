@@ -24,9 +24,9 @@ enum update_status
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 480
 #define SCREEN_SIZE 1
-#define PORTAL_FULLSCREEN false
-#define PORTAL_RESIZABLE false
-#define PORTAL_BORDERLESS false
-#define PORTAL_FULLSCREEN_DESKTOP false
+#define WIN_FULLSCREEN false
+#define WIN_RESIZABLE false
+#define WIN_BORDERLESS false
+#define WIN_FULLSCREEN_DESKTOP false
 #define VSYNC true
 #define TITLE "DEV PROJ"

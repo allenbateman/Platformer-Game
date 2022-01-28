@@ -56,20 +56,6 @@ bool StartMenu::Start()
 	loadButton->normalRec = { 514,1,170,60 };
 	loadButton->disabledRec = { 514,62,170,60 };
 
-	if (!app->IsASavedGame())
-		loadButton->state = GuiControlState::DISABLED;
-
-
-	exitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 4, "Exit", 0, { (app->win->GetWidth() / 2) - 85 , (app->win->GetHeight() / 2) + 150, 170, 60 }, this);
-	exitButton->texture = app->tex->Load("Assets/Spritesx16/GUI.png");
-	exitButton->normalRec = { 172,62,170,60 };
-	exitButton->disabledRec = { 172,62,170,60 };
-
-
-
-	sliderTest = (GuiSlider*)app->guiManager->CreateGuiControl(GuiControlType::SLIDER, 4, "", 0, { (app->win->GetWidth() / 2) - 425 , (app->win->GetHeight() / 2) + 75, 170, 10 }, this, { (app->win->GetWidth() / 2) - 425 , (app->win->GetHeight() / 2) +70, 10, 15 });
-
-
 	return true;
 }
 
@@ -116,13 +102,8 @@ bool StartMenu::OnGuiMouseClickEvent(GuiControl* control)
 	if (control->id == startButton->id)
 	{
 		app->levelManagement->gameState = LevelManagement::SCENE1;
-
-	}
-	else if (control->id == exitButton->id)
-	{
-		app->exit = true;
 	}
 
 
-	return true;
+	return false;
 }

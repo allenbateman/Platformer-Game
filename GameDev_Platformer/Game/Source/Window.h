@@ -1,5 +1,5 @@
-#ifndef __PORTALDOW_H__
-#define __PORTALDOW_H__
+#ifndef __WINDOW_H__
+#define __WINDOW_H__
 
 #include "Module.h"
 
@@ -50,4 +50,4 @@ private:
 	uint scale;
 };
 
-#endif // __PORTALDOW_H__
+#endif // __WINDOW_H__

@@ -24,11 +24,12 @@ public:
 	bool PreUpdate() override;
 	bool Update(float dt) override;
 	bool CleanUp() override;
+	Module* currentScene = nullptr;
+	Module* currentLevel = nullptr;
 	void NextLevel();
 	void ReturnToMainMenu();
 	void ReturnToLevelSelection();
 	void RestartLevel();
-	void LoadLevel();
 
 	enum GameState {
 		NONE = 0,
@@ -39,8 +40,6 @@ public:
 		GAME_OVER = 6
 	};
 	GameState gameState;
-	Module* currentScene = nullptr;
-	Module* currentLevel = nullptr;
 	int gemCount = 0;
 	int frameCounter = 0;
 	int delayTime = 100;

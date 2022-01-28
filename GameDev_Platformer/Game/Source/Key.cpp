@@ -3,7 +3,6 @@
 Key::Key(iPoint pos) : Collectable(pos)
 {
 	spawnPos = pos;
-	name = "key";
 }
 
 Key::Key(Collider_Type type, iPoint pos) : Collectable(pos)
@@ -20,7 +19,7 @@ bool Key::Start()
 	r.y = position.x;
 	r.w = 16;
 	r.h = 16;
-	physBody = app->physics->CreateRectangleSensor(position.x, position.y, r.w, r.h, b2_staticBody);
+	physBody = app->physics->CreateRectangleSensor(position.x, position.y , r.w, r.h, b2_staticBody);
 	physBody->listener = app->entities;
 	physBody->color = { 100,50,255,255 };
 	physBody->type = Collider_Type::KEY;
@@ -47,7 +46,7 @@ bool Key::PostUpdate()
 	r.w = 16;
 	r.h = 16;
 	if (texture != NULL)
-		app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x) - (r.w * 0.5), METERS_TO_PIXELS(physBody->body->GetPosition().y) - (r.h * 0.5), &r);
+		app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x) - r.w * 0.5, METERS_TO_PIXELS(physBody->body->GetPosition().y) - r.h * 0.5, &r);
 
 	return true;
 }
@@ -71,7 +70,7 @@ bool Key::SaveState(pugi::xml_node& data) const
 {
 	bool ret = true;
 	pugi::xml_node entity = data.append_child("Key");
-	entity.append_attribute("type") = physBody->type;;
+	entity.append_attribute("type") = type;
 	entity.append_attribute("x") = position.x;
 	entity.append_attribute("y") = position.y;
 	return ret;

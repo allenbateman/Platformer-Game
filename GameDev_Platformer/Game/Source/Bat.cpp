@@ -72,9 +72,7 @@ bool Bat::Start()
 		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
 		physBody->listener = app->entities;
 		physBody->color = { 255,255,0,255 };
-		physBody->type = Collider_Type::BAT;
-
-		type = physBody->type;
+		physBody->type = Collider_Type::ENEMY;
 
 		physBody->body->SetFixedRotation(true);
 		app->physics->allPhysicBodies.add(physBody);
@@ -98,6 +96,15 @@ bool Bat::Start()
 
 bool Bat::PreUpdate()
 {
+
+	if (LoadRequest && physBody->body != NULL)
+	{
+		iPoint p;
+		p.x = position.x;
+		p.y = position.y;
+		SetPosition(p);
+		LoadRequest = false;
+	}
 
 	position.x = physBody->body->GetPosition().x;
 	position.y = physBody->body->GetPosition().y;
@@ -220,10 +227,10 @@ bool Bat::PostUpdate()
 
 bool Bat::CleanUp()
 {
-	//delete physBody;
-	//physBody = nullptr;
-	//delete currentAnim;
-	//currentAnim = nullptr;
+	delete physBody;
+	physBody = nullptr;
+	delete currentAnim;
+	currentAnim = nullptr;
 	return true;
 }
 
@@ -251,9 +258,8 @@ bool Bat::SaveState(pugi::xml_node& data) const
 {
 	bool ret = true;
 	pugi::xml_node bat = data.append_child("bat");
-	bat.append_attribute("type") = physBody->type;;
-	bat.append_attribute("x") = position.x;
-	bat.append_attribute("y") = position.y;
+	bat.append_attribute("x") = physBody->body->GetPosition().x;
+	bat.append_attribute("y") = physBody->body->GetPosition().y;
 	bat.append_attribute("state") = state;
 	return ret;
 }
