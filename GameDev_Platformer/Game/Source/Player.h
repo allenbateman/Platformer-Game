@@ -13,6 +13,7 @@ enum PlayerState
 	JUMP,
 	DOUBLE_JUMP,
 	ATTACK,
+	SKILL,
 	DEAD
 };
 
@@ -38,7 +39,7 @@ public:
 
 	//attacks
 	void MeleeAttack();
-	void RangedAttack();
+	void SkillAttack();
 	//skills?
 
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
@@ -49,7 +50,8 @@ public:
 
 public:
 	Animation* currentAnim = nullptr;
-	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim, meleePlayerAnim;
+	Animation* skillAnim = nullptr;
+	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim, meleePlayerAnim, skillPlayerAnim;
 
 	float jumpForce = 15;
 	float onAirXSpeed = 5;
@@ -71,6 +73,7 @@ public:
 	PhysBody* topSensor;
 
 	PhysBody* meleeAttack;
+	PhysBody* skillAttack;
 
 	int colliderRadius = 8;
 	float gravityScale;
@@ -81,6 +84,7 @@ public:
 	bool isGodmodeOn = false;
 	bool LoadRequest = false;
 
-	int frameCounter;
+	int frameCounter = 0;
+	int skillCounter = 0;
 };
 

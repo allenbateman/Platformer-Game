@@ -15,6 +15,7 @@ enum PlayerState
 	JUMP,
 	DOUBLE_JUMP,
 	ATTACK,
+	SKILL,
 	DEAD
 };
 class ModulePlayer : public Module
@@ -39,7 +40,7 @@ public:
 
 	//attacks
 	void MeleeAttack();
-	void RangedAttack();
+	void SkillAttack();
 	//skills?
 
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
@@ -52,12 +53,13 @@ public:
 
 public:
 	Animation* currentAnim = nullptr;
-	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim, meleePlayerAnim;
+	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim, meleePlayerAnim, skillPlayerAnim;
 	
 	float jumpForce = 15;
 	float onAirXSpeed = 5;
 	float jumpCooldown = 50;
 	float currentJumpCd = 0;
+	bool isSkillObtained = false;
 	bool doubleJump = false;
 	bool onGround = false;
 	bool onAir = false;
@@ -75,6 +77,7 @@ public:
 	PhysBody* topSensor;
 
 	PhysBody* meleeAttack;
+	PhysBody* skillAttack;
 	
 	int colliderRadius = 8;
 	float gravityScale;
