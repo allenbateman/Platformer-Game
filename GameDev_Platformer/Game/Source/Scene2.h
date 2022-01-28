@@ -6,6 +6,7 @@
 #include "Globals.h"
 #include "ModulePhysics.h"
 #include "Animation.h"
+#include "GuiPanel.h"
 
 struct SDL_Texture;
 
@@ -36,21 +37,19 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void Enable();
+	void Disable();
 
 	// Load / Save
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&) const;
 
-	void OnCollision(PhysBody* bodyA, PhysBody* bodyB);
-
+	int KeysToTake = 3;
 private:
+	SDL_Texture* img;
 	p2List_item<PhysBody*>* collider;
 
-
-
-	//to remove
-	SDL_Texture* img;
-	SDL_Rect rect;
+	uint music;
 };
 
 #endif // __SCENE2_H__
