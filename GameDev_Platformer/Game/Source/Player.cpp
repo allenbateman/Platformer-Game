@@ -86,6 +86,34 @@ bool Player::Start()
 		meleePlayerAnim.loop = false;
 		meleePlayerAnim.mustFlip = true;
 		meleePlayerAnim.speed = 0.3f;
+		//Skill attack anim
+		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
+		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
+		skillPlayerAnim.loop = false;
+		skillPlayerAnim.mustFlip = true;
+		skillPlayerAnim.speed = 0.5f;
 
 		currentAnim = &idlePlayerAnim;
 		state = PlayerState::IDLE;
@@ -162,19 +190,50 @@ bool Player::PreUpdate()
 	if (isGodmodeOn)
 	{
 		MeleeAttack();
-		if (state != ATTACK)
+		SkillAttack();
+		if (state != ATTACK && state != SKILL)
 			GodMovement();
 
 	}
 	else
 	{
 		MeleeAttack();
-		if (state != ATTACK)
+		SkillAttack();
+		if (state != ATTACK && state != SKILL)
 			Movement();
 	}
-
-
-
+	if (skillAttack != nullptr)
+	{
+		skillCounter++;
+		if (direction == 1)
+		{
+			if (skillCounter < 120)
+			{
+				skillAttack->body->SetLinearVelocity({ 5, 0 });
+			}
+			else if (skillCounter > 120 && skillCounter < 240)
+			{
+				skillAttack->body->SetLinearVelocity({ -5, 0 });
+			}
+			else skillAttack = nullptr;
+		}
+		else
+		{
+			if (skillCounter < 60)
+			{
+				skillAttack->body->SetLinearVelocity({ -5, 0 });
+			}
+			else if (skillCounter > 60 && skillCounter < 120)
+			{
+				skillAttack->body->SetLinearVelocity({ 5, 0 });
+			}
+			else
+			{
+				skillAttack = nullptr; 
+				state = PlayerState::IDLE;
+			}
+		}
+	}
 
 	return true;
 }
@@ -202,6 +261,9 @@ bool Player::Update(float dt)
 	case ATTACK:
 		currentAnim = &meleePlayerAnim;
 		break;
+	case SKILL:
+		skillAnim = &skillPlayerAnim;
+		break;
 	case DEAD:
 		currentAnim = &deathPlayerAnim;
 		break;
@@ -215,20 +277,28 @@ bool Player::Update(float dt)
 		idlePlayerAnim.Update();
 		walkingPlayerAnim.Reset();
 		meleePlayerAnim.Reset();
+		skillPlayerAnim.Reset();
 		break;
 	case JUMP:
 		jumpingPlayerAnim.Update();
 		idlePlayerAnim.Reset();
 		walkingPlayerAnim.Reset();
 		meleePlayerAnim.Reset();
+		skillPlayerAnim.Reset();
 		break;
 	case MOVE:
 		walkingPlayerAnim.Update();
 		idlePlayerAnim.Reset();
 		meleePlayerAnim.Reset();
+		skillPlayerAnim.Reset();
 		break;
 	case ATTACK:
 		meleePlayerAnim.Update();
+		idlePlayerAnim.Reset();
+		skillPlayerAnim.Reset();
+		break;
+	case SKILL:
+		skillPlayerAnim.Update();
 		idlePlayerAnim.Reset();
 		break;
 	case DEAD:
@@ -283,6 +353,13 @@ bool Player::PostUpdate()
 		if (state == ATTACK && direction == 1)
 		{
 			app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 52), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
+				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
+		}
+		if (state == SKILL && direction == 1)
+		{
+			app->render->DrawTexture(texture, METERS_TO_PIXELS(skillAttack->body->GetPosition().x - 52), METERS_TO_PIXELS(skillAttack->body->GetPosition().y) - 26,
+				&(skillAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
+			app->render->DrawTexture(texture, METERS_TO_PIXELS(skillAttack->body->GetPosition().x - 52), METERS_TO_PIXELS(skillAttack->body->GetPosition().y) - 26,
 				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 		}
 		else if (state == DEAD)
@@ -361,7 +438,8 @@ void Player::Movement()
 
 		//Ground movement
 				//Jump
-		if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) && currentJumpCd <= 0 && (physBody->body->GetLinearVelocity().y < 0.1 && physBody->body->GetLinearVelocity().y > -0.1))
+		if ((app->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT || app->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT) && 
+			currentJumpCd <= 0 && (physBody->body->GetLinearVelocity().y < 0.1 && physBody->body->GetLinearVelocity().y > -0.1))
 		{
 			physBody->body->SetGravityScale(2);
 			physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(), true);
@@ -492,8 +570,26 @@ void Player::MeleeAttack()
 	}
 }
 
-void Player::RangedAttack()
+void Player::SkillAttack()
 {
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && state != ATTACK && state != SKILL)
+	{
+		//attack collider spawn offset 
+		int dir = 0;
+		if (direction == 1) dir = -25;
+		else dir = 20;
+
+		physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
+
+		skillAttack = app->physics->CreateRectangleSensor(METERS_TO_PIXELS(physBody->body->GetPosition().x) + dir,
+					  METERS_TO_PIXELS(physBody->body->GetPosition().y), 18, 20, b2_staticBody);
+		skillAttack->color = { 120, 50, 100, 155 };
+		skillAttack->listener = app->levelManagement->currentScene;
+		skillAttack->type = Collider_Type::PLAYER_ATTACK;
+		app->physics->allPhysicBodies.add(skillAttack);
+
+		state = SKILL;
+	}
 }
 
 void Player::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
