@@ -117,6 +117,9 @@
     <ClCompile Include="Source\GuiPanel.cpp">
       <Filter>GUI</Filter>
     </ClCompile>
+    <ClCompile Include="Source\BigMusher.cpp">
+      <Filter>Entities\Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\App.h" />
@@ -270,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="Source\Intro.h">
       <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\BigMusher.h">
+      <Filter>Entities\Enemy</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
