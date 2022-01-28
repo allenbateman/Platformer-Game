@@ -13,7 +13,6 @@ enum PlayerState
 	JUMP,
 	DOUBLE_JUMP,
 	ATTACK,
-	SKILL,
 	DEAD
 };
 
@@ -57,6 +56,8 @@ public:
 	float onAirXSpeed = 5;
 	float jumpCooldown = 50;
 	float currentJumpCd = 0;
+	bool isSkillObtained = false;
+	bool isSkillActive = false;
 	bool doubleJump = false;
 	bool onGround = false;
 	bool onAir = false;
@@ -64,6 +65,7 @@ public:
 	bool wallRight = false;
 	PlayerState state;
 	SDL_RendererFlip direction;
+	SDL_RendererFlip lastDirection;
 	fPoint lastPosition;
 	fPoint position;
 	fPoint speed = { 8,8 };

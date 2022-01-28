@@ -91,31 +91,12 @@ bool Player::Start()
 		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
 		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
 		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 365, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 386, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 407, 0, 21, 18 });
-		skillPlayerAnim.PushBack({ 428, 0, 21, 18 });
-		skillPlayerAnim.loop = false;
+		skillPlayerAnim.loop = true;
 		skillPlayerAnim.mustFlip = true;
 		skillPlayerAnim.speed = 0.5f;
 
 		currentAnim = &idlePlayerAnim;
+		skillAnim = &skillPlayerAnim;
 		state = PlayerState::IDLE;
 
 		position = { 20, 300 };
@@ -191,7 +172,7 @@ bool Player::PreUpdate()
 	{
 		MeleeAttack();
 		SkillAttack();
-		if (state != ATTACK && state != SKILL)
+		if (state != ATTACK)
 			GodMovement();
 
 	}
@@ -199,40 +180,8 @@ bool Player::PreUpdate()
 	{
 		MeleeAttack();
 		SkillAttack();
-		if (state != ATTACK && state != SKILL)
+		if (state != ATTACK)
 			Movement();
-	}
-	if (skillAttack != nullptr)
-	{
-		skillCounter++;
-		if (direction == 1)
-		{
-			if (skillCounter < 120)
-			{
-				skillAttack->body->SetLinearVelocity({ 5, 0 });
-			}
-			else if (skillCounter > 120 && skillCounter < 240)
-			{
-				skillAttack->body->SetLinearVelocity({ -5, 0 });
-			}
-			else skillAttack = nullptr;
-		}
-		else
-		{
-			if (skillCounter < 60)
-			{
-				skillAttack->body->SetLinearVelocity({ -5, 0 });
-			}
-			else if (skillCounter > 60 && skillCounter < 120)
-			{
-				skillAttack->body->SetLinearVelocity({ 5, 0 });
-			}
-			else
-			{
-				skillAttack = nullptr; 
-				state = PlayerState::IDLE;
-			}
-		}
 	}
 
 	return true;
@@ -261,14 +210,10 @@ bool Player::Update(float dt)
 	case ATTACK:
 		currentAnim = &meleePlayerAnim;
 		break;
-	case SKILL:
-		skillAnim = &skillPlayerAnim;
-		break;
 	case DEAD:
 		currentAnim = &deathPlayerAnim;
 		break;
 	}
-
 
 
 	switch (state)
@@ -277,28 +222,20 @@ bool Player::Update(float dt)
 		idlePlayerAnim.Update();
 		walkingPlayerAnim.Reset();
 		meleePlayerAnim.Reset();
-		skillPlayerAnim.Reset();
 		break;
 	case JUMP:
 		jumpingPlayerAnim.Update();
 		idlePlayerAnim.Reset();
 		walkingPlayerAnim.Reset();
 		meleePlayerAnim.Reset();
-		skillPlayerAnim.Reset();
 		break;
 	case MOVE:
 		walkingPlayerAnim.Update();
 		idlePlayerAnim.Reset();
 		meleePlayerAnim.Reset();
-		skillPlayerAnim.Reset();
 		break;
 	case ATTACK:
 		meleePlayerAnim.Update();
-		idlePlayerAnim.Reset();
-		skillPlayerAnim.Reset();
-		break;
-	case SKILL:
-		skillPlayerAnim.Update();
 		idlePlayerAnim.Reset();
 		break;
 	case DEAD:
@@ -308,6 +245,11 @@ bool Player::Update(float dt)
 			app->levelManagement->gameState = LevelManagement::GameState::GAME_OVER;
 		}
 		break;
+	}
+	if (isSkillActive)
+	{
+		skillPlayerAnim.Update();
+		idlePlayerAnim.Reset();
 	}
 	currentAnim->Update();
 
@@ -355,11 +297,16 @@ bool Player::PostUpdate()
 			app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 52), METERS_TO_PIXELS(physBody->body->GetPosition().y) - 26,
 				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 		}
-		if (state == SKILL && direction == 1)
+		else if (isSkillActive)
 		{
-			app->render->DrawTexture(texture, METERS_TO_PIXELS(skillAttack->body->GetPosition().x - 52), METERS_TO_PIXELS(skillAttack->body->GetPosition().y) - 26,
+			if (direction == 1)
+			{
+				app->render->DrawTexture(texture, METERS_TO_PIXELS(skillAttack->body->GetPosition().x - 15), METERS_TO_PIXELS(skillAttack->body->GetPosition().y -16),
+					&(skillAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
+			}
+			else app->render->DrawTexture(texture, METERS_TO_PIXELS(skillAttack->body->GetPosition().x - 15), METERS_TO_PIXELS(skillAttack->body->GetPosition().y - 16),
 				&(skillAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
-			app->render->DrawTexture(texture, METERS_TO_PIXELS(skillAttack->body->GetPosition().x - 52), METERS_TO_PIXELS(skillAttack->body->GetPosition().y) - 26,
+			app->render->DrawTexture(texture, METERS_TO_PIXELS(physBody->body->GetPosition().x - 16), METERS_TO_PIXELS(physBody->body->GetPosition().y - 26),
 				&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 		}
 		else if (state == DEAD)
@@ -376,7 +323,6 @@ bool Player::PostUpdate()
 			&(currentAnim->GetCurrentFrame()), 1, 1, 1, 1, 1.8f, direction);
 	}
 
-
 	if (state == ATTACK && frameCounter < 20)
 	{
 		frameCounter++;
@@ -386,6 +332,49 @@ bool Player::PostUpdate()
 		state = PlayerState::IDLE;
 		frameCounter = 0;
 		meleeAttack->pendingToDelete = true;
+	}
+
+	if (isSkillActive)
+	{
+		if (lastDirection == 0)
+		{
+			if (skillCounter < 30)
+			{
+				skillAttack->body->SetLinearVelocity({ 20, 0 });
+				skillCounter++;
+			}
+			else if (skillCounter >= 30 && skillCounter < 60)
+			{
+				skillAttack->body->SetLinearVelocity({ -20, 0 });
+				skillCounter++;
+			}
+			else
+			{
+				skillAttack->pendingToDelete = true;
+				isSkillActive = false;
+				skillCounter = 0;
+			}
+		}
+		else
+		{
+			if (skillCounter < 30)
+			{
+				skillAttack->body->SetLinearVelocity({ -20, 0 });
+				skillCounter++;
+			}
+			else if (skillCounter >= 30 && skillCounter < 60)
+			{
+				skillAttack->body->SetLinearVelocity({ 20, 0 });
+				skillCounter++;
+			}
+			else
+			{
+				skillAttack->pendingToDelete = true;
+				isSkillActive = false;
+				skillCounter = 0;
+				skillPlayerAnim.Reset();
+			}
+		}
 	}
 
 	return true;
@@ -572,23 +561,22 @@ void Player::MeleeAttack()
 
 void Player::SkillAttack()
 {
-	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && state != ATTACK && state != SKILL)
+	if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN && state != ATTACK && isSkillActive == false)
 	{
 		//attack collider spawn offset 
 		int dir = 0;
 		if (direction == 1) dir = -25;
 		else dir = 20;
-
-		physBody->body->SetLinearVelocity({ 0 , physBody->body->GetLinearVelocity().y });
+		lastDirection = direction;
 
 		skillAttack = app->physics->CreateRectangleSensor(METERS_TO_PIXELS(physBody->body->GetPosition().x) + dir,
-					  METERS_TO_PIXELS(physBody->body->GetPosition().y), 18, 20, b2_staticBody);
+					  METERS_TO_PIXELS(physBody->body->GetPosition().y), 18, 20, b2_kinematicBody);
 		skillAttack->color = { 120, 50, 100, 155 };
 		skillAttack->listener = app->levelManagement->currentScene;
 		skillAttack->type = Collider_Type::PLAYER_ATTACK;
 		app->physics->allPhysicBodies.add(skillAttack);
 
-		state = SKILL;
+		isSkillActive = true;
 	}
 }
 
