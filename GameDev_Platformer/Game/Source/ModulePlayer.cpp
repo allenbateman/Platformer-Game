@@ -541,6 +541,10 @@ void ModulePlayer::MeleeAttack()
 	}
 }
 
+void ModulePlayer::RangedAttack()
+{
+}
+
 void ModulePlayer::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 {
 	wallLeft = false;
