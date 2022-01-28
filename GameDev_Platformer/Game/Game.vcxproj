@@ -99,7 +99,9 @@
     <ClCompile Include="Source\Gem.cpp" />
     <ClCompile Include="Source\GuiButton.cpp" />
     <ClCompile Include="Source\GuiManager.cpp" />
+    <ClCompile Include="Source\GuiPanel.cpp" />
     <ClCompile Include="Source\GuiSlider.cpp" />
+    <ClCompile Include="Source\GuiToggle.cpp" />
     <ClCompile Include="Source\HPotion.cpp" />
     <ClCompile Include="Source\Intro.cpp" />
     <ClCompile Include="Source\Key.cpp" />
@@ -138,7 +140,9 @@
     <ClInclude Include="Source\GuiButton.h" />
     <ClInclude Include="Source\GuiControl.h" />
     <ClInclude Include="Source\GuiManager.h" />
+    <ClInclude Include="Source\GuiPanel.h" />
     <ClInclude Include="Source\GuiSlider.h" />
+    <ClInclude Include="Source\GuiToggle.h" />
     <ClInclude Include="Source\HPotion.h" />
     <ClInclude Include="Source\Intro.h" />
     <ClInclude Include="Source\Key.h" />

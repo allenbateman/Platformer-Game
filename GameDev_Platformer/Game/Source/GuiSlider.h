@@ -15,9 +15,12 @@ public:
 
 	bool Update(float dt);
 	bool Draw(Render* render);
+	int GetValue(float pos);
 
 	int mouseX, mouseY;
 	unsigned int click;
+
+	int value;
 
 	bool canClick = true;
 	bool drawBasic = false;

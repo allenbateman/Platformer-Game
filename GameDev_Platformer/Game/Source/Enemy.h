@@ -11,7 +11,6 @@ public:
 	virtual void Move(float dt);
 	virtual void UpdatePath();
 
-
 	int hitPoints;
 	int score;
 	float detectionDistance = 10; // in pixels

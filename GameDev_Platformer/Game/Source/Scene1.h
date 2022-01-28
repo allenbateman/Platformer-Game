@@ -6,6 +6,7 @@
 #include "Globals.h"
 #include "ModulePhysics.h"
 #include "Animation.h"
+#include "GuiPanel.h"
 
 struct SDL_Texture;
 
@@ -47,7 +48,6 @@ public:
 private:
 	SDL_Texture* img;
 	p2List_item<PhysBody*>* collider;
-
 
 	Animation* currentLivesAnim = nullptr;
 	Animation*	lives2Anim, lives3Anim;
