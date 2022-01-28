@@ -1,13 +1,18 @@
 #include "App.h"
 #include "Input.h"
 #include "Textures.h"
+#include "Animation.h"
 #include "Audio.h"
 #include "Render.h"
 #include "Window.h"
 #include "Scene2.h"
 #include "Map.h"
 #include "ModulePhysics.h"
-#include "player.h"
+#include "LevelManagement.h"
+#include "ModuleEntities.h"
+#include "Player.h"
+#include "Musher.h"
+#include "Bat.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -24,7 +29,7 @@ Scene2::~Scene2()
 // Called before render is available
 bool Scene2::Awake()
 {
-	LOG("Loading Scene");
+	LOG("Loading Scene 2");
 	bool ret = true;
 
 	return ret;
@@ -33,27 +38,43 @@ bool Scene2::Awake()
 // Called before the first frame
 bool Scene2::Start()
 {
+	app->physics->Start();
+	app->map->Load("level2.tmx");
+	//	app->audio->PlayMusic("Assets/audio/music/level1.wav");
 
-	img = app->tex->Load("Assets/Spritesx16/ToBeContinued.png");
-	//loadMap
+	app->levelManagement->KeysToTake = 3;
+
+	//Spawn all entities
+	app->entities->Start();
+
 	return true;
 }
 
 // Called each loop iteration
 bool Scene2::PreUpdate()
 {
+	if (app->entities->playerInstance->isGodmodeOn) app->entities->playerInstance->lives = 3;
+
 	return true;
 }
 
 // Called each loop iteration
 bool Scene2::Update(float dt)
 {
-	rect.x = 0;
-	rect.y = 0;
-	rect.w = 1280;
-	rect.h = 480;
-	if (img != nullptr && active)
-		app->render->DrawTexture(img, 0, 0, &rect, 1.0f, 0.0f, 1, 1, 1, SDL_FLIP_NONE);
+	// L02: DONE 3: Request Load / Save when pressing L/S
+	if (app->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN)
+		app->LoadGameRequest();
+
+	if (app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN || app->input->GetKey(SDL_SCANCODE_F5))
+		app->SaveGameRequest();
+
+	SString title("Map:%dx%d Tiles:%dx%d Tilesets:%d",
+		app->map->mapData.width, app->map->mapData.height,
+		app->map->mapData.tileWidth, app->map->mapData.tileHeight,
+		app->map->mapData.tilesets.count());
+
+
+
 	return true;
 }
 
@@ -62,42 +83,70 @@ bool Scene2::PostUpdate()
 {
 	bool ret = true;
 
+	// Draw functions
+	app->map->Draw();
+	app->physics->DrawColliders();
+
+	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		ret = false;
+	//switch (app->player->lives)
+	//{
+	//case 1:
+	//	currentLivesAnim = &lives1Anim;
+	//	break;
+	//case 2:
+	//	currentLivesAnim = &lives2Anim;
+	//	break;
+	//case 3:
+	//	currentLivesAnim = &lives3Anim;
+	//	break;
+	//}
+
+	//	if (app->player->lives >= 1) app->render->DrawTexture(props, 20, 20, &(currentLivesAnim->GetCurrentFrame()));
+
+
 	return ret;
 }
 
 // Called before quitting
 bool Scene2::CleanUp()
 {
-	LOG("Freeing scene 2");
-
+	LOG("Disable scene 2");
+	app->map->CleanUp();
+	app->entities->CleanUp();
+	app->physics->CleanUp();
+	app->audio->PlayMusic("");
 	return true;
 }
 
-bool Scene2::LoadState(pugi::xml_node&)
+void Scene2::Enable()
+{
+	LOG("Enable scene 1");
+	Start();
+}
+
+void Scene2::Disable()
+{
+	LOG("Disable scene 1");
+	app->map->CleanUp();
+	app->physics->Disable();
+	app->entities->Disable();
+}
+
+bool Scene2::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
+	pugi::xml_node level = data.child("level1");
+	KeysToTake = level.attribute("keys_to_collect").as_int();
 	return ret;
 }
 
-bool Scene2::SaveState(pugi::xml_node&) const
+bool Scene2::SaveState(pugi::xml_node& data) const
 {
 	bool ret = true;
+	pugi::xml_node level = data.append_child("level1");
+
+	level.append_attribute("keys_to_collect") = KeysToTake;
+
 	return ret;
-}
-void Scene2::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
-{
-	b2Vec2 position;
-
-	LOG("I got touched!");
-
-
-	if (bodyA->type == Collider_Type::GEM || bodyB->type == Collider_Type::GEM)
-	{
-		LOG("GOT A GEM!");
-	}
-
-	if (bodyA->type == Collider_Type::DEATH || bodyB->type == Collider_Type::DEATH)
-	{
-		LOG("I DIED!");
-	}
 }

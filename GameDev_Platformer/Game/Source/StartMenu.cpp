@@ -59,7 +59,6 @@ bool StartMenu::Start()
 	if (!app->IsASavedGame())
 		loadButton->state = GuiControlState::DISABLED;
 
-
 	exitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 4, "Exit", 0, { (app->win->GetWidth() / 2) - 85 , (app->win->GetHeight() / 2) + 150, 170, 60 }, this);
 	exitButton->texture = app->tex->Load("Assets/Spritesx16/GUI.png");
 	exitButton->normalRec = { 172,62,170,60 };
