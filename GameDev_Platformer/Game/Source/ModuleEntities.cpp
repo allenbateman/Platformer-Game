@@ -133,7 +133,7 @@ void ModuleEntities::AddEntity(Collider_Type type, iPoint spawnPos)
                 checkPoint.add(p);
             }
                 break;
-            case WIN:
+            case PORTAL:
                 entities[i] = portalInstance = new Portal(type, spawnPos);
                 break;
             default :
@@ -181,6 +181,7 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
             RemoveEntity(bodyB);
             break;
         case Collider_Type::POTION:
+            playerInstance->lives++;
             RemoveEntity(bodyB);
             break;
         case Collider_Type::DEATH:
@@ -188,7 +189,7 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
             if (!playerInstance->isGodmodeOn)
                 playerInstance->state = PlayerState::DEAD;
             break;
-        case Collider_Type::ENEMY:
+        case Collider_Type::MUSHER:
             if (!playerInstance->isGodmodeOn)
             {
                 playerInstance->lives--;
@@ -200,7 +201,19 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
                 }
             }
             break;
-        case Collider_Type::WIN:
+        case Collider_Type::BAT:
+            if (!playerInstance->isGodmodeOn)
+            {
+                playerInstance->lives--;
+                LOG("OUCH GOT HIT!");
+                if (playerInstance->lives <= 0)
+                {
+                    playerInstance->state = PlayerState::DEAD;
+                    LOG("KILL ME!");
+                }
+            }
+            break;
+        case Collider_Type::PORTAL:
             if (app->levelManagement->KeysToTake == 0 && portalInstance->portalState == Portal::PortalState::P_OPEN)
             {
                 app->levelManagement->NextLevel();
@@ -231,7 +244,7 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 
     }else 
-    if (bodyA->type == Collider_Type::ENEMY && bodyB->type == Collider_Type::PLAYER_ATTACK)
+    if ((bodyA->type == Collider_Type::MUSHER || bodyA->type == Collider_Type::BAT) && bodyB->type == Collider_Type::PLAYER_ATTACK)
     {
         RemoveEntity(bodyA);
         bodyA->pendingToDelete = true;
@@ -253,10 +266,10 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     }
     else if (bodyA->type == PLAYER_Y_SENSOR && bodyB->type == GROUND)
     {
-        if (bodyA->body == playerInstance->topSensor->body)
+        if (playerInstance->topSensor->body != NULL && bodyA->body == playerInstance->topSensor->body)
         {
         }
-        else if (bodyA->body == playerInstance->botSensor->body)
+        else if (playerInstance->topSensor->body != NULL && bodyA->body == playerInstance->botSensor->body)
         {
             playerInstance->onGround = true;
             playerInstance->doubleJump = false;
@@ -287,22 +300,14 @@ bool ModuleEntities::LoadState(pugi::xml_node& data)
 
     while (currentEntitie != NULL )
     {
-        Collider_Type type = static_cast<Collider_Type>(currentEntitie.attribute("type").as_int());
+       Collider_Type type = static_cast<Collider_Type>(currentEntitie.attribute("type").as_int());
        float x = currentEntitie.attribute("x").as_int();
        float y = currentEntitie.attribute("y").as_int();
+       pos = app->map->MapToWorld(x, y);
+       pos.x += 8;
+       pos.y += 8;
+       AddEntity(type, pos);
 
-
-       for (uint i = 0; i < MAX_ENTITIES; ++i)
-       {
-           if (entities[i] == nullptr)
-           {
-               pos = app->map->MapToWorld(x, y);
-               pos.x += 8;
-               pos.y += 8;
-               AddEntity(type, pos);
-               break;
-           }
-       }
        currentEntitie = currentEntitie.next_sibling();
     }
 
@@ -311,6 +316,7 @@ bool ModuleEntities::LoadState(pugi::xml_node& data)
         if (entities[i] != nullptr)
         {
             entities[i]->Start();
+           // entities[i]->LoadState();
         }
     }
     return true;

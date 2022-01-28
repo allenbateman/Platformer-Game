@@ -4,6 +4,8 @@
 #include "ModuleFonts.h"
 
 #include "GuiButton.h"
+#include "GuiSlider.h"
+#include "GuiToggle.h"
 #include "Audio.h"
 
 GuiManager::GuiManager(bool isActive) :Module(isActive)
@@ -31,6 +33,12 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 	{
 	case GuiControlType::BUTTON:
 		control = new GuiButton(id, bounds, text, fontid);
+		break;
+	case GuiControlType::SLIDER:
+		control = new GuiSlider(id, bounds, sliderBounds);
+		break;
+	case GuiControlType::TOGGLE:
+		control = new GuiToggle(id, bounds);
 		break;
 	
 	// More Gui Controls can go here

@@ -3,6 +3,7 @@
 
 CheckPoint::CheckPoint(iPoint pos) : Entity(pos)
 {
+	name = "checkpoint";
 }
 
 CheckPoint::CheckPoint(Collider_Type type, iPoint pos) : Entity(pos)
@@ -34,6 +35,10 @@ bool CheckPoint::LoadState(pugi::xml_node& data)
 
 bool CheckPoint::SaveState(pugi::xml_node& data) const
 {
+	pugi::xml_node entity = data.append_child("CheckPoint");
+	entity.append_attribute("type") = physBody->type;;
+	entity.append_attribute("x") = position.x;
+	entity.append_attribute("y") = position.y;
 	return true;
 }
 
@@ -61,14 +66,14 @@ bool CheckPoint::Start()
 	currentAnim = &idleShrineAnim;
 	frameCounter = 0;
 
-	physBody = app->physics->CreateRectangleSensor(position.x, position.y+32, 16, 48, b2_staticBody);
+	physBody = app->physics->CreateRectangleSensor(position.x, position.y, 16, 48, b2_staticBody);
 	physBody->listener = app->entities;
 	physBody->color = { 25,150,25,255 };
 	physBody->type = Collider_Type::CHECK_POINT;
 	app->physics->allPhysicBodies.add(physBody);
 
-//	position.x = physBody->body->GetPosition().x;
-//	position.y = physBody->body->GetPosition().y;
+	position.x = physBody->body->GetPosition().x;
+	position.y = physBody->body->GetPosition().y;
 
 	return true;
 }
@@ -102,13 +107,14 @@ bool CheckPoint::Update(float dt)
 
 bool CheckPoint::PostUpdate()
 {
-	app->render->DrawTexture(texture, position.x-16,position.y, &(currentAnim->GetCurrentFrame()));
+	//app->render->DrawTexture(texture, METERS_TO_PIXELS(position.x)-16, METERS_TO_PIXELS(position.y), &(currentAnim->GetCurrentFrame()));
+	app->render->DrawTexture(texture, METERS_TO_PIXELS(position.x) - (16 * 0.5), METERS_TO_PIXELS(position.y) - (48 * 0.5), &(currentAnim->GetCurrentFrame()));
 	return true;
 }
 
 bool CheckPoint::Cleanup()
 {
-	texture = nullptr;
-	currentAnim = nullptr;
+	//texture = nullptr;
+	//currentAnim = nullptr;
 	return true;
 }

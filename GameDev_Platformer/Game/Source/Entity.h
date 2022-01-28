@@ -73,6 +73,8 @@ public:
 	// The current position in the world
 	iPoint spawnPos;
 	fPoint position;
+	fPoint centerPosition;//for rigidBody
+	fPoint texPosition; //for texture position
 	iPoint drawOffset = { 0, 0 };
 	Collider_Type type;
 	// The Entity's texture
@@ -85,11 +87,13 @@ public:
 	bool DEBUG;
 
 	//If Enemy
-
-
 	State state;
 	Direction direction;
 	PhysBody* physBody = nullptr;
+
+	//Entity Name
+
+	SString name;
 protected:
 	// A ptr to the current animation
 	Animation* currentAnim = nullptr;

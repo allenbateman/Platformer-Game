@@ -31,7 +31,7 @@ enum Collider_Type {
 	CHECK_POINT, 
 	SPAWNER,
 	DEATH,
-	WIN,
+	PORTAL,
 	PLAYER,
 	PLAYER_ATTACK,
 	GROUND,

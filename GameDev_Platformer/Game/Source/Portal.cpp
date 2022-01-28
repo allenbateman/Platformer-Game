@@ -3,6 +3,7 @@
 
 Portal::Portal(iPoint pos) : Entity(pos)
 {
+	name = "portal";
 }
 
 Portal::Portal(Collider_Type type, iPoint pos) : Entity(pos)
@@ -34,6 +35,10 @@ bool Portal::LoadState(pugi::xml_node& data)
 
 bool Portal::SaveState(pugi::xml_node& data) const
 {
+	pugi::xml_node entity = data.append_child("Portal");
+	entity.append_attribute("type") = physBody->type;
+	entity.append_attribute("x") = position.x;
+	entity.append_attribute("y") = position.y;
 	return false;
 }
 
@@ -68,12 +73,13 @@ bool Portal::Start()
 	portalState = P_IDLE;
 	currentAnim = &idlePortalAnim;
 
-	physBody = app->physics->CreateRectangleSensor(position.x, position.y+48, 32, 64, b2_staticBody);
+	physBody = app->physics->CreateRectangleSensor(position.x, position.y, 32, 64, b2_staticBody);
 	physBody->listener = app->entities;
 	physBody->color = { 25,150,25,255 };
-	physBody->type = Collider_Type::WIN;
+	physBody->type = Collider_Type::PORTAL;
 	app->physics->allPhysicBodies.add(physBody);
-
+	position.x = physBody->body->GetPosition().x;
+	position.y = physBody->body->GetPosition().y;
 
 	return true;
 }
@@ -108,7 +114,7 @@ bool Portal::Update(float dt)
 
 bool Portal::PostUpdate()
 {
-	app->render->DrawTexture(texture, position.x-16, position.y+16, &(currentAnim->GetCurrentFrame()));
+	app->render->DrawTexture(texture, METERS_TO_PIXELS(position.x)-(32 * 0.5), METERS_TO_PIXELS(position.y)- (64 * 0.5), &(currentAnim->GetCurrentFrame()));
 	return true;
 }
 

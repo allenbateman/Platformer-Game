@@ -62,7 +62,9 @@ bool Musher::Start()
 		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
 		physBody->listener = app->entities;
 		physBody->color = { 255,125,0,255 };
-		physBody->type = Collider_Type::ENEMY;
+		physBody->type = Collider_Type::MUSHER;
+
+		type = physBody->type;
 
 		physBody->body->SetFixedRotation(true);
 		app->physics->allPhysicBodies.add(physBody);
@@ -78,30 +80,12 @@ bool Musher::Start()
 		state = PATROL;
 	
 	}
-	else if (physBody->body == NULL)
-	{
-		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
-		physBody->listener = app->entities;
-		physBody->color = { 255,125,0,255 };
-		physBody->type = Collider_Type::ENEMY;
-
-		physBody->body->SetFixedRotation(true);
-		app->physics->allPhysicBodies.add(physBody);
-	}
 	
 	return true;
 }
 
 bool Musher::PreUpdate()
 {
-	if (LoadRequest && physBody->body != NULL)
-	{
-		iPoint p;
-		p.x = position.x;
-		p.y = position.y;
-		SetPosition(p);
-		LoadRequest = false;
-	}
 
 	position.x = physBody->body->GetPosition().x;
 	position.y = physBody->body->GetPosition().y;
@@ -195,10 +179,10 @@ bool Musher::PostUpdate()
 bool Musher::CleanUp()
 {
 	//delete physBody;
-	delete physBody;
-	physBody = nullptr;
-	delete currentAnim;
-	currentAnim = nullptr;
+	//delete physBody;
+	//physBody = nullptr;
+	//delete currentAnim;
+	//currentAnim = nullptr;
 	return true;
 }
 
@@ -225,8 +209,9 @@ bool Musher::SaveState(pugi::xml_node& data) const
 {
 	bool ret = true;
 	pugi::xml_node musher = data.append_child("musher");
-	musher.append_attribute("x") = physBody->body->GetPosition().x;
-	musher.append_attribute("y") = physBody->body->GetPosition().y;
+	musher.append_attribute("type") = physBody->type;
+	musher.append_attribute("x") = position.x;
+	musher.append_attribute("y") = position.y;
 	musher.append_attribute("state") = state;
 	return ret;
 }

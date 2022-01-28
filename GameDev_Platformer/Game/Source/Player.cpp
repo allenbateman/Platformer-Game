@@ -13,6 +13,7 @@
 
 Player::Player(iPoint pos) : Entity(pos)
 {
+	name = "player";
 }
 
 Player::Player(Collider_Type type, iPoint pos) : Entity(type, pos)
@@ -95,6 +96,8 @@ bool Player::Start()
 		physBody->type = Collider_Type::PLAYER;
 		physBody->body->SetFixedRotation(true);
 		app->physics->allPhysicBodies.add(physBody);
+
+		type = physBody->type;
 
 		currentJumpCd = jumpCooldown;
 
@@ -314,23 +317,22 @@ bool Player::PostUpdate()
 // Unload assets
 bool Player::CleanUp()
 {
-	if (physBody != nullptr)
-	{
-		leftSensor->pendingToDelete = true;
-		rightSensor->pendingToDelete = true;
-		topSensor->pendingToDelete = true;
-		botSensor->pendingToDelete = true;
 
-		leftSensor = nullptr;
-		rightSensor = nullptr;
-		topSensor = nullptr;
-		botSensor = nullptr;
+	leftSensor->pendingToDelete = true;
+	rightSensor->pendingToDelete = true;
+	topSensor->pendingToDelete = true;
+	botSensor->pendingToDelete = true;
+	
+	leftSensor = nullptr;
+	rightSensor = nullptr;
+	topSensor = nullptr;
+	botSensor = nullptr;
 
-		state = PlayerState::IDLE;
-		physBody->pendingToDelete = true;
-		physBody = nullptr;
-		currentAnim = nullptr;
-	}
+	state = PlayerState::IDLE;
+	physBody->pendingToDelete = true;
+	physBody = nullptr;
+	currentAnim = nullptr;
+	
 	return true;
 }
 
@@ -515,7 +517,8 @@ bool Player::LoadState(pugi::xml_node& data)
 bool Player::SaveState(pugi::xml_node& data) const
 {
 	bool ret = true;
-	pugi::xml_node player = data.append_child("player");
+	pugi::xml_node player = data.append_child("Player");
+	player.append_attribute("type") = type;
 	player.append_attribute("x") = physBody->body->GetPosition().x;
 	player.append_attribute("y") = physBody->body->GetPosition().y;
 	player.append_attribute("lives") = lives;
