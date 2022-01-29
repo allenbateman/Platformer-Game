@@ -7,6 +7,12 @@
 #include "ModulePhysics.h"
 #include "Animation.h"
 
+#include "GuiButton.h"
+#include "GuiSlider.h"
+#include "GuiPanel.h"
+#include "GuiToggle.h"
+
+
 struct SDL_Texture;
 
 class GameOver : public Module
@@ -36,9 +42,14 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 private:
 	SDL_Texture* img;
 	SDL_Rect rect;
+
+	GuiPanel* menuPanel;
+	GuiButton* backToTitleButton;
 };
 
 #endif // __GAMEOVER_H__

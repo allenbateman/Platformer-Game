@@ -34,7 +34,8 @@ public:
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&) const;
 
-	bool SetVSYNC(bool vsync);
+	void SetVSYNC(bool vsync);
+	bool GetVSYNC();
 
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
@@ -54,6 +55,8 @@ public:
 	SDL_Rect camera;
 	SDL_Rect viewport;
 	SDL_Color background;
+private:
+	bool isVSYNC;
 };
 
 #endif // __RENDER_H__

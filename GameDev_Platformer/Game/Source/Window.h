@@ -36,7 +36,8 @@ public:
 	// Retrieve window height
 	int GetHeight() const;
 
-	bool SetFullScreen(bool fullScreen);
+	void SetFullScreen(bool fullScreen);
+	bool GetFullScreen();
 
 public:
 	// The window we'll be rendering to
@@ -50,6 +51,8 @@ private:
 	uint width;
 	uint height;
 	uint scale;
+
+	bool fullScreen;
 };
 
 #endif // __PORTALDOW_H__

@@ -6,7 +6,11 @@
 #include "Globals.h"
 #include "ModulePhysics.h"
 #include "Animation.h"
+
+#include "GuiButton.h"
+#include "GuiSlider.h"
 #include "GuiPanel.h"
+#include "GuiToggle.h"
 
 struct SDL_Texture;
 
@@ -44,6 +48,9 @@ public:
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&) const;
 
+
+	bool OnGuiMouseClickEvent(GuiControl* control);
+
 	int KeysToTake = 2;
 private:
 	SDL_Texture* img;
@@ -52,6 +59,25 @@ private:
 	Animation* currentLivesAnim = nullptr;
 	Animation*	lives2Anim, lives3Anim;
 	uint music;
+
+
+
+	//ui
+	GuiPanel* settingsPanel;
+	GuiSlider* volumeSlider;
+	GuiSlider* fxSlider;
+	GuiToggle* vsyncCheckbox;
+	GuiToggle* fullScreenCheckbox;
+	GuiButton* closePanelBttn;
+
+
+
+	GuiPanel* pausePanel;
+	GuiButton* resumeButton;
+	GuiButton* settingsButton;
+	GuiButton* backToTitleButton;
+	GuiButton* exitButton;
+	GuiButton* closePanelBttn2;
 };
 
 #endif // __SCENE1_H__

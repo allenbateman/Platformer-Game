@@ -41,43 +41,50 @@ bool StartMenu::Start()
 	r.h = 40;
 
 	r.x = (app->win->GetWidth() / 2);
-	r.y = (app->win->GetHeight() / 2);
-	// L14: TODO 2: Declare a GUI Button and create it using the GuiManager
-	startButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 1, "abcd",0, { (app->win->GetWidth() / 2)-85 , (app->win->GetHeight() / 2) - 75, 170, 60 }, this);
+	r.y = (app->win->GetHeight() / 2); 
+	
+	menuPanel = new GuiPanel(true);
+	menuPanel->bounds = { 0,0,0,0};
+	menuPanel->position = { 0,0 };
+	startButton = (GuiButton*)menuPanel->CreateGuiControl(GuiControlType::BUTTON, 1, "Start",0, { (app->win->GetWidth() / 2)-85 , (app->win->GetHeight() / 2) - 75, 170, 60 }, this);
 	startButton->texture = app->tex->Load("Assets/Spritesx16/GUI.png"); //load background button texture
-	startButton->normalRec = { 172,1,170,60 }; // set background rect
+	startButton->normalRec = { 0,0,170,60 }; // set background rect
+	startButton->focusedRec = { 0,59,170,60 };
 
-	settingsButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 2, "Settings",0, { (app->win->GetWidth() / 2) - 85 , (app->win->GetHeight() / 2), 170, 60 }, this);
+	settingsButton = (GuiButton*)menuPanel->CreateGuiControl(GuiControlType::BUTTON, 2, "Settings",0, { (app->win->GetWidth() / 2) - 85 , (app->win->GetHeight() / 2), 170, 60 }, this);
 	settingsButton->texture = app->tex->Load("Assets/Spritesx16/GUI.png");
-	settingsButton->normalRec = { 343,1,170,60 };
+	settingsButton->normalRec = { 340,0,170,60 };
+	settingsButton->focusedRec = { 340,60,170,60 };
 
-	loadButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 3, "Load",0, { (app->win->GetWidth() / 2)-85 , (app->win->GetHeight() / 2) + 75, 170, 60 }, this);
+	loadButton = (GuiButton*)menuPanel->CreateGuiControl(GuiControlType::BUTTON, 3, "Load",0, { (app->win->GetWidth() / 2)-85 , (app->win->GetHeight() / 2) + 75, 170, 60 }, this);
 	loadButton->texture = app->tex->Load("Assets/Spritesx16/GUI.png");
-	loadButton->normalRec = { 514,1,170,60 };
-	loadButton->disabledRec = { 514,62,170,60 };
+	loadButton->normalRec = { 0,120,170,60 };
+	loadButton->focusedRec = { 0,180,170,60 };
 
 	if (!app->IsASavedGame())
 		loadButton->state = GuiControlState::DISABLED;
 
-	exitButton = (GuiButton*)app->guiManager->CreateGuiControl(GuiControlType::BUTTON, 4, "Exit", 0, { (app->win->GetWidth() / 2) - 85 , (app->win->GetHeight() / 2) + 150, 170, 60 }, this);
+	exitButton = (GuiButton*)menuPanel->CreateGuiControl(GuiControlType::BUTTON, 4, "Exit", 0, { (app->win->GetWidth() / 2) - 85 , (app->win->GetHeight() / 2) + 150, 170, 60 }, this);
 	exitButton->texture = app->tex->Load("Assets/Spritesx16/GUI.png");
-	exitButton->normalRec = { 172,62,170,60 };
-	exitButton->disabledRec = { 172,62,170,60 };
+	exitButton->normalRec = { 170,0,170,60 };
+	exitButton->focusedRec = { 170,60,170,60 };
 
 
 	settingsPanel = new GuiPanel(false);
 	settingsPanel->bounds = {510,0,266 ,382};
 	settingsPanel->position = { (app->win->GetWidth() *40 /100) ,(app->win->GetWidth() *5 / 100) };
+
 	volumeSlider = (GuiSlider*) settingsPanel->CreateGuiControl(GuiControlType::SLIDER, 5, "Volume", 0, { (settingsPanel->position.x +147), (settingsPanel->position.y +99), 83, 8 }, this, { (settingsPanel->position.x + 147), (settingsPanel->position.y +99), 6, 10 });
 	fxSlider = (GuiSlider*)settingsPanel->CreateGuiControl(GuiControlType::SLIDER, 6, "Fx", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 167), 83, 8 }, this, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 167), 6, 10 });
 	
-	vsyncCheckbox = (GuiToggle*)settingsPanel->CreateGuiControl(GuiControlType::CHECKBOX, 7, "vsync", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 231), 22, 22 }, this);
+	vsyncCheckbox = (GuiToggle*)settingsPanel->CreateGuiControl(GuiControlType::CHECKBOX, 10, "vsync", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 231), 22, 22 }, this);
+	vsyncCheckbox->State = app->render->GetVSYNC();
+
+	fullScreenCheckbox = (GuiToggle*)settingsPanel->CreateGuiControl(GuiControlType::CHECKBOX, 11, "fullScreen", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 295), 22, 22 }, this);
+	fullScreenCheckbox->State = app->win->GetFullScreen();
 	
-	fullScreenCheckbox = (GuiToggle*)settingsPanel->CreateGuiControl(GuiControlType::CHECKBOX, 8, "fullScreen", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 295), 22, 22 }, this);
 
-	fullScreenCheckbox = (GuiToggle*)settingsPanel->CreateGuiControl(GuiControlType::CHECKBOX, 9, "fullScreen", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 295), 22, 22 }, this);
-
-	closePanelBttn = (GuiButton*)settingsPanel->CreateGuiControl(GuiControlType::BUTTON, 10, "fullScreen", 0, { (settingsPanel->position.x + 23), (settingsPanel->position.y + 20), 22, 22 }, this);
+	closePanelBttn = (GuiButton*)settingsPanel->CreateGuiControl(GuiControlType::BUTTON, 7, "close", 0, { (settingsPanel->position.x + 23), (settingsPanel->position.y + 20), 22, 22 }, this);
 	closePanelBttn->normalRec = { 66,240,22,22 };
 	closePanelBttn->selectedRec = { 66,240,22,22 };
 	closePanelBttn->disabledRec = { 66,240,22,22 };
@@ -91,6 +98,7 @@ bool StartMenu::Start()
 bool StartMenu::PreUpdate()
 {
 	settingsPanel->PreUpdate();
+	menuPanel->PreUpdate();
 	return true;
 }
 
@@ -98,6 +106,7 @@ bool StartMenu::PreUpdate()
 bool StartMenu::Update(float dt)
 {
 	settingsPanel->Update(dt);
+	menuPanel->Update(dt);
 	return true;
 }
 
@@ -112,8 +121,8 @@ bool StartMenu::PostUpdate()
 	if (img != nullptr && active)
 		app->render->DrawTexture(img, 0, 0, &rect, 1.0f, 0.0f, 1, 1, 1, SDL_FLIP_NONE);
 	//Draw GUI
-	app->guiManager->Draw();
 	settingsPanel->Draw();
+	menuPanel->Draw();
 
 	return ret;
 }
@@ -141,10 +150,12 @@ bool StartMenu::OnGuiMouseClickEvent(GuiControl* control)
 	else if (control->id == settingsButton->id)
 	{
 		settingsPanel->Active = true;
+		menuPanel->Active = false;
 	}
 	else if (control->id == closePanelBttn->id)
 	{
 		settingsPanel->Active = false;
+		menuPanel->Active = true;
 	}
 	else if (control->id == vsyncCheckbox->id)
 	{

@@ -6,6 +6,7 @@
 #include "Globals.h"
 #include "ModulePhysics.h"
 #include "Animation.h"
+
 #include "GuiButton.h"
 #include "GuiSlider.h"
 #include "GuiPanel.h"
@@ -46,6 +47,7 @@ private:
 	SDL_Texture* img;
 	SDL_Rect rect;
 
+	GuiPanel* menuPanel;
 	GuiButton* startButton;
 	GuiButton* settingsButton;
 	GuiButton* loadButton;

@@ -110,17 +110,21 @@ bool Render::SaveState(pugi::xml_node& data) const
 	return true;
 }
 
-bool Render::SetVSYNC(bool vsync)
+void Render::SetVSYNC(bool vsync)
 {
+	this->isVSYNC = vsync;
 	if (vsync)
 	{
 		SDL_GL_SetSwapInterval(1);
-		return true;
 	}
 	else {
 		SDL_GL_SetSwapInterval(0);
-		return false;
 	}
+}
+
+bool Render::GetVSYNC()
+{
+	return isVSYNC;
 }
 
 void Render::SetBackgroundColor(SDL_Color color)
