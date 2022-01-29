@@ -54,6 +54,7 @@ public:
 	SDL_Texture* UItexture;
 
 	int mainFont;
+	int numberFont;
 
 
 

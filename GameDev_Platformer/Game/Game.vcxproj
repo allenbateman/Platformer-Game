@@ -115,7 +115,6 @@
     <ClCompile Include="Source\ModuleEntities.cpp" />
     <ClCompile Include="Source\ModuleFonts.cpp" />
     <ClCompile Include="Source\ModulePhysics.cpp" />
-    <ClCompile Include="Source\ModulePlayer.cpp" />
     <ClCompile Include="Source\Musher.cpp" />
     <ClCompile Include="Source\Pathfinding.cpp" />
     <ClCompile Include="Source\PerfTimer.cpp" />
@@ -153,7 +152,6 @@
     <ClInclude Include="Source\ModuleEntities.h" />
     <ClInclude Include="Source\ModuleFonts.h" />
     <ClInclude Include="Source\ModulePhysics.h" />
-    <ClInclude Include="Source\ModulePlayer.h" />
     <ClInclude Include="Source\Musher.h" />
     <ClInclude Include="Source\p2List.h" />
     <ClInclude Include="Source\Pathfinding.h" />

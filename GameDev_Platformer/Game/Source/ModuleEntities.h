@@ -48,5 +48,11 @@ public:
 
 	Portal* portalInstance;
 	p2List<CheckPoint*> checkPoint;
+
+	//should not be here
+	int playerLives,coinsCollected = 0;
+
+	int coinFx, hitFx;
+	
 };
 

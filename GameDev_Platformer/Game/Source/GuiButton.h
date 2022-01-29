@@ -35,6 +35,9 @@ public:
 
 	Animation* hoverAnim, pressedAnim;
 	Animation* currentAnim;
+
+	uint focusedfx, selectedfx;
+	bool playfx = true;
 };
 
 #endif // __GUIBUTTON_H__

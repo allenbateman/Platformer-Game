@@ -57,6 +57,7 @@ bool GuiSlider::Update(float dt)
 			{
 				NotifyObserver();
 			}
+
 		}else state = GuiControlState::NORMAL;
 	}
 
@@ -144,4 +145,12 @@ int GuiSlider::GetValue(float pos)
 	value = minValue + (maxValue - minValue) * ((pos - minValueFrom) / (maxValueFrom - minValueFrom));
 
 	return value;
+}
+
+void GuiSlider::SetValue(int _value)
+{
+
+	thumbBounds.x = bounds.x + ((bounds.x +bounds.w) - bounds.x) * ((_value - 0) / (128 - 0));
+
+
 }

@@ -2,6 +2,8 @@
 #include "Point.h"
 #include "Log.h"
 
+#include "App.h"
+#include "Audio.h"
 #include "LevelManagement.h"
 
 #include "Entity.h"
@@ -42,6 +44,9 @@ bool ModuleEntities::Start()
             entities[i]->Start();
         }
     }
+
+    coinFx = app->audio->LoadFx("Assets/audio/fx/PickupCoin.wav");
+    hitFx = app->audio->LoadFx("Assets/audio/fx/Hit.wav");
 
     return true;
 }
@@ -170,10 +175,14 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
        switch (bodyB->type)
         {
         case Collider_Type::GEM:
+
+            coinsCollected++;
+            app->audio->PlayFx(coinFx);
             RemoveEntity(bodyB);
             break;
         case Collider_Type::KEY:
             app->levelManagement->KeysToTake--;
+            playerInstance->keysCollected++;
             if (app->levelManagement->KeysToTake == 0)
             {
                 portalInstance->Transition();
@@ -216,7 +225,7 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
         case Collider_Type::PORTAL:
             if (app->levelManagement->KeysToTake == 0 && portalInstance->portalState == Portal::PortalState::P_OPEN)
             {
-                app->levelManagement->NextLevel();
+                app->levelManagement->gameState = app->levelManagement->GAME_OVER;
                 LOG("I WON, GIVE ME TREAT!");
             }
             break;
@@ -232,10 +241,10 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
                     }
                     p = p->next;
                 }
+                app->SaveGameRequest();
+
+                LOG("CHECKPOINT! PROGRESS SAVED!");
             }
-            app->SaveGameRequest();
-            LOG("CHECKPOINT! PROGRESS SAVED!");
-            
             break;
         default:
             break;
@@ -246,6 +255,7 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     }else 
     if ((bodyA->type == Collider_Type::MUSHER || bodyA->type == Collider_Type::BAT) && bodyB->type == Collider_Type::PLAYER_ATTACK)
     {
+        app->audio->PlayFx(hitFx);
         RemoveEntity(bodyA);
         bodyA->pendingToDelete = true;
     }
@@ -289,6 +299,7 @@ bool ModuleEntities::LoadState(pugi::xml_node& data)
         if (entities[i] != nullptr)
         {
             entities[i]->Cleanup();
+            entities[i]->physBody->pendingToDelete = true;
             delete entities[i];
             entities[i] = nullptr;
         }
@@ -316,7 +327,7 @@ bool ModuleEntities::LoadState(pugi::xml_node& data)
         if (entities[i] != nullptr)
         {
             entities[i]->Start();
-           // entities[i]->LoadState();
+            //entities[i]->LoadState(data);
         }
     }
     return true;

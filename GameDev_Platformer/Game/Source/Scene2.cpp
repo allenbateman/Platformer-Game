@@ -90,20 +90,6 @@ bool Scene2::PostUpdate()
 
 	if (app->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
-	//switch (app->player->lives)
-	//{
-	//case 1:
-	//	currentLivesAnim = &lives1Anim;
-	//	break;
-	//case 2:
-	//	currentLivesAnim = &lives2Anim;
-	//	break;
-	//case 3:
-	//	currentLivesAnim = &lives3Anim;
-	//	break;
-	//}
-
-	//	if (app->player->lives >= 1) app->render->DrawTexture(props, 20, 20, &(currentLivesAnim->GetCurrentFrame()));
 
 
 	return ret;

@@ -52,6 +52,7 @@ public:
 	bool OnGuiMouseClickEvent(GuiControl* control);
 
 	int KeysToTake = 2;
+	float timer = 0;//millis
 private:
 	SDL_Texture* img;
 	p2List_item<PhysBody*>* collider;
@@ -78,6 +79,11 @@ private:
 	GuiButton* backToTitleButton;
 	GuiButton* exitButton;
 	GuiButton* closePanelBttn2;
+
+	GuiPanel* UiPanel;
+	SDL_Rect lifes,coins,keys;
+
+	SDL_Texture* palyerUI;
 };
 
 #endif // __SCENE1_H__

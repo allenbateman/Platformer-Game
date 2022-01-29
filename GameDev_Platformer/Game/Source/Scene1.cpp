@@ -41,7 +41,7 @@ bool Scene1::Start()
 {
 	app->physics->Start();
 	app->map->Load("level1.tmx");
-//	app->audio->PlayMusic("Assets/audio/music/level1.wav");
+	app->audio->PlayMusic("Assets/audio/music/level1.wav");
 
 	app->levelManagement->KeysToTake = 2;
 
@@ -53,12 +53,17 @@ bool Scene1::Start()
 	settingsPanel->position = { (app->win->GetWidth() * 40 / 100) ,(app->win->GetWidth() * 5 / 100) };
 
 	volumeSlider = (GuiSlider*)settingsPanel->CreateGuiControl(GuiControlType::SLIDER, 8, "Volume", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 99), 83, 8 }, this, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 99), 6, 10 });
+	volumeSlider->SetValue(app->audio->GetMusicVolume());
+	
 	fxSlider = (GuiSlider*)settingsPanel->CreateGuiControl(GuiControlType::SLIDER, 9, "Fx", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 167), 83, 8 }, this, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 167), 6, 10 });
+	fxSlider->SetValue(app->audio->GetMusicVolume());
 
 	vsyncCheckbox = (GuiToggle*)settingsPanel->CreateGuiControl(GuiControlType::CHECKBOX, 10, "vsync", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 231), 22, 22 }, this);
 	vsyncCheckbox->State = app->render->GetVSYNC();
+	
 	fullScreenCheckbox = (GuiToggle*)settingsPanel->CreateGuiControl(GuiControlType::CHECKBOX, 11, "fullScreen", 0, { (settingsPanel->position.x + 147), (settingsPanel->position.y + 295), 22, 22 }, this);
 	fullScreenCheckbox->State = app->win->GetFullScreen();
+	
 	closePanelBttn = (GuiButton*)settingsPanel->CreateGuiControl(GuiControlType::BUTTON, 7, "fullScreen", 0, { (settingsPanel->position.x + 23), (settingsPanel->position.y + 20), 22, 22 }, this);
 	closePanelBttn->normalRec = { 66,240,22,22 };
 	closePanelBttn->selectedRec = { 66,240,22,22 };
@@ -99,6 +104,12 @@ bool Scene1::Start()
 	closePanelBttn2->focusedRec = { 66,240,22,22 };
 	closePanelBttn2->pressedRec = { 66,240,22,22 };;
 
+
+	palyerUI = app->tex->Load("Assets/Spritesx16/Sidebar.png");
+	timer = 120000;//2min in millis
+	app->entities->coinsCollected = 0;
+
+
 	return true;
 }
 
@@ -133,6 +144,14 @@ bool Scene1::Update(float dt)
 	pausePanel->Update(dt);
 	settingsPanel->Update(dt);
 
+	timer -= dt;
+
+	if (timer <= 0)
+	{
+		app->levelManagement->gameState = app->levelManagement->GameState::GAME_OVER;
+	}
+
+
 	return true;
 }
 
@@ -144,6 +163,44 @@ bool Scene1::PostUpdate()
 	// Draw functions
 	app->map->Draw();
 	app->physics->DrawColliders();
+	SDL_Rect r = { 0,0,1280,48};
+
+	//background
+	app->render->DrawTexture(palyerUI, 0, 0,&r);
+
+	//lives
+	r = { 0,262,32,32 };
+	int x = 49, y = 4;
+	for (int i = 0; i < app->entities->playerInstance->lives; i++)
+	{
+		app->render->DrawTexture(app->guiManager->UItexture, x + (x*i), y, &r);
+	}
+
+	r = {57,262,24,32};
+	//coins 
+		app->render->DrawTexture(app->guiManager->UItexture,1089 , y, &r);
+
+		std::string s = std::to_string(app->entities->coinsCollected);
+		const char* txt = s.c_str(); 
+		app->fonts->BlitText(1121, 4, 1, txt);
+	//keys
+	r = { 33,262,23,32 };
+		app->render->DrawTexture(app->guiManager->UItexture, 1177 , y, &r);
+		s = std::to_string(app->entities->playerInstance->keysCollected);
+		txt = s.c_str(); 
+		app->fonts->BlitText(1209, 4, 1, txt);
+	//timer 
+		int seconds =(int) timer / 1000;
+		int min = seconds / 60;
+		s = std::to_string(min);
+		txt = s.c_str();
+		app->fonts->BlitText(987, 4, 1, txt);		
+		app->fonts->BlitText(1000, 4, 1, ":");
+
+		s = std::to_string(seconds- (min*60));
+		txt = s.c_str();
+		app->fonts->BlitText(1019, 4, 1, txt);
+
 	pausePanel->Draw();
 	settingsPanel->Draw();
 
@@ -159,7 +216,7 @@ bool Scene1::CleanUp()
 	app->map->CleanUp();
 	app->entities->CleanUp();
 	app->physics->CleanUp();
-	app->audio->PlayMusic("");
+	app->audio->StopMusic();
 	return true;
 }
 
@@ -204,6 +261,7 @@ bool Scene1::OnGuiMouseClickEvent(GuiControl* control)
 	}
 	else if (control->id == backToTitleButton->id)
 	{
+		app->entities->coinsCollected = 0;
 		app->levelManagement->gameState = app->levelManagement->START;
 	}
 	else if (control->id == exitButton->id)
@@ -230,7 +288,7 @@ bool Scene1::OnGuiMouseClickEvent(GuiControl* control)
 	}
 	else if (control->id == volumeSlider->id)
 	{
-		app->audio->SetMusicVolume(volumeSlider->id);
+		app->audio->SetMusicVolume(volumeSlider->value);
 	}
 	else if (control->id == fxSlider->id)
 	{

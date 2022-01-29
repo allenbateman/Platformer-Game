@@ -138,6 +138,11 @@ bool Audio::PlayMusic(const char* path, float fade_time)
 	return ret;
 }
 
+void Audio::StopMusic()
+{
+	Mix_HaltMusic();
+}
+
 // Load WAV
 unsigned int Audio::LoadFx(const char* path)
 {
@@ -180,11 +185,21 @@ bool Audio::PlayFx(unsigned int id, int repeat)
 int Audio::SetMusicVolume(int volume)
 {
 	Mix_VolumeMusic(volume);
-	return volume;
+	return musicVolume = volume;
+}
+
+int Audio::GetMusicVolume()
+{
+	return musicVolume;
 }
 
 int Audio::SetFxVolume(int volume)
 {
 	Mix_Volume(-1, volume);
-	return volume;
+	return fxVolume = volume;
+}
+
+int Audio::GetFxVolume()
+{
+	return fxVolume;
 }

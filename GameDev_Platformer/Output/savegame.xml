@@ -22,12 +22,12 @@
 	</level2>
 	<game_over />
 	<entities>
-		<Gem type="0" x="54.5" y="26.5" />
+		<Gem type="0" x="65.5" y="20.5" />
 		<Gem type="0" x="75.5" y="18.5" />
 		<Key type="1" x="76.5" y="25.5" />
 		<HealthPotion type="12" x="1104" y="400" />
-		<Player type="8" x="53.7487526" y="15.4989748" lives="2" state="1" />
-		<musher type="3" x="73.5" y="25.4950237" state="0" />
+		<Player type="8" x="53.6236" y="14.5539618" lives="2" state="1" coins="14" keys="1" />
+		<musher type="3" x="73.5" y="25.4950199" state="0" />
 		<Portal type="7" x="79" y="12" />
 		<CheckPoint type="4" x="54.5" y="14.5" />
 	</entities>

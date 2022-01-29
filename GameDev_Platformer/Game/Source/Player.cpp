@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Globals.h"
 #include "App.h"
+#include "Audio.h"
 #include "Input.h"
 #include "ModuleEntities.h"
 #include "ModulePhysics.h"
@@ -136,6 +137,8 @@ bool Player::Start()
 		lastPosition = position;
 
 		lives = 1;
+
+		jumpFx = app->audio->LoadFx("Assets/audio/fx/Jump.wav");
 	}
 	return true;
 }
@@ -243,6 +246,7 @@ bool Player::Update(float dt)
 		if (currentAnim->HasFinished())
 		{
 			app->levelManagement->gameState = LevelManagement::GameState::GAME_OVER;
+			app->entities->coinsCollected = 0;
 		}
 		break;
 	}
@@ -435,6 +439,7 @@ void Player::Movement()
 			onGround = false;	doubleJump = true;
 			currentJumpCd = jumpCooldown;
 			state = JUMP;
+			app->audio->PlayFx(jumpFx);
 
 			if (physBody->body->GetLinearVelocity().y > speed.y)
 			{
@@ -467,7 +472,7 @@ void Player::Movement()
 			physBody->body->ApplyLinearImpulse(b2Vec2(0, -jumpForce), physBody->body->GetWorldCenter(), true);
 			doubleJump = false;
 			state = DOUBLE_JUMP;
-
+			app->audio->PlayFx(jumpFx);
 			if (physBody->body->GetLinearVelocity().y >= speed.y)
 			{
 
@@ -588,13 +593,15 @@ bool Player::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
 
-	position.x = data.child("player").attribute("x").as_int();
-	position.y = data.child("player").attribute("y").as_int();
+	b2Vec2 p;
+	p.x = data.child("player").attribute("x").as_int();
+	p.y = data.child("player").attribute("y").as_int();
+
+	physBody->body->SetTransform(p,0);
 	lives = data.child("player").attribute("lives").as_int();
 	state = static_cast<PlayerState>(data.child("player").attribute("state").as_int());
-
-	LoadRequest = true;
-
+	app->entities->coinsCollected = data.child("player").attribute("coins").as_int();
+	keysCollected = data.child("player").attribute("keys").as_int();
 	return ret;
 }
 
@@ -607,5 +614,7 @@ bool Player::SaveState(pugi::xml_node& data) const
 	player.append_attribute("y") = physBody->body->GetPosition().y;
 	player.append_attribute("lives") = lives;
 	player.append_attribute("state") = state;
+	player.append_attribute("coins") = app->entities->coinsCollected;
+	player.append_attribute("keys") = keysCollected;
 	return ret;
 }

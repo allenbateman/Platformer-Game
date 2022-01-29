@@ -15,6 +15,7 @@ GuiButton::GuiButton(uint32 id, SDL_Rect bounds, const char* text, int fontid) :
 	texture = app->guiManager->UItexture;
 	canClick = true;
 	drawBasic = false;
+	playfx = true;
 }
 
 GuiButton::~GuiButton()
@@ -34,6 +35,12 @@ bool GuiButton::Update(float dt)
 			(mouseY > bounds.y ) && (mouseY < (bounds.y + bounds.h )))
 		{
 			state = GuiControlState::FOCUSED;
+			
+			if (playfx)
+			{
+				app->audio->PlayFx(1);
+				playfx = false;
+			}
 
 			if (app->input->GetMouseButtonDown(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT)
 			{
@@ -46,7 +53,12 @@ bool GuiButton::Update(float dt)
 				NotifyObserver();
 			}
 		}
-		else state = GuiControlState::NORMAL;
+		else { 
+			state = GuiControlState::NORMAL; 
+			playfx = true;
+		}
+
+		
 	}
 
 	return false;
@@ -82,6 +94,7 @@ bool GuiButton::Draw(Render* render)
 	} break;
 	case GuiControlState::PRESSED:
 	{
+		app->audio->PlayFx(2);
 		render->DrawRectangle(bounds, 255, 255, 255, 255);
 		if (texture != NULL)
 			render->DrawTexture(texture, bounds.x, bounds.y, &pressedRec);

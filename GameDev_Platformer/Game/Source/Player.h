@@ -88,5 +88,9 @@ public:
 
 	int frameCounter = 0;
 	int skillCounter = 0;
+
+	int keysCollected = 0;
+
+	int jumpFx;
 };
 

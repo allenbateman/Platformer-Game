@@ -91,6 +91,7 @@ public:
 	SDL_Rect section;       // Texture atlas base section
 
 	Module* observer;        // Observer module (it should probably be an array/list)
+	uint soundfx;
 };
 
 #endif // __GUICONTROL_H__
