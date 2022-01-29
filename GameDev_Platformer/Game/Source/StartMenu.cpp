@@ -146,6 +146,22 @@ bool StartMenu::OnGuiMouseClickEvent(GuiControl* control)
 	{
 		settingsPanel->Active = false;
 	}
+	else if (control->id == vsyncCheckbox->id)
+	{
+		app->render->SetVSYNC(vsyncCheckbox->State);
+	}
+	else if (control->id == fullScreenCheckbox->id)
+	{
+		app->win->SetFullScreen(fullScreenCheckbox->State);
+	}
+	else if (control->id == volumeSlider->id)
+	{
+		app->audio->SetMusicVolume(volumeSlider->id);
+	}
+	else if (control->id == fxSlider->id)
+	{
+		app->audio->SetFxVolume(fxSlider->value);
+	}
 
 
 	return true;

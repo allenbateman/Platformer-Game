@@ -11,6 +11,10 @@ GuiSlider::GuiSlider(uint32 id, SDL_Rect bounds, SDL_Rect Thumb) : GuiControl(Gu
 	texture = app->guiManager->UItexture;
 	canClick = true;
 	drawBasic = false;
+	maxValue = 128;
+	minValue = 0;
+	minValueFrom = bounds.x;
+	maxValueFrom = bounds.x + bounds.w;
 
 	backgroundRect = {89,240,82,8};
 	thumbRect = {172,240,6,10};
@@ -132,12 +136,12 @@ int GuiSlider::GetValue(float pos)
 {
 
 	if (pos < bounds.x)
-		return value = 0;
+		return value = minValue;
 
 	if (pos > (bounds.x + bounds.w))
-		return	value = 100;
+		return	value = maxValue;
 
-	value = 0 + (100 - 0) * ((pos - bounds.x) / ((bounds.x + bounds.w) - bounds.x));
+	value = minValue + (maxValue - minValue) * ((pos - minValueFrom) / (maxValueFrom - minValueFrom));
 
 	return value;
 }

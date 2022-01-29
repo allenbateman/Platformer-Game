@@ -34,6 +34,8 @@ public:
 	bool LoadState(pugi::xml_node&);
 	bool SaveState(pugi::xml_node&) const;
 
+	bool SetVSYNC(bool vsync);
+
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
 

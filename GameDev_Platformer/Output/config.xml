@@ -1,5 +1,4 @@
 <!-- Config file for the game -->
-<!-- L01: DONE 1: Create configuration file-->
 <config>
   <app>
     <title>Game Development Testbed</title>
@@ -17,8 +16,6 @@
     <resizable value="true"/>
     <fullscreen_window value="false"/>
   </window>
-
-  <!-- L03: Added maps folder as config option -->
   <map>
     <folder>Assets/maps/</folder>
   </map>

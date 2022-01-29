@@ -30,6 +30,8 @@ public:
 	SDL_Rect backgroundRect;
 	SDL_Texture* texture;
 
+	int maxValue, minValue;
+	int maxValueFrom, minValueFrom;
 
 	Animation* hoverAnim, pressedAnim;
 	Animation* currentAnim;

@@ -53,6 +53,7 @@ bool Scene2::Start()
 // Called each loop iteration
 bool Scene2::PreUpdate()
 {
+
 	if (app->entities->playerInstance->isGodmodeOn) app->entities->playerInstance->lives = 3;
 
 	return true;
