@@ -144,6 +144,7 @@ bool StartMenu::OnGuiMouseClickEvent(GuiControl* control)
 	if (control->id == startButton->id)
 	{
 		app->levelManagement->gameState = LevelManagement::SCENE1;
+		app->levelManagement->loadLevel = false;
 
 	}
 	else if (control->id == exitButton->id)
@@ -175,6 +176,11 @@ bool StartMenu::OnGuiMouseClickEvent(GuiControl* control)
 	else if (control->id == fxSlider->id)
 	{
 		app->audio->SetFxVolume(fxSlider->value);
+	}
+	else if (control->id == loadButton->id)
+	{
+		app->levelManagement->gameState = LevelManagement::SCENE1;
+		app->levelManagement->loadLevel = true;
 	}
 
 

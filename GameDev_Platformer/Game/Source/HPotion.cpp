@@ -11,6 +11,7 @@ HPotion::HPotion(Collider_Type type, iPoint pos) : Collectable(pos)
 
 bool HPotion::LoadState(pugi::xml_node& data)
 {
+	
 	return true;
 }
 

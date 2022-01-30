@@ -45,8 +45,9 @@ bool Scene1::Start()
 
 	app->levelManagement->KeysToTake = 2;
 
-	//Spawn all entities
+	//Spawn all entities if not load request
 	app->entities->Start();
+
 
 	settingsPanel = new GuiPanel(false);
 	settingsPanel->bounds = { 510,0,266 ,382 };
@@ -108,6 +109,17 @@ bool Scene1::Start()
 	palyerUI = app->tex->Load("Assets/Spritesx16/Sidebar.png");
 	timer = 120000;//2min in millis
 	app->entities->coinsCollected = 0;
+
+
+	if (app->levelManagement->loadLevel)
+	{
+		app->LoadGameRequest();
+		app->levelManagement->loadLevel = false;
+		app->levelManagement->gameState = app->levelManagement->SCENE1;
+		app->levelManagement->currentScene = this;
+		return true;
+	}
+
 
 
 	return true;
@@ -238,7 +250,7 @@ bool Scene1::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
 	pugi::xml_node level = data.child("level1");
-	KeysToTake = level.attribute("keys_to_collect").as_int();
+	app->levelManagement->KeysToTake = level.attribute("keys_to_collect").as_int();
 	return ret;
 }
 
@@ -247,7 +259,7 @@ bool Scene1::SaveState(pugi::xml_node& data) const
 	bool ret = true;
 	pugi::xml_node level = data.append_child("level1");
 
-	level.append_attribute("keys_to_collect") = KeysToTake;
+	level.append_attribute("keys_to_collect") = app->levelManagement->KeysToTake;
 
 	return ret;
 }

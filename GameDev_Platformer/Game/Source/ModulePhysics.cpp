@@ -454,6 +454,14 @@ bool ModulePhysics::LoadState(pugi::xml_node& data)
 
 	pugi::xml_node physics = data.child("physics");
 
+	if (world == NULL)
+	{
+		world = new b2World(b2Vec2(GRAVITY_X, -GRAVITY_Y));
+		world->SetContactListener(this);
+		b2BodyDef bd;
+		ground = world->CreateBody(&bd);
+	}
+
 
 	return ret;
 }

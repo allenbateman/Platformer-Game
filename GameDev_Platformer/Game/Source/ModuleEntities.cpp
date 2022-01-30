@@ -263,7 +263,7 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
     playerInstance->wallLeft = false;
     playerInstance->wallRight = false;
     //For player movement
-    if (bodyA->type == PLAYER_X_SENSOR && bodyB->type == GROUND)
+    if ((bodyA->type == PLAYER_X_SENSOR && bodyA->body != nullptr) &&bodyB->type == GROUND)
     {
         if (bodyA->body == playerInstance->leftSensor->body)
         {
@@ -274,7 +274,7 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
             playerInstance->wallRight = true;
         }
     }
-    else if (bodyA->type == PLAYER_Y_SENSOR && bodyB->type == GROUND)
+    else if ((bodyA->type == PLAYER_Y_SENSOR && bodyA->body != nullptr) && bodyB->type == GROUND)
     {
         if (playerInstance->topSensor->body != NULL && bodyA->body == playerInstance->topSensor->body)
         {
@@ -299,12 +299,11 @@ bool ModuleEntities::LoadState(pugi::xml_node& data)
         if (entities[i] != nullptr)
         {
             entities[i]->Cleanup();
-            entities[i]->physBody->pendingToDelete = true;
             delete entities[i];
             entities[i] = nullptr;
         }
     }
-
+    playerInstance = nullptr;
     pugi::xml_node currentEntitie = data.first_child();
 
     iPoint pos;
@@ -315,8 +314,6 @@ bool ModuleEntities::LoadState(pugi::xml_node& data)
        float x = currentEntitie.attribute("x").as_int();
        float y = currentEntitie.attribute("y").as_int();
        pos = app->map->MapToWorld(x, y);
-       pos.x += 8;
-       pos.y += 8;
        AddEntity(type, pos);
 
        currentEntitie = currentEntitie.next_sibling();
@@ -327,7 +324,7 @@ bool ModuleEntities::LoadState(pugi::xml_node& data)
         if (entities[i] != nullptr)
         {
             entities[i]->Start();
-            //entities[i]->LoadState(data);
+            entities[i]->LoadState(data);
         }
     }
     return true;

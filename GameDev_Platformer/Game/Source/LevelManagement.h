@@ -26,9 +26,12 @@ public:
 	bool CleanUp() override;
 	void NextLevel();
 	void ReturnToMainMenu();
-	void ReturnToLevelSelection();
 	void RestartLevel();
-	void LoadLevel();
+
+	// Load / Save
+	bool LoadState(pugi::xml_node& data) override;
+	bool SaveState(pugi::xml_node& data) const override;
+
 
 	enum GameState {
 		NONE = 0,
@@ -48,6 +51,7 @@ public:
 
 	//to track current keys
 	int KeysToTake = 0;
+	bool loadLevel = false;
 
 };
 #endif // __LEVELMANAGEMENT_H__

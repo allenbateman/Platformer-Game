@@ -13,6 +13,7 @@ Entity::Entity(iPoint pos)
 
 Entity::Entity(Collider_Type _type, iPoint pos)
 {
+	
 	position.x = pos.x;
 	position.y = pos.y;
 	type = _type;
@@ -66,6 +67,7 @@ void Entity::SetToDelete()
 
 bool Entity::Cleanup()
 {
+	physBody->pendingToDelete = true;
 	texture = nullptr;
 	currentAnim = nullptr;
 	return true;

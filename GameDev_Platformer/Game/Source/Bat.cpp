@@ -16,6 +16,8 @@ Bat::Bat(iPoint pos) : Enemy(pos)
 }
 Bat::Bat(Collider_Type type, iPoint pos) : Enemy(pos)
 {
+
+
 	spawnPos = pos;
 }
 
@@ -237,7 +239,6 @@ bool Bat::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
 
-	Start();
 	position.x = data.child("bat").attribute("x").as_int();
 	position.y = data.child("bat").attribute("y").as_int();
 	state = static_cast<BatState>(data.child("bat").attribute("state").as_int());

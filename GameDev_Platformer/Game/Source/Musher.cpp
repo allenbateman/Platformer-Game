@@ -195,7 +195,6 @@ bool Musher::LoadState(pugi::xml_node& data)
 {
 	bool ret = true;
 	
-	Start();
 	position.x = data.child("musher").attribute("x").as_int();
 	position.y = data.child("musher").attribute("y").as_int();
 	state = static_cast<MusherState>(data.child("muhser").attribute("state").as_int());

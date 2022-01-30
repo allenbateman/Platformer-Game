@@ -10,26 +10,30 @@
 	</physics>
 	<guiManager />
 	<:anonymous />
-	<:anonymous />
+	<levelManager>
+		<levelManager currentLevel="0" />
+	</levelManager>
 	<:anonymous />
 	<intro />
 	<start_menu />
 	<level1>
-		<level1 keys_to_collect="2" />
+		<level1 keys_to_collect="1" />
 	</level1>
 	<level2>
 		<level1 keys_to_collect="3" />
 	</level2>
 	<game_over />
 	<entities>
-		<Gem type="0" x="65.5" y="20.5" />
-		<Gem type="0" x="75.5" y="18.5" />
-		<Key type="1" x="76.5" y="25.5" />
-		<HealthPotion type="12" x="1104" y="400" />
-		<Player type="8" x="53.6236" y="14.5539618" lives="2" state="1" coins="14" keys="1" />
-		<musher type="3" x="73.5" y="25.4950199" state="0" />
+		<Gem type="0" x="54" y="26" />
+		<Gem type="0" x="65" y="20" />
+		<Gem type="0" x="75" y="18" />
+		<Key type="1" x="76" y="25" />
+		<HealthPotion type="12" x="17656" y="6392" />
+		<bat type="2" x="54" y="27.495039" state="0" />
+		<player type="8" x="53" y="15" lives="2" state="2" coins="5" keys="1" />
+		<musher type="3" x="71.9696198" y="25.4956245" state="0" />
 		<Portal type="7" x="79" y="12" />
-		<CheckPoint type="4" x="54.5" y="14.5" />
+		<CheckPoint type="4" x="54" y="14" />
 	</entities>
 	<renderer>
 		<camera x="0" y="0" />

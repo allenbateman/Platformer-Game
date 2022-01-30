@@ -9,7 +9,7 @@ using namespace std;
 
 LevelManagement::LevelManagement(bool isActive) : Module(isActive)
 {
-
+	name.Create("levelManager");
 }
 
 LevelManagement::~LevelManagement()
@@ -194,6 +194,38 @@ void LevelManagement::RestartLevel()
 	else {
 		app->fade->Fade(currentScene, currentScene, 60.0f);
 	}
+}
+
+bool LevelManagement::LoadState(pugi::xml_node& data)
+{
+	pugi::xml_document gameStateFile;
+	pugi::xml_parse_result  result = gameStateFile.load_file("savegame.xml");
+	if (gameStateFile.child("save_state") == NULL)
+		return false;
+
+	pugi::xml_node lm = gameStateFile.child("save_state").child("levelManager");
+
+	gameState =  static_cast<GameState>(lm.attribute("currentLevel").as_int());
+
+	if (gameState == SCENE1)
+	{
+		app->fade->Fade(currentScene, app->scene1, 60.0f);
+	}
+	else if (gameState == SCENE2) {
+		app->fade->Fade(currentScene, app->scene2, 60.0f);
+	}
+	loadLevel = true;
+	return true;
+}
+
+bool LevelManagement::SaveState(pugi::xml_node& data) const
+{
+	pugi::xml_node manager = data.append_child("levelManager");
+
+	manager.append_attribute("currentLevel") = gameState;
+
+
+	return true;
 }
 
 

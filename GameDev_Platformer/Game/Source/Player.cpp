@@ -602,13 +602,14 @@ bool Player::LoadState(pugi::xml_node& data)
 	state = static_cast<PlayerState>(data.child("player").attribute("state").as_int());
 	app->entities->coinsCollected = data.child("player").attribute("coins").as_int();
 	keysCollected = data.child("player").attribute("keys").as_int();
+
 	return ret;
 }
 
 bool Player::SaveState(pugi::xml_node& data) const
 {
 	bool ret = true;
-	pugi::xml_node player = data.append_child("Player");
+	pugi::xml_node player = data.append_child("player");
 	player.append_attribute("type") = type;
 	player.append_attribute("x") = physBody->body->GetPosition().x;
 	player.append_attribute("y") = physBody->body->GetPosition().y;
