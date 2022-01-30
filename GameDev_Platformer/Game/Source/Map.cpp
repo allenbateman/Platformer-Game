@@ -672,6 +672,10 @@ bool Map::LoadObjectLayer(pugi::xml_node& node, ObjectLayer* layer)
 
 			obj->type = Collider_Type::MUSHER;
 		}
+		else if (strcmp(object.attribute("type").as_string(), "BigMusher") == 0) {
+
+			obj->type = Collider_Type::BIG_MUSHER;
+		}
 		layer->objects.add(obj);
 		//send current object node and obj to store the properties
 		LoadObject(object, obj);
@@ -796,6 +800,10 @@ bool Map::SetMapColliders()
 				case MUSHER:
 					app->entities->AddEntity(MUSHER, spawnPos);
 					LOG("SPAWN MUSHER...");
+					break;
+				case BIG_MUSHER:
+					app->entities->AddEntity(BIG_MUSHER, spawnPos);
+					LOG("SPAWN BIG MUSHER...");
 					break;
 				case GEM:
 					app->entities->AddEntity(Collider_Type::GEM, spawnPos);

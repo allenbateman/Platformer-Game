@@ -26,7 +26,6 @@ public:
 
 public:
 
-	float jumpForce = 0.2f;
 	bool onGround = false;
 
 	float detectionDistance = 10; // in pixels
@@ -38,13 +37,12 @@ public:
 
 	float speedMultiplier = 0.2f;// 1-0   1->slowest-> 0.1 fastest;
 
-	enum MusherState {
+	enum BigMusherState {
 		PATROL = 0,
 		MOVE_TOWARDS = 1,
-		JUMP = 2,
 		DEATH = 3
 	};
-	MusherState state;
+	BigMusherState state;
 	bool LoadRequest = false;
 
 	int curretnTileIndex = 0;

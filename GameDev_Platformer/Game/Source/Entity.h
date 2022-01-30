@@ -77,6 +77,10 @@ public:
 	fPoint texPosition; //for texture position
 	iPoint drawOffset = { 0, 0 };
 	Collider_Type type;
+
+	//Boss' HP
+	int lives;
+
 	// The Entity's texture
 	SDL_Texture* texture = nullptr;
 
