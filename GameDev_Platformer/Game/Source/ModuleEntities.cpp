@@ -187,7 +187,7 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
         case Collider_Type::KEY:
             app->levelManagement->KeysToTake--;
             playerInstance->keysCollected++;
-            if (app->levelManagement->KeysToTake == 0)
+            if (app->levelManagement->KeysToTake <= 0)
             {
                 portalInstance->Transition();
             }
@@ -238,7 +238,7 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
             }
             break;
         case Collider_Type::PORTAL:
-            if (app->levelManagement->KeysToTake == 0 && portalInstance->portalState == Portal::PortalState::P_OPEN)
+            if (app->levelManagement->KeysToTake <= 0 && portalInstance->portalState == Portal::PortalState::P_OPEN)
             {
                 app->levelManagement->gameState = app->levelManagement->GAME_OVER;
                 LOG("I WON, GIVE ME TREAT!");

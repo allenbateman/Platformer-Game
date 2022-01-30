@@ -17,23 +17,21 @@
 	<intro />
 	<start_menu />
 	<level1>
-		<level1 keys_to_collect="1" />
+		<level1 keys_to_collect="0" />
 	</level1>
 	<level2>
 		<level1 keys_to_collect="3" />
 	</level2>
 	<game_over />
 	<entities>
-		<Gem type="0" x="54" y="26" />
 		<Gem type="0" x="65" y="20" />
 		<Gem type="0" x="75" y="18" />
 		<Key type="1" x="76" y="25" />
-		<HealthPotion type="12" x="17656" y="6392" />
-		<bat type="2" x="54" y="27.495039" state="0" />
-		<player type="8" x="53" y="15" lives="2" state="2" coins="5" keys="1" />
-		<musher type="3" x="71.9696198" y="25.4956245" state="0" />
-		<Portal type="7" x="79" y="12" />
-		<CheckPoint type="4" x="54" y="14" />
+		<HealthPotion type="13" x="2004877304" y="2004877304" />
+		<player type="9" x="53" y="12.5263166" lives="2" state="1" coins="6" keys="2" />
+		<musher type="3" x="62" y="23.513382" state="0" />
+		<Portal type="8" x="79" y="12" />
+		<CheckPoint type="5" x="54" y="14" />
 	</entities>
 	<renderer>
 		<camera x="0" y="0" />
