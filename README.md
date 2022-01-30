@@ -15,9 +15,10 @@ As we wehere working in 2D we learned how to project in an orthogonal view and i
 ## Player
 
 Arrows-> movement
-Q-> Mele attack
-E-> Ranged attack
 
+Q-> Mele attack
+
+E-> Ranged attack
 
 ## Game 
 
