@@ -72,8 +72,6 @@ bool Musher::Start()
 		//make the path 
 		pathfinding = new PathFinding(true);
 
-		lives = 1;
-
 		int w, h;
 		uchar* data = NULL;
 		if (app->map->CreateWalkabilityMap(w, h, &data,1)) pathfinding->SetMap(w, h, data);

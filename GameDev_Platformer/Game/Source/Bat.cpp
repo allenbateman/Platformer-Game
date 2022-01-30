@@ -88,8 +88,6 @@ bool Bat::Start()
 		//make the path 
 		pathfinding = new PathFinding(true);
 
-		lives = 1;
-
 		int w, h;
 		uchar* data = NULL;
 		if (app->map->CreateWalkabilityMap(w, h, &data,2)) pathfinding->SetMap(w, h, data);

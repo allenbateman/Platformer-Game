@@ -11,7 +11,6 @@
 #include "Player.h"
 #include "Bat.h"
 #include "Musher.h"
-#include "BigMusher.h"
 #include "Gem.h"
 #include "Key.h"
 #include "HPotion.h"
@@ -120,9 +119,6 @@ void ModuleEntities::AddEntity(Collider_Type type, iPoint spawnPos)
             case MUSHER:
                 entities[i] = new Musher(type, spawnPos);
                 break;
-            case BIG_MUSHER:
-                entities[i] = new BigMusher(type, spawnPos);
-                break;
             case PLAYER:
                  entities[i] = playerInstance = new Player(type, spawnPos);
                 break;
@@ -213,17 +209,6 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
                     LOG("KILL ME!");
                 }
             }
-        case Collider_Type::BIG_MUSHER:
-            if (!playerInstance->isGodmodeOn)
-            {
-                playerInstance->lives--;
-                LOG("OUCH GOT HIT!");
-                if (playerInstance->lives <= 0)
-                {
-                    playerInstance->state = PlayerState::DEAD;
-                    LOG("KILL ME!");
-                }
-            }
             break;
         case Collider_Type::BAT:
             if (!playerInstance->isGodmodeOn)
@@ -268,35 +253,11 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
 
 
     }else 
-    if ((bodyA->type == Collider_Type::MUSHER || bodyA->type == Collider_Type::BAT || bodyA->type == Collider_Type::BIG_MUSHER) && bodyB->type == Collider_Type::PLAYER_ATTACK)
+    if ((bodyA->type == Collider_Type::MUSHER || bodyA->type == Collider_Type::BAT) && bodyB->type == Collider_Type::PLAYER_ATTACK)
     {
-
-        for (int i = 0; i < MAX_ENTITIES; i++)
-        {
-            if (entities[i] != nullptr)
-            {
-                if ((bodyA->type == Collider_Type::MUSHER || bodyA->type == Collider_Type::BAT) && entities[i]->physBody == bodyA)
-                {
-                    entities[i]->lives--;
-                    if (entities[i]->lives <= 0)
-                    {
-                        app->audio->PlayFx(hitFx);
-                        RemoveEntity(bodyA);
-                        bodyA->pendingToDelete = true;
-                    }
-                }
-                else if (bodyA->type == Collider_Type::BIG_MUSHER && entities[i]->physBody == bodyA)
-                {
-                    entities[i]->lives--;
-                    if (entities[i]->lives <= 0)
-                    {
-                        app->audio->PlayFx(hitFx);
-                        RemoveEntity(bodyA);
-                        bodyA->pendingToDelete = true;
-                    }
-                }
-            }
-        }
+        app->audio->PlayFx(hitFx);
+        RemoveEntity(bodyA);
+        bodyA->pendingToDelete = true;
     }
 
     playerInstance->wallLeft = false;
@@ -325,6 +286,7 @@ void ModuleEntities::OnCollision(PhysBody* bodyA, PhysBody* bodyB)
             playerInstance->physBody->body->SetGravityScale(1);
         }
     }
+
 }
 
 

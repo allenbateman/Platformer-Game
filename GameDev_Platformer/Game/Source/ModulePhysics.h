@@ -28,7 +28,6 @@ enum Collider_Type {
 	KEY, 
 	BAT,
 	MUSHER,
-	BIG_MUSHER,
 	CHECK_POINT, 
 	SPAWNER,
 	DEATH,

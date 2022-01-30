@@ -31,33 +31,38 @@ bool BigMusher::Awake()
 
 bool BigMusher::Start()
 {
-	LOG("big MUShER START");
+	LOG("MUShER START");
 	if (physBody == NULL)
 	{
 		texture = app->tex->Load("Assets/Spritesx16/characters.png");
 		//Idle anim
-		idleAnim.PushBack({ 256, 207, 22, 27 });
-		idleAnim.PushBack({ 288, 207 , 22, 27 });
-		idleAnim.PushBack({ 318, 207 , 22, 27 });
-		idleAnim.PushBack({ 288, 207 , 22, 27 });
+		idleAnim.PushBack({ 41, 274, 14, 14 });
+		idleAnim.PushBack({ 73, 276 , 14, 12 });
 		idleAnim.loop = true;
 		idleAnim.mustFlip = true;
 		idleAnim.speed = 0.01f;
 		//Walking anim
-		idleAnim.PushBack({ 256, 207, 27, 22 });
-		idleAnim.PushBack({ 288, 207 , 27, 22 });
-		idleAnim.PushBack({ 318, 207 , 27, 22 });
-		idleAnim.PushBack({ 288, 207 , 27, 22 });
+		walkingAnim.PushBack({ 9, 274, 14, 14 });
+		walkingAnim.PushBack({ 41, 274, 14, 14 });
+		walkingAnim.PushBack({ 73, 276 , 14, 12 });
 		walkingAnim.loop = true;
 		walkingAnim.mustFlip = true;
 		walkingAnim.speed = 0.1f;
+		//Jump anim
+		jumpingAnim.PushBack({ 137, 274, 14, 14 });
+		jumpingAnim.PushBack({ 168, 272, 14, 14 });
+		jumpingAnim.PushBack({ 201, 272, 14, 15 });
+		jumpingAnim.PushBack({ 233, 275, 14, 13 });
+		jumpingAnim.loop = true;
+		jumpingAnim.mustFlip = true;
+		jumpingAnim.speed = 0.1f;
 
 		currentAnim = &idleAnim;
 
-		physBody = app->physics->CreateCircle(position.x, position.y, 16, b2_dynamicBody, { 0,400,125,255 });
+		physBody = app->physics->CreateCircle(position.x, position.y, 8, b2_dynamicBody, { 0,400,125,255 });
 		physBody->listener = app->entities;
 		physBody->color = { 255,125,0,255 };
-		physBody->type = Collider_Type::BIG_MUSHER;
+		physBody->type = Collider_Type::MUSHER;
 
 		type = physBody->type;
 
@@ -67,14 +72,13 @@ bool BigMusher::Start()
 		//make the path 
 		pathfinding = new PathFinding(true);
 
-		lives = 10;
-
 		int w, h;
 		uchar* data = NULL;
 		if (app->map->CreateWalkabilityMap(w, h, &data, 1)) pathfinding->SetMap(w, h, data);
 		RELEASE_ARRAY(data);
 
 		state = PATROL;
+
 	}
 
 	return true;
@@ -108,8 +112,9 @@ bool BigMusher::PreUpdate()
 			state = PATROL;
 		}
 		break;
+	case JUMP:
+		break;
 	case DEATH:
-		app->scene2->KeysToTake--;
 		break;
 	default:
 		break;
@@ -193,7 +198,7 @@ bool BigMusher::LoadState(pugi::xml_node& data)
 	Start();
 	position.x = data.child("BigMusher").attribute("x").as_int();
 	position.y = data.child("BigMusher").attribute("y").as_int();
-	state = static_cast<BigMusherState>(data.child("BigMusher").attribute("state").as_int());
+	state = static_cast<MusherState>(data.child("BigMusher").attribute("state").as_int());
 
 	LoadRequest = true;
 
