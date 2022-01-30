@@ -13,10 +13,12 @@
 #include "ModuleEntities.h"
 #include "player.h"
 #include "Musher.h"
+#include "BigMusher.h"
 #include "Bat.h"
 
 #include "Defs.h"
 #include "Log.h"
+#include "GuiToggle.cpp"
 
 Scene1::Scene1(bool isActive) : Module(isActive)
 {
@@ -109,7 +111,6 @@ bool Scene1::Start()
 	timer = 120000;//2min in millis
 	app->entities->coinsCollected = 0;
 
-
 	return true;
 }
 
@@ -150,7 +151,6 @@ bool Scene1::Update(float dt)
 	{
 		app->levelManagement->gameState = app->levelManagement->GameState::GAME_OVER;
 	}
-
 
 	return true;
 }
