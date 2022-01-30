@@ -73,8 +73,11 @@ bool GuiSlider::Draw(Render* render)
 
 	case GuiControlState::DISABLED:
 	{
-		render->DrawRectangle(bounds, 125, 200, 0, 0);
-		render->DrawRectangle(thumbBounds, 125, 200, 0, 0);
+		if (app->guiManager->Debug)
+		{
+			render->DrawRectangle(bounds, 125, 200, 0, 0);
+			render->DrawRectangle(thumbBounds, 125, 200, 0, 0);
+		}
 
 		if (texture != NULL)
 		{
@@ -86,8 +89,11 @@ bool GuiSlider::Draw(Render* render)
 
 	case GuiControlState::NORMAL:
 	{
-		render->DrawRectangle(bounds, 125, 125, 0, 125);
-		render->DrawRectangle(thumbBounds, 0, 200, 0, 255);
+		if (app->guiManager->Debug)
+		{
+			render->DrawRectangle(bounds, 125, 125, 0, 125);
+			render->DrawRectangle(thumbBounds, 0, 200, 0, 255);
+		}
 		if (texture != NULL)
 		{
 			render->DrawTexture(texture, bounds.x, bounds.y, &backgroundRect);
@@ -96,8 +102,11 @@ bool GuiSlider::Draw(Render* render)
 	} break;
 	case GuiControlState::FOCUSED:
 	{
-		render->DrawRectangle(bounds, 255, 255, 255, 160);
-		render->DrawRectangle(thumbBounds, 0, 255, 255, 255);
+		if (app->guiManager->Debug)
+		{
+			render->DrawRectangle(bounds, 255, 255, 255, 160);
+			render->DrawRectangle(thumbBounds, 0, 255, 255, 255);
+		}
 		if (texture != NULL)
 		{
 			render->DrawTexture(texture, bounds.x, bounds.y, &backgroundRect);
@@ -106,8 +115,12 @@ bool GuiSlider::Draw(Render* render)
 	} break;
 	case GuiControlState::PRESSED:
 	{
-		render->DrawRectangle(bounds, 255, 255, 255, 255);
-		render->DrawRectangle(thumbBounds, 0, 255, 255, 255);
+
+		if (app->guiManager->Debug)
+		{
+			render->DrawRectangle(bounds, 255, 255, 255, 255);
+			render->DrawRectangle(thumbBounds, 0, 255, 255, 255);
+		}
 		if (texture != NULL)
 		{
 			render->DrawTexture(texture, bounds.x, bounds.y, &backgroundRect);
@@ -118,8 +131,11 @@ bool GuiSlider::Draw(Render* render)
 
 	case GuiControlState::SELECTED:
 	{
-		render->DrawRectangle(bounds, 0, 255, 0, 255);
-		render->DrawRectangle(thumbBounds, 0, 255, 255, 255);
+		if (app->guiManager->Debug)
+		{
+			render->DrawRectangle(bounds, 0, 255, 0, 255);
+			render->DrawRectangle(thumbBounds, 0, 255, 255, 255);
+		}
 		if (texture != NULL)
 		{
 			render->DrawTexture(texture, bounds.x, bounds.y, &backgroundRect);

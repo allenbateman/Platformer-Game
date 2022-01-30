@@ -55,7 +55,7 @@ public:
 
 	int mainFont;
 	int numberFont;
-
+	bool Debug = false;
 
 
 	//GuiButton* startButton;//1

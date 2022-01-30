@@ -47,6 +47,7 @@ public:
 	Player* playerInstance;
 
 	Portal* portalInstance;
+//	CheckPoint* checkPoint;
 	p2List<CheckPoint*> checkPoint;
 
 	//should not be here

@@ -56,6 +56,8 @@ bool GuiPanel::Draw()
 {
 	if (!Active)
 		return false;
+
+
 	app->render->DrawTexture(app->guiManager->UItexture,position.x, position.y,&bounds);
 
 	ListItem<GuiControl*>* control = controls.start;

@@ -25,6 +25,15 @@ bool LevelManagement::Start()
 
 bool LevelManagement::PreUpdate()
 {
+
+	if ((app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) && currentScene->active == true)
+	{
+		gameState = SCENE1;
+	}
+	if ((app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) && currentScene->active == true)
+	{
+		RestartLevel();
+	}
 	switch (gameState)
 	{
 	case INTRO:
@@ -40,10 +49,7 @@ bool LevelManagement::PreUpdate()
 		{
 			gameState = SCENE1;
 		}
-		if ((app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) && currentScene->active == true)
-		{
-			gameState = SCENE1;
-		}
+
 		if ((app->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) && currentScene->active == true)
 		{
 			gameState = SCENE2;
@@ -122,6 +128,7 @@ bool LevelManagement::Update(float dt)
 			if (app->fade->Fade(currentScene, (Module*)app->scene1, 30))
 			{
 				currentScene = (Module*)app->scene1;
+				currentLevel = (Module*)app->scene1;
 				LOG("LEVEL 1");
 			}
 		}
@@ -133,6 +140,7 @@ bool LevelManagement::Update(float dt)
 			if (app->fade->Fade(currentScene, (Module*)app->scene2, 30))
 			{
 				currentScene = (Module*)app->scene2;
+				currentLevel = (Module*)app->scene2;
 				LOG("LEVEL 2");
 			}
 		}
@@ -192,7 +200,7 @@ void LevelManagement::RestartLevel()
 		app->fade->Fade(currentScene, (Module*)app->gameOver, 60.0f);
 	}
 	else {
-		app->fade->Fade(currentScene, currentScene, 60.0f);
+		app->fade->Fade(currentScene, currentLevel, 60.0f);
 	}
 }
 

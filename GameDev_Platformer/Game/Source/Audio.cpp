@@ -55,6 +55,8 @@ bool Audio::Awake(pugi::xml_node& config)
 		ret = true;
 	}
 
+	SetMusicVolume(100);
+	SetFxVolume(100);
 	return ret;
 }
 

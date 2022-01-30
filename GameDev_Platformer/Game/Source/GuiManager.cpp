@@ -31,6 +31,8 @@ bool GuiManager::Start()
 
 	app->audio->LoadFx("Assets/audio/fx/buttonFocus.wav");
 	app->audio->LoadFx("Assets/audio/fx/buttonPressed.wav");
+	Debug = false;
+
 	return true;
 }
 
@@ -71,8 +73,12 @@ GuiControl* GuiManager::CreateGuiControl(GuiControlType type, int id, const char
 
 bool GuiManager::Update(float dt)
 {	
+	if (app->input->GetKey(SDL_SCANCODE_F8) == KEY_DOWN)
+		Debug = !Debug;
+
 	accumulatedTime += dt;
 	if (accumulatedTime >= updateMsCycle) doLogic = true;
+
 
 	UpdateAll(dt,doLogic);
 
