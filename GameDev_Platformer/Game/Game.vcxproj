@@ -120,6 +120,8 @@
     <ClCompile Include="Source\PerfTimer.cpp" />
     <ClCompile Include="Source\Player.cpp" />
     <ClCompile Include="Source\Portal.cpp" />
+    <ClCompile Include="Source\Quest.cpp" />
+    <ClCompile Include="Source\QuestManager.cpp" />
     <ClCompile Include="Source\Render.cpp" />
     <ClCompile Include="Source\Scene1.cpp" />
     <ClCompile Include="Source\Scene2.cpp" />
@@ -163,6 +165,8 @@
     <ClInclude Include="Source\Player.h" />
     <ClInclude Include="Source\Portal.h" />
     <ClInclude Include="Source\PQueue.h" />
+    <ClInclude Include="Source\Quest.h" />
+    <ClInclude Include="Source\QuestManager.h" />
     <ClInclude Include="Source\Queue.h" />
     <ClInclude Include="Source\Render.h" />
     <ClInclude Include="Source\Scene1.h" />

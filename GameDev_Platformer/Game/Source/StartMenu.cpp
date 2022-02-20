@@ -60,6 +60,7 @@ bool StartMenu::Start()
 	loadButton->texture = app->tex->Load("Assets/Spritesx16/GUI.png");
 	loadButton->normalRec = { 0,120,170,60 };
 	loadButton->focusedRec = { 0,180,170,60 };
+	loadButton->disabledRec = { 340,240,170,60 };
 
 	if (!app->IsASavedGame())
 		loadButton->state = GuiControlState::DISABLED;
@@ -145,7 +146,6 @@ bool StartMenu::OnGuiMouseClickEvent(GuiControl* control)
 	{
 		app->levelManagement->gameState = LevelManagement::SCENE1;
 		app->levelManagement->loadLevel = false;
-
 	}
 	else if (control->id == exitButton->id)
 	{

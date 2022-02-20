@@ -408,6 +408,9 @@ bool App::IsASavedGame()
 	if (gameStateFile.child("save_state") == NULL)
 		ret = false;
 
+	if (gameStateFile.child("save_state").first_child() == NULL)
+		ret = false;
+
 	return ret;
 }
 

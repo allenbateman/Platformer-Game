@@ -29,6 +29,7 @@ bool LevelManagement::PreUpdate()
 	if ((app->input->GetKey(SDL_SCANCODE_F1) == KEY_DOWN) && currentScene->active == true)
 	{
 		gameState = SCENE1;
+		loadLevel = false;
 	}
 	if ((app->input->GetKey(SDL_SCANCODE_F3) == KEY_DOWN) && currentScene->active == true)
 	{
@@ -200,6 +201,7 @@ void LevelManagement::RestartLevel()
 		app->fade->Fade(currentScene, (Module*)app->gameOver, 60.0f);
 	}
 	else {
+		loadLevel = false;
 		app->fade->Fade(currentScene, currentLevel, 60.0f);
 	}
 }
