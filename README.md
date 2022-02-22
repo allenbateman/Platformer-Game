@@ -4,7 +4,7 @@ This is a university project where we had to develope a small platformer game.
 
 In this project we learned how to implement XML, save and load data, understanding XML nodes. 
 
-We also learned how to implment different pathfinidg methods, like BFS, Dijkstra, and A*. We used this systems for enemies IA movement, but knowing that there are many more applications.
+We also learned how to implment different pathfinidg methods, like BFS, Dijkstra, and A*. We used this systems for enemies AI movement, but knowing that there are many more applications.
 
 We studied how entity systems work and their structure for handeling many obj from a single script, and implement this same method for GUI management.
 
