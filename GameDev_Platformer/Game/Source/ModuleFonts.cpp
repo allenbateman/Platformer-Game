@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Log.h"
 #include<string.h>
+#include "SDL_ttf/Includes/SDL_ttf.h"
 
 ModuleFonts::ModuleFonts(bool isEnabled) : Module(isEnabled)
 {
@@ -13,6 +14,15 @@ ModuleFonts::ModuleFonts(bool isEnabled) : Module(isEnabled)
 ModuleFonts::~ModuleFonts()
 {
 
+}
+
+bool ModuleFonts::LoadTIFF(const char* fontPath)
+{
+
+	//this opens a font style and sets a size
+	TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 24);
+
+	return false;
 }
 
 // Load new texture from file path

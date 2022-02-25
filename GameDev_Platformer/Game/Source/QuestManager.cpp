@@ -10,19 +10,8 @@ QuestManager::~QuestManager()
 
 bool QuestManager::Awake(pugi::xml_node&)
 {
-	return false;
+	return true;
 }
-
-
-//Activate Quest
-
-//Cancel Quest
-
-//Complete Quest
-
-//Finish Quest
-
-//Add item
 
 void QuestManager::ActivateQuest(int questID)
 {
@@ -40,7 +29,58 @@ void QuestManager::ActivateQuest(int questID)
 	}
 }
 
-//Get available quest 
+void QuestManager::CanelQuest(int questID)
+{
+	ListItem<Quest>* currentQuest = questList->start;
+	while (currentQuest != NULL)
+	{
+
+		if (currentQuest->data.id == questID && currentQuest->data.progress == Quest::ACTIVE)
+		{
+			currentQuestList->add(currentQuest->data);
+			currentQuest->data.progress = Quest::AVAILABLE;
+		}
+
+		currentQuest = currentQuest->next;
+	}
+}
+
+void QuestManager::CompleteQuest(int questID)
+{
+	ListItem<Quest>* currentQuest = questList->start;
+	while (currentQuest != NULL)
+	{
+
+		if (currentQuest->data.id == questID && currentQuest->data.progress == Quest::ACTIVE)
+		{
+			currentQuestList->add(currentQuest->data);
+			currentQuest->data.progress = Quest::COMPLETE;
+		}
+
+		currentQuest = currentQuest->next;
+	}
+}
+
+void QuestManager::FinishQuest(int questID)
+{
+	ListItem<Quest>* currentQuest = questList->start;
+	while (currentQuest != NULL)
+	{
+
+		if (currentQuest->data.id == questID && currentQuest->data.progress == Quest::COMPLETE)
+		{
+			currentQuestList->add(currentQuest->data);
+			currentQuest->data.progress = Quest::DONE;
+		}
+
+		currentQuest = currentQuest->next;
+	}
+}
+
+void QuestManager::AddItem()
+{
+}
+
 bool QuestManager::GetAvailableQuest(int questID)
 {
 	ListItem<Quest>* currentQuest = questList->start;
@@ -55,7 +95,6 @@ bool QuestManager::GetAvailableQuest(int questID)
 	return false;
 }
 
-//Get active quest
 bool QuestManager::GetActiveQuest(int questID)
 {
 	ListItem<Quest>* currentQuest = questList->start;
@@ -70,7 +109,6 @@ bool QuestManager::GetActiveQuest(int questID)
 	return false;
 }
 
-//Get complete quest but not Done (get rewards etc)
 bool QuestManager::GetCompletedQuest(int questID)
 {
 	ListItem<Quest>* currentQuest = questList->start;
