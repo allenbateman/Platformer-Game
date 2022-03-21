@@ -1,3 +1,40 @@
 <?xml version="1.0"?>
 <save_state>
+	<window />
+	<input />
+	<textures />
+	<audio />
+	<map />
+	<physics>
+		<physics />
+	</physics>
+	<guiManager />
+	<:anonymous />
+	<levelManager>
+		<levelManager currentLevel="4" />
+	</levelManager>
+	<:anonymous />
+	<intro />
+	<start_menu />
+	<level1>
+		<level1 keys_to_collect="1" />
+	</level1>
+	<level2>
+		<level1 keys_to_collect="3" />
+	</level2>
+	<game_over />
+	<entities>
+		<Gem type="0" x="54.5" y="26.5" />
+		<Gem type="0" x="65.5" y="20.5" />
+		<Gem type="0" x="75.5" y="18.5" />
+		<Key type="1" x="76.5" y="25.5" />
+		<HealthPotion type="13" x="1104" y="400" />
+		<player type="9" x="53.5961647" y="15.4195814" lives="1" state="2" coins="5" keys="1" />
+		<musher type="3" x="73.5" y="25.4950199" state="0" />
+		<Portal type="8" x="79" y="12" />
+		<CheckPoint type="5" x="54.5" y="14.5" />
+	</entities>
+	<renderer>
+		<camera x="0" y="0" />
+	</renderer>
 </save_state>

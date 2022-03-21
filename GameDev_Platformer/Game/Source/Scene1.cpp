@@ -197,30 +197,30 @@ bool Scene1::PostUpdate()
 		app->render->DrawTexture(app->guiManager->UItexture, x + (x*i), y, &r);
 	}
 
-	r = {57,262,24,32};
-	//coins 
-		app->render->DrawTexture(app->guiManager->UItexture,1089 , y, &r);
+	//r = {57,262,24,32};
+	////coins 
+	//	app->render->DrawTexture(app->guiManager->UItexture,1089 , y, &r);
 
-		std::string s = std::to_string(app->entities->coinsCollected);
-		const char* txt = s.c_str(); 
-		app->fonts->BlitText(1121, 4, 1, txt);
-	//keys
-	r = { 33,262,23,32 };
-		app->render->DrawTexture(app->guiManager->UItexture, 1177 , y, &r);
-		s = std::to_string(app->entities->playerInstance->keysCollected);
-		txt = s.c_str(); 
-		app->fonts->BlitText(1209, 4, 1, txt);
-	//timer 
-		int seconds =(int) timer / 1000;
-		int min = seconds / 60;
-		s = std::to_string(min);
-		txt = s.c_str();
-		app->fonts->BlitText(987, 4, 1, txt);		
-		app->fonts->BlitText(1000, 4, 1, ":");
+	//	std::string s = std::to_string(app->entities->coinsCollected);
+	//	const char* txt = s.c_str(); 
+	//	app->fonts->BlitText(1121, 4, 1, txt);
+	////keys
+	//r = { 33,262,23,32 };
+	//	app->render->DrawTexture(app->guiManager->UItexture, 1177 , y, &r);
+	//	s = std::to_string(app->entities->playerInstance->keysCollected);
+	//	txt = s.c_str(); 
+	//	app->fonts->BlitText(1209, 4, 1, txt);
+	////timer 
+	//	int seconds =(int) timer / 1000;
+	//	int min = seconds / 60;
+	//	s = std::to_string(min);
+	//	txt = s.c_str();
+	//	app->fonts->BlitText(987, 4, 1, txt);		
+	//	app->fonts->BlitText(1000, 4, 1, ":");
 
-		s = std::to_string(seconds- (min*60));
-		txt = s.c_str();
-		app->fonts->BlitText(1019, 4, 1, txt);
+	//	s = std::to_string(seconds- (min*60));
+	//	txt = s.c_str();
+	//	app->fonts->BlitText(1019, 4, 1, txt);
 
 	pausePanel->Draw();
 	settingsPanel->Draw();

@@ -64,23 +64,23 @@ private:
 
 
 	//ui
-	GuiPanel* settingsPanel;
-	GuiSlider* volumeSlider;
-	GuiSlider* fxSlider;
-	GuiToggle* vsyncCheckbox;
-	GuiToggle* fullScreenCheckbox;
-	GuiButton* closePanelBttn;
+	GuiPanel* settingsPanel = nullptr;
+	GuiSlider* volumeSlider = nullptr;
+	GuiSlider* fxSlider = nullptr;
+	GuiToggle* vsyncCheckbox = nullptr;
+	GuiToggle* fullScreenCheckbox = nullptr;
+	GuiButton* closePanelBttn = nullptr;
 
 
 
-	GuiPanel* pausePanel;
-	GuiButton* resumeButton;
-	GuiButton* settingsButton;
-	GuiButton* backToTitleButton;
-	GuiButton* exitButton;
-	GuiButton* closePanelBttn2;
+	GuiPanel* pausePanel = nullptr;
+	GuiButton* resumeButton = nullptr;
+	GuiButton* settingsButton = nullptr;
+	GuiButton* backToTitleButton = nullptr;
+	GuiButton* exitButton = nullptr;
+	GuiButton* closePanelBttn2 = nullptr;
 
-	GuiPanel* UiPanel;
+	GuiPanel* UiPanel = nullptr;
 	SDL_Rect lifes,coins,keys;
 
 	SDL_Texture* palyerUI;

@@ -3,24 +3,20 @@
 
 #include "Module.h"
 #include "SDL\include\SDL_pixels.h"
+#include "External/SDL_ttf/include/SDL_ttf.h"
 
 #define MAX_FONTS 10
 #define MAX_FONT_CHARS 256
 
 struct SDL_Texture;
 
-struct Font
+struct Text
 {
-	// Lookup table. All characters displayed in the same order as the texture
-	char table[MAX_FONT_CHARS];
-
 	// The font texture
 	SDL_Texture* texture = nullptr;
+	const char* text;
+	SDL_Rect dpsRect;// to store the text texture dimensions
 
-	// Font setup data
-	uint totalLength;
-	uint rows, columns;
-	uint char_w, char_h;
 };
 
 class ModuleFonts : public Module
@@ -33,25 +29,52 @@ public:
 	// Destructor
 	~ModuleFonts();
 
-	bool LoadTIFF(const char* fontPath);
+	bool Start();
+	bool CleanUp();
+	bool Update(float dt);
 
-	// Loads a font file from a texture
+	//Load font
+	int LoadTIFF(const char* fontPath, int fontSize);
+
+	//Unload font
+	void UnloadTIFF(int font_id);
+
+	//Unload all fonts
+	void UnloadAllTIFF();
+
+	// Create a surface from font
 	// Returns a font index from the fonts array
-	// Param texturePath	- The path to the texture file
-	// Param characters		- The lookup table. All characters displayed in the same order as the texture
-	// Param rows			- The amount of character rows in the texture
-	int Load(const char* texturePath, const char* characters, uint rows = 1);
+	// Param rect			- The rectangle where the texture dimensions will be stored
+	// Param fontIndex		- The index to refer to a font 
+	// Param text			- The text to dispaly
+	// Param color			- The color to render the text
+	SDL_Texture* LoadRenderedText(SDL_Rect& rect, int font_id, const char* text, SDL_Color color);
 
-	// Removes a font by its index
-	// Unloads the texture and removes it from the fonts array
-	void UnLoad(int fontIndex);
+	SDL_Texture* LoadRenderedParagraph(SDL_Rect& rect, int font_id, const char* text, SDL_Color color, uint32 wrapedLength);
 
-	// Create a surface from text
-	void BlitText(int x, int y, int fontIndex, const char* text) const;
+	//Globally used font
+	int globalFont;
+	//Font used in menu buttons
+	int menuButtonFont;
+
+	int titles;
 
 private:
+
 	// An array to keep track and store all loaded fonts
-	Font fonts[MAX_FONTS];
+	TTF_Font* fonts[MAX_FONTS];
+
+
+	// To display text
+	SDL_Rect dpsRect;// to store the text texture dimensions
+	SDL_Texture* textTex1;// to store the actual texture to display
+	int mWidth;//Image dimensions
+	int mHeight;
+
+	SDL_Rect  dpsParagraph;
+	SDL_Texture* textTex2;
+
+
 };
 
 
