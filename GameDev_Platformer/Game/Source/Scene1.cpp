@@ -253,6 +253,7 @@ void Scene1::Disable()
 	app->map->CleanUp();
 	app->physics->Disable();
 	app->entities->Disable();
+	app->audio->StopMusic();
 }
 
 bool Scene1::LoadState(pugi::xml_node& data)

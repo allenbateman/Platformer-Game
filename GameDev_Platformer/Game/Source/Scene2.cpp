@@ -102,7 +102,7 @@ bool Scene2::CleanUp()
 	app->map->CleanUp();
 	app->entities->CleanUp();
 	app->physics->CleanUp();
-	app->audio->PlayMusic("");
+	app->audio->StopMusic();
 	return true;
 }
 
@@ -118,6 +118,7 @@ void Scene2::Disable()
 	app->map->CleanUp();
 	app->physics->Disable();
 	app->entities->Disable();
+	app->audio->StopMusic();
 }
 
 bool Scene2::LoadState(pugi::xml_node& data)
