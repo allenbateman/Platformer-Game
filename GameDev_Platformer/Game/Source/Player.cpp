@@ -101,7 +101,8 @@ bool Player::Start()
 		state = PlayerState::IDLE;
 
 		position = { 20, 300 };
-		physBody = app->physics->CreateCircle(position.x, position.y, colliderRadius, b2_dynamicBody, { 0,250,125,255 });
+		//physBody = app->physics->CreateCircle(position.x, position.y, colliderRadius, b2_dynamicBody, { 0,250,125,255 });
+		physBody = app->physics->CreateRectangle(position.x, position.y,10,10,  b2_dynamicBody, { 250,125,255 });
 		physBody->listener = app->entities;
 		physBody->type = Collider_Type::PLAYER;
 		physBody->body->SetFixedRotation(true);
