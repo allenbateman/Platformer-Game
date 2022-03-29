@@ -52,7 +52,7 @@ public:
 	Animation* skillAnim = nullptr;
 	Animation idlePlayerAnim, walkingPlayerAnim, jumpingPlayerAnim, deathPlayerAnim, meleePlayerAnim, skillPlayerAnim;
 
-	float jumpForce = 15;
+	float jumpForce = 10;
 	float onAirXSpeed = 5;
 	float jumpCooldown = 50;
 	float currentJumpCd = 0;
