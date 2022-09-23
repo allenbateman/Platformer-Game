@@ -28,7 +28,7 @@ class ModulePhysics;
 class ModuleEntities;
 class GuiManager;
 class ModuleFonts;
-
+class QuestManager;
 
 class App
 {
@@ -112,6 +112,7 @@ public:
 	ModulePhysics* physics;
 	ModuleEntities* entities;
 	GuiManager* guiManager;
+	QuestManager* questManager;
 	ModuleFonts* fonts;
 	
 	float dt;

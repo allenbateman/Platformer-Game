@@ -35,13 +35,13 @@ bool GameOver::Start()
 {
 	img = app->tex->Load("Assets/Spritesx16/GameOver.png");
 
-	menuPanel = new GuiPanel(true);
-	menuPanel->bounds = { 0,0,0,0 };
-	menuPanel->position = { 0,0 };
-	backToTitleButton = (GuiButton*)menuPanel->CreateGuiControl(GuiControlType::BUTTON, 5, "backtotitle", 0, { (app->win->GetWidth() / 2) - 85 , (app->win->GetHeight() / 2), 170, 60 }, this);
-	backToTitleButton->texture = app->guiManager->UItexture;
-	backToTitleButton->normalRec = { 340,120,170,60 };
-	backToTitleButton->focusedRec = { 340,180,170,60 };
+	//menuPanel = new GuiPanel(true);
+	//menuPanel->bounds = { 0,0,0,0 };
+	//menuPanel->position = { 0,0 };
+	////backToTitleButton = (GuiButton*)menuPanel->CreateGuiControl(GuiControlType::BUTTON, 5, "backtotitle", 0, { (app->win->GetWidth() / 2) - 85 , (app->win->GetHeight() / 2), 170, 60 }, this);
+	////backToTitleButton->texture = app->guiManager->UItexture;
+	////backToTitleButton->normalRec = { 340,120,170,60 };
+	////backToTitleButton->focusedRec = { 340,180,170,60 };
 
 	return true;
 }
@@ -67,7 +67,6 @@ bool GameOver::Update(float dt)
 	if (img != nullptr && active)
 		app->render->DrawTexture(img, 0, 0, &rect, 1.0f, 0.0f, 1, 1, 1, SDL_FLIP_NONE);
 
-	menuPanel->Update(dt);
 	return true;
 }
 
@@ -75,8 +74,6 @@ bool GameOver::Update(float dt)
 bool GameOver::PostUpdate()
 {
 	bool ret = true;
-
-	menuPanel->Draw();
 
 	return ret;
 }

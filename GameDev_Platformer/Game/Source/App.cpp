@@ -34,9 +34,12 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	render = new Render(true);
 	tex = new Textures(true);
 	audio = new Audio(true);
-	levelManagement = new LevelManagement(true);
 	physics = new ModulePhysics(true);
+
+	levelManagement = new LevelManagement(true);
+	
 	guiManager = new GuiManager(true);
+
 	fonts = new ModuleFonts(true);
 	map = new Map(true);
 	entities = new ModuleEntities(true);
