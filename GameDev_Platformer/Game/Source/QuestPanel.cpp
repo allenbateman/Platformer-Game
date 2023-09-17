@@ -24,7 +24,9 @@ bool QuestPanel::Start()
 	notAvailableTex = app->fonts->LoadRenderedText(notavailable, 0, "Not available", {255,255,255});
 	availableTex = app->fonts->LoadRenderedText(rAvailable,0, "There is something new!", { 255,255,255 });
 
-	currentQuest = app->questManager->questList->start;
+
+	if(app->questManager != nullptr)
+	currentQuest = reinterpret_cast<ListItem<Quest*>*>(app->questManager->questList->start);
 
 	nextButton = (GuiButton*)CreateGuiButton(0,app->guiManager,this, { 332, 610,52,56 });
 
@@ -135,7 +137,7 @@ bool QuestPanel::OnGuiMouseClickEvent(GuiControl* control)
 
 		if (currentQuest == nullptr)
 		{
-			currentQuest = app->questManager->questList->start;
+			currentQuest = reinterpret_cast<ListItem<Quest*>*>(app->questManager->questList->start);
 		}
 	}
 	else if (control->id == cancelButton->id)

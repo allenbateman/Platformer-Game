@@ -58,7 +58,7 @@ bool GuiSlider::Update(float dt)
 				
 
 				value = GetValue(mouseX);
-				LOG("slider value:%f", GetValue(mouseX));
+				//LOG("slider value:%f", GetValue(mouseX));
 				state = GuiControlState::PRESSED;
 			}
 
